@@ -1,4 +1,5 @@
-# Project Name
+# Personal Finance Management System
+
 ## Project for Knowledge Based Systems (VIII Semester)
 
 ## Team 16 members
