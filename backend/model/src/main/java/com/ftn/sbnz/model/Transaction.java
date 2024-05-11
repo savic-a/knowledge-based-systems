@@ -26,4 +26,5 @@ public class Transaction implements Serializable {
     private double value;
     private Timestamp date;
     private Type type;
+    private Long clientId;
 }
