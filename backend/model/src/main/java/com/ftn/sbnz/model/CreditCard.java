@@ -18,6 +18,6 @@ public class CreditCard implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private double currentBalance;
+    private double balance;
     private Long clientId;
 }
