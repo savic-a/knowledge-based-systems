@@ -7,11 +7,14 @@ when
     $transaction: Transaction($type: type, $value: value, $clientId: clientId)
     $card: CreditCard(clientId == $clientId)
 then
+    System.out.println("Promjena stanja na kartici");
+    double newBalance = 0;
     if ($type == Transaction.Type.INCOME) {
-        $card.setBalance($card.getBalance() + $value);
+        newBalance = $card.getBalance() + $value;
     }
     else {
-        $card.setBalance($card.getBalance() - $value);
+        newBalance = $card.getBalance() - $value;
     }
-    update($card);
+    System.out.println(Double.toString(newBalance));
+    modify($card){setBalance(newBalance);}
 end
