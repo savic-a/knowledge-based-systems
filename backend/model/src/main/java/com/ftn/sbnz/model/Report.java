@@ -22,4 +22,5 @@ public class Report implements Serializable {
     private int weekNum;
     private String reason;
     private Timestamp generatonDate;
+    private Long clientId;
 }

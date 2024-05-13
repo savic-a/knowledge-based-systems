@@ -24,4 +24,5 @@ public class Alarm implements Serializable {
     private Long id;
     private String description;
     private Level Level;
+    private Long clientId;
 }

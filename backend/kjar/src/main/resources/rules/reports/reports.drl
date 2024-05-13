@@ -1,1 +1,54 @@
-// TODO: when alarm is created, generate report
+import com.ftn.sbnz.model.FirstOfMonthEvent;
+import com.ftn.sbnz.model.Alarm;
+import com.ftn.sbnz.model.Report;
+import com.ftn.sbnz.model.Transaction;
+import java.util.Date;
+import java.util.Calendar;
+import java.sql.Timestamp;
+
+global java.util.Date lastTriggerDate;
+
+
+function Date getLastMonthStartDate() {
+    Calendar cal = Calendar.getInstance();
+    cal.add(Calendar.MONTH, -1);
+    cal.set(Calendar.DAY_OF_MONTH, 1);
+    return cal.getTime();
+}
+
+
+rule "First of the Month"
+    timer (cron: 0 0 0 1 * ?)  // fire at midnight (00:00) on the first day of every month
+    when
+        eval(lastTriggerDate == null || lastTriggerDate.getMonth() != new java.util.Date().getMonth())
+    then
+        lastTriggerDate = new java.util.Date();
+        System.out.println("Starting new month...");
+        new FirstOfMonthEvent();
+end
+
+
+rule "Calculate Last Month's Income"
+    when
+    // TODO: check which client and do this for each client
+        FirstOfMonthEvent()
+        $transaction: Transaction(type == Transaction.Type.INCOME, date >= getLastMonthStartDate())  // transactions within the last month (30 days)
+        accumulate($value: Number(doubleValue >= 0) from $transaction.getValue(), $totalIncome: sum($value))
+    then
+        // totalIncome += $value;
+        System.out.println("Total income and valueeee");
+        System.out.println($totalIncome);
+        // System.out.println($value);
+        Report report = new Report(1L, 0, "Total Income for the Last Month i ovdje dodati + value", new Timestamp(System.currentTimeMillis()), 1L);
+end
+
+
+rule "Generate Alarm Report"
+    when
+        $alarm: Alarm()
+    then
+        System.out.println("Dodan je alarm");
+        String description = "Alarm happened: " + $alarm.getDescription();
+        Report report = new Report(1L, -1, description, new Timestamp(System.currentTimeMillis()), $alarm.getClientId());
+        insert(report);
+end
