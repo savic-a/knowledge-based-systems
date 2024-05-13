@@ -9,7 +9,6 @@ import com.ftn.sbnz.util.KnowledgeSessionHelper;
 public class Test {
     public static void main() {
         try {
-            System.out.println("usao u test main...");
             KieContainer kc = KnowledgeSessionHelper.createRuleBase();
             KieSession kSession = KnowledgeSessionHelper.getStatefulKnowledgeSession(kc, "ksession-reports");
 
