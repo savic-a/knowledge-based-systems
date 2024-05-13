@@ -1,7 +1,7 @@
 package com.ftn.sbnz.model;
 
 import java.io.Serializable;
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +17,7 @@ import lombok.Setter;
 public class Transaction implements Serializable {
 
     public enum Type {
-        INCOME, EXPENDITURE
+        INCOME, OUTCOME
     };
     
     private static final long serialVersionUID = 1L;
@@ -26,4 +26,5 @@ public class Transaction implements Serializable {
     private double value;
     private Timestamp date;
     private Type type;
+    private Long clientId;
 }

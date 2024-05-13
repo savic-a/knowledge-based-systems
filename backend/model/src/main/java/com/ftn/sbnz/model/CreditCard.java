@@ -19,4 +19,5 @@ public class CreditCard implements Serializable {
 
     private Long id;
     private double currentBalance;
+    private Long clientId;
 }
