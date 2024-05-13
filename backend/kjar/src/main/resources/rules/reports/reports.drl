@@ -1,1 +1,46 @@
 // TODO: when alarm is created, generate report
+import com.ftn.sbnz.model.FirstOfMonthEvent;
+import com.ftn.sbnz.model.Alarm;
+import com.ftn.sbnz.model.Report;
+import com.ftn.sbnz.model.Transaction;
+import java.util.Date;
+import java.sql.Timestamp;
+
+global java.util.Date lastTriggerDate;  // TODO: is here smart to use global, what will happen if we have more than one client in the system
+
+
+// rule "First of the Month"
+//     timer (cron: 0 0 0 1 * ?)  // fire at midnight (00:00) on the first day of every month
+//     when
+//         eval(lastTriggerDate == null || lastTriggerDate.getMonth() != new java.util.Date().getMonth())
+//     then
+//         lastTriggerDate = new java.util.Date();
+//         System.out.println("Starting new month...");
+//         new FirstOfMonthEvent();
+// end
+
+
+// rule "Calculate Last Month's Income"
+//     when
+//     // TODO: check which client
+//         FirstOfMonthEvent()
+//         $transaction: Transaction(type == Transaction.Type.INCOME, 
+//                                   date >= (new Date() - 30*24*60*60*1000))  // transactions within the last month (30 days)
+//         accumulate($value: Number(doubleValue >= 0) from $transaction.getValue(), $totalIncome: sum($value))
+//     then
+//         // totalIncome += $value;
+//         System.out.println("Total income and valueeee");
+//         System.out.println($totalIncome);
+//         System.out.println($value);
+//         Report report = new Report(-1, 0, "Total Income for the Last Month i ovdje dodati + value", new Timestamp(System.currentTimeMillis()), 1);
+// end
+
+
+rule "Generate Alarm Report"
+    when
+        $alarm: Alarm()
+    then
+        System.out.println("dodan je alaaaaaaarm");
+        Report report = new Report(1L, -1, "Alarm happened: dodati deskripciju", new Timestamp(System.currentTimeMillis()), 1L);
+        insert(report);
+end

@@ -17,7 +17,7 @@ import lombok.Setter;
 public class Transaction implements Serializable {
 
     public enum Type {
-        INCOME, EXPENDITURE
+        INCOME, OUTCOME
     };
     
     private static final long serialVersionUID = 1L;

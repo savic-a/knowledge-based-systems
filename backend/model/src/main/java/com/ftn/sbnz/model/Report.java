@@ -1,7 +1,7 @@
 package com.ftn.sbnz.model;
 
 import java.io.Serializable;
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,4 +22,5 @@ public class Report implements Serializable {
     private int weekNum;
     private String reason;
     private Timestamp generatonDate;
+    private Long clientId;
 }

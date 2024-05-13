@@ -2,7 +2,7 @@ import com.ftn.sbnz.model.Transaction;
 import com.ftn.sbnz.model.CreditCard;
 
 
-rule "New transaction added - update current balance"
+rule "Update current balance"
 when
     $transaction: Transaction($type: type, $value: value, $clientId: clientId)
     $card: CreditCard(clientId == $clientId)
@@ -15,3 +15,4 @@ then
     }
     update($card);
 end
+

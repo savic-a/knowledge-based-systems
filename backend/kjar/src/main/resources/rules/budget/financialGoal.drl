@@ -1,2 +1,11 @@
+import com.ftn.sbnz.model.Transaction;
+import com.ftn.sbnz.model.CreditCard;
+
 // TODO: when financial goal is created check if it is reasonable (compare to budget)
 // set flag if goal is accepted
+
+// rule "Set state of Transaction"
+// when
+//     $transaction: Transaction($type: type, $value: value, $clientId: clientId)
+//     $budget: 
+
