@@ -28,7 +28,7 @@ public class CreditCardRulesService {
         kSession.insert( new Client(1L, "PERA", "PERIC", "pera@gmail.com",  "123"));
         kSession.insert( new CreditCard(1L, 2000.00, 1L));
         kSession.insert( new Transaction(1L, 200.00, Timestamp.valueOf(LocalDateTime.now()), Type.INCOME, 1L));
-        kSession.insert( new Transaction(2L, 400.00, Timestamp.valueOf(LocalDateTime.now()), Type.EXPENDITURE, 1L));
+        kSession.insert( new Transaction(2L, 400.00, Timestamp.valueOf(LocalDateTime.now()), Type.OUTCOME, 1L));
 
         kSession.fireAllRules();
     }
