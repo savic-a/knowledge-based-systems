@@ -11,4 +11,7 @@
     <kbase name="reports" packages="reports">
         <ksession name="ksession-reports"/>
     </kbase>
+    <kbase name="cep" eventProcessingMode="stream" packages="cep">
+        <ksession name="ksession-cep"/>
+    </kbase>
 </kmodule>

@@ -8,8 +8,8 @@ import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ftn.sbnz.model.Alarm;
-import com.ftn.sbnz.model.Alarm.Level;
+import com.ftn.sbnz.event.Alarm;
+import com.ftn.sbnz.event.Alarm.Level;
 import com.ftn.sbnz.model.FirstOfMonthEvent;
 import com.ftn.sbnz.model.Transaction;
 import com.ftn.sbnz.model.Transaction.Type;
