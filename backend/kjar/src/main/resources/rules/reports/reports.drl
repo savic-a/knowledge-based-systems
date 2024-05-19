@@ -107,7 +107,4 @@ rule "Generate Too Many Alarms Report"
         System.out.println("Dodano je alarm upozorenje");
         Alarm alarm = new Alarm(1L, "Many low priority alarms happened. Please check what is going on.", Alarm.Level.MEDIUM, $clientId);
         insert(alarm);
-        // String description = "Alarm happened: " + $alarm.getDescription();
-        // Report report = new Report(1L, -1, description, new Timestamp(System.currentTimeMillis()), $alarm.getClientId());
-        // insert(report);
 end

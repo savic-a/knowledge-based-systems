@@ -2,6 +2,7 @@ package com.ftn.sbnz.service.services;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -12,10 +13,14 @@ import com.ftn.sbnz.model.Client;
 import com.ftn.sbnz.model.CreditCard;
 import com.ftn.sbnz.model.Transaction;
 import com.ftn.sbnz.model.Transaction.Type;
+import com.ftn.sbnz.service.repositories.CreditCardRepository;
 
 @Service
 public class CreditCardRulesService {
     private final KieContainer kieContainer;
+
+    @Autowired
+    public CreditCardRepository repository;
 
     @Autowired
     public CreditCardRulesService(KieContainer kieContainer) {
@@ -31,5 +36,9 @@ public class CreditCardRulesService {
         kSession.insert( new Transaction(2L, 400.00, Timestamp.valueOf(LocalDateTime.now()), Type.OUTCOME, 1L));
 
         kSession.fireAllRules();
+    }
+
+    public List<CreditCard> getAll() {
+        return repository.findAll();
     }
 }
