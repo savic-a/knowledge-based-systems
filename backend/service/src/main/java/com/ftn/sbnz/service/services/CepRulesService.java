@@ -29,6 +29,7 @@ public class CepRulesService {
         kSession.insert(new TransactionEvent(1L, 300.00, Type.OUTCOME, 1L));
         kSession.insert(new TransactionEvent(1L, 250.0, Type.OUTCOME, 1L)); 
         kSession.insert(new TransactionEvent(1L, 50.0, Type.OUTCOME, 1L)); 
+        kSession.insert(new TransactionEvent(1L, 500.0, Type.OUTCOME, 1L)); 
 
         kSession.fireAllRules();
     }

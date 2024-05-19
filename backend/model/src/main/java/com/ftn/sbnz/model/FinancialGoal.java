@@ -25,4 +25,6 @@ public class FinancialGoal implements Serializable {
     private double targetValue;
     private Timestamp targetDate;
     private double currentBalance;
+    private double startBalance;
+    private Long clientId;
 }
