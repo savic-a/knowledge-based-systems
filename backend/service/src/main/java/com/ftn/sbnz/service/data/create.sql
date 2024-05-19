@@ -18,3 +18,11 @@ CREATE TABLE credit_card (
     balance DOUBLE PRECISION,
     client_id BIGINT
 );
+
+CREATE TABLE client (
+    id BIGINT PRIMARY KEY,
+    name VARCHAR(255),
+    surname VARCHAR(255),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL
+);

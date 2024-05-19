@@ -5,3 +5,5 @@ GRANT ALL ON DATABASE sbnz TO postgres;
 GRANT ALL ON DATABASE sbnz TO root;
 
 GRANT ALL PRIVILEGES ON TABLE credit_card TO root;
+
+GRANT ALL PRIVILEGES ON TABLE client TO root;
