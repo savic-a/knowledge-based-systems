@@ -1,25 +1,28 @@
-import  com.ftn.sbnz.event.TransactionEvent;
+import com.ftn.sbnz.event.TransactionEvent;
+import com.ftn.sbnz.model.Budget;
 
 declare ResultEvent
     @role(event)
-    customerId: Long
+    clientId: Long
     reason: String
 end
 
 rule "Weekly transactions exceed 20% of budget"
     when
-        $budget: Budget($cId: customerId, $weeklyBudget: weeklyBudget)
-        $t1: TransactionEvent($cId == customerId)
+        $budget: Budget($bId: id, $weeklyBudget: value, $cId: clientId)
+        $t1: TransactionEvent($cId == clientId)
         $totalAmount: Number(doubleValue >= $weeklyBudget * 0.2) from accumulate(
-            TransactionEvent(
-                customerId == $cId,
+            $t2: TransactionEvent(
+                clientId == $cId,
+                type == TransactionEvent.Type.OUTCOME,
                 this after[0d, 7d] $t1
             ),
-            sum(amount)
+            sum($t2.getValue())
         )
-        not (ResultEvent(customerId == $cId, reason == "Sudden jump in costs"))
-        
+        not (ResultEvent(clientId == $cId, reason == "Sudden jump in costs"))
+
     then
         System.out.println("Detected sudden jump in costs for customer " + $cId);
+        System.out.println($totalAmount);
         insert(new ResultEvent($cId, "Sudden jump in costs"));
 end

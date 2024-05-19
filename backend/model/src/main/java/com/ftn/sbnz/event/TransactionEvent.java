@@ -1,6 +1,7 @@
 package com.ftn.sbnz.event;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import org.kie.api.definition.type.Expires;
 import org.kie.api.definition.type.Role;
@@ -31,7 +32,15 @@ public class TransactionEvent implements Serializable {
 
     private Long id;
     private double value;
-    private Timestamp date;
+    private Date executionTime;
     private Type type;
     private Long clientId;
+
+    public TransactionEvent(Long id, double value, Type type, Long client) {
+        this.id = id;
+        this.value = value;
+        this.clientId = client;
+        this.type = type;
+        this.executionTime = new Date();
+    }
 }

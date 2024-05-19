@@ -15,14 +15,14 @@ import lombok.Setter;
 @AllArgsConstructor
 @Data
 public class Budget implements Serializable {
-    public enum Period {
-        WEEK, MONTH
-    };
+    // public enum Period {
+    //     WEEK, MONTH
+    // };
     
     private static final long serialVersionUID = 1L;
 
     private Long id;
     private double value;
-    private Period period;
+    // private Period period;
     private Long clientId;
 }
