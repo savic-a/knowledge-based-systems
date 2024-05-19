@@ -1,11 +1,6 @@
 import com.ftn.sbnz.event.TransactionEvent;
+import com.ftn.sbnz.event.AnalysisTransaction;
 import com.ftn.sbnz.model.Budget;
-
-declare ResultEvent
-    @role(event)
-    clientId: Long
-    reason: String
-end
 
 rule "Weekly transactions exceed 20% of budget"
     when
@@ -19,10 +14,10 @@ rule "Weekly transactions exceed 20% of budget"
             ),
             sum($t2.getValue())
         )
-        not (ResultEvent(clientId == $cId, reason == "Sudden jump in costs"))
+        not (AnalysisTransaction(clientId == $cId, reason == "Sudden jump in costs", type == AnalysisTransaction.FinancialGoalType.UNFAVORABLE))
 
     then
         System.out.println("Detected sudden jump in costs for customer " + $cId);
         System.out.println($totalAmount);
-        insert(new ResultEvent($cId, "Sudden jump in costs"));
+        insert(new AnalysisTransaction($cId, "Sudden jump in costs", AnalysisTransaction.FinancialGoalType.UNFAVORABLE));
 end
