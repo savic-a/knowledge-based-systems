@@ -3,7 +3,7 @@ package com.ftn.sbnz.service;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
-import com.ftn.sbnz.model.Alarm;
+import com.ftn.sbnz.event.Alarm;
 import com.ftn.sbnz.util.KnowledgeSessionHelper;
 
 public class Test {

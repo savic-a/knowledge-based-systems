@@ -1,4 +1,4 @@
-package com.ftn.sbnz.model;
+package com.ftn.sbnz.event;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,33 +13,34 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Getter
-@Setter
+@Setter 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Role(Role.Type.EVENT)
 @Timestamp("executionTime")
 @Expires("2h30m")
-public class Alarm implements Serializable {
+public class TransactionEvent implements Serializable {
 
-    public enum Level {
-        LOW, MEDIUM, HIGH
+    public enum Type {
+        INCOME, OUTCOME
     };
     
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private String description;
-    private Level level;
-    private Long clientId;
+    private double value;
     private Date executionTime;
+    private Type type;
+    private Long clientId;
 
-    public Alarm(Long id, String desc, Level l, Long client) {
+    public TransactionEvent(Long id, double value, Type type, Long client) {
         this.id = id;
-        this.description = desc;
+        this.value = value;
         this.clientId = client;
-        this.level = l;
+        this.type = type;
         this.executionTime = new Date();
     }
 }

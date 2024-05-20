@@ -1,4 +1,4 @@
-package com.ftn.sbnz.service.services;
+package com.ftn.sbnz.service.services.rules;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;

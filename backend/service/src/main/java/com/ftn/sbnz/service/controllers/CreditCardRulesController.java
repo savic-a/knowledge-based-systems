@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ftn.sbnz.model.CreditCard;
-import com.ftn.sbnz.service.services.CreditCardRulesService;
+import com.ftn.sbnz.service.services.rules.CreditCardRulesService;
 
 @RestController
 @RequestMapping("/credit-card")

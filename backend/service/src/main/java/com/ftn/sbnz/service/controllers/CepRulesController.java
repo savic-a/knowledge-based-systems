@@ -5,20 +5,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ftn.sbnz.service.services.rules.ReportsRulesService;
+import com.ftn.sbnz.service.services.rules.CepRulesService;
 
 @RestController
-@RequestMapping("/reports")
-public class ReportsRulesController {
-    private ReportsRulesService reportsService;
+@RequestMapping("/cep")
+public class CepRulesController {
+    private CepRulesService creditCardService;
 
     @Autowired
-    public ReportsRulesController(ReportsRulesService reportsService) {
-        this.reportsService = reportsService;
+    public CepRulesController(CepRulesService creditCardService) {
+        this.creditCardService = creditCardService;
     }
 
     @GetMapping("")
     public void fireAllRules() {
-        reportsService.fireRules();
+        creditCardService.fireRules();
     }
 }
