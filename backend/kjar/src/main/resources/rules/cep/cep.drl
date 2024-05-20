@@ -4,26 +4,6 @@ import com.ftn.sbnz.event.AccomplishedGoal;
 import com.ftn.sbnz.model.Budget;
 import com.ftn.sbnz.model.FinancialGoal;
 
-rule "Weekly transactions exceed 20% of budget"
-    when
-        Budget($bId: id, $budget: value, $cId: clientId)
-        $t1: TransactionEvent($cId == clientId)
-        $totalAmount: Number(doubleValue >= $budget * 0.2) from accumulate(
-            $t2: TransactionEvent(
-                clientId == $cId,
-                type == TransactionEvent.Type.OUTCOME,
-                this after[0d, 7d] $t1
-            ),
-            sum($t2.getValue())
-        )
-        not (AnalysisTransaction(clientId == $cId, reason == "Sudden jump in costs", type == AnalysisTransaction.FinancialGoalType.UNFAVORABLE))
-
-    then
-        System.out.println("Detected sudden jump in costs for customer " + $cId);
-        System.out.println($totalAmount);
-        insert(new AnalysisTransaction($cId, "Sudden jump in costs", AnalysisTransaction.FinancialGoalType.UNFAVORABLE));
-end
-
 
 rule "Budget exceeded detection"
     when
@@ -41,8 +21,28 @@ rule "Budget exceeded detection"
 
     then
         System.out.println("Detected overrun budget for customer " + $cId);
-        System.out.println($totalAmount);
         insert(new AnalysisTransaction($cId, "Budget overrun", AnalysisTransaction.FinancialGoalType.UNFAVORABLE));
+end
+
+
+rule "Weekly transactions exceed 20% of budget"
+    when
+        Budget($bId: id, $budget: value, $cId: clientId)
+        $t1: TransactionEvent($cId == clientId)
+        $totalAmount: Number(doubleValue >= $budget * 0.2) from accumulate(
+            $t2: TransactionEvent(
+                clientId == $cId,
+                type == TransactionEvent.Type.OUTCOME,
+                this after[0d, 7d] $t1
+            ),
+            sum($t2.getValue())
+        )
+        not (AnalysisTransaction(clientId == $cId, reason == "Sudden jump in costs", type == AnalysisTransaction.FinancialGoalType.UNFAVORABLE))
+        not (AnalysisTransaction(clientId == $cId, reason == "Budget overrun", type == AnalysisTransaction.FinancialGoalType.UNFAVORABLE))
+
+    then
+        System.out.println("Detected sudden jump in costs for customer " + $cId);
+        insert(new AnalysisTransaction($cId, "Sudden jump in costs", AnalysisTransaction.FinancialGoalType.UNFAVORABLE));
 end
 
 
@@ -59,13 +59,10 @@ end
 rule "Analyze Financial Goal Every Two Weeks"
     when
         $goal: FinancialGoal($clientId: clientId, $targetValue: targetValue, $currentBalance: currentBalance, $startBalance: startBalance)
+        eval(($currentBalance - $startBalance) / $targetValue <= 1.0)
     then
         double total = $currentBalance - $startBalance;
-        System.out.println(total);
         double percentageAchieved = (total / $targetValue) * 100;
-
-        System.out.println(total);
-        System.out.println(percentageAchieved);
 
         insert( new AccomplishedGoal($clientId, "Financial goal analysis: " + percentageAchieved + "% of the goal achieved."));
         
