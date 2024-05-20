@@ -1,5 +1,6 @@
 import com.ftn.sbnz.event.TransactionEvent;
 import com.ftn.sbnz.event.AnalysisTransaction;
+import com.ftn.sbnz.event.AccomplishedGoal;
 import com.ftn.sbnz.model.Budget;
 import com.ftn.sbnz.model.FinancialGoal;
 
@@ -52,4 +53,21 @@ rule "Financial goal achieved detection"
     then
         insert(new AnalysisTransaction($goal.getClientId(), "Goal achieved: " + $goal.getName(), AnalysisTransaction.FinancialGoalType.FAVORABLE));
         System.out.println("Financial goal achieved for client: " + $goal.getClientId() + " Goal: " + $goal.getName());
+end
+
+
+rule "Analyze Financial Goal Every Two Weeks"
+    when
+        $goal: FinancialGoal($clientId: clientId, $targetValue: targetValue, $currentBalance: currentBalance, $startBalance: startBalance)
+    then
+        double total = $currentBalance - $startBalance;
+        System.out.println(total);
+        double percentageAchieved = (total / $targetValue) * 100;
+
+        System.out.println(total);
+        System.out.println(percentageAchieved);
+
+        insert( new AccomplishedGoal($clientId, "Financial goal analysis: " + percentageAchieved + "% of the goal achieved."));
+        
+        System.out.println("Financial goal analysis for client " + $clientId + ": " + percentageAchieved + "% of the goal achieved.");
 end
