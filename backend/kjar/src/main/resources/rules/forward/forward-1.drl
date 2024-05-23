@@ -18,19 +18,22 @@ rule "Generate Mild Warning for Excessive Spending"
                 date <= today()), 
             sum($t1.getValue())
         )
+        // $category: Category()
         $transactions: List() from accumulate(
             Transaction(clientId == $clientId, category == Category.SHOPPING, value > 0, date >= startOfMonth(), date <= today()), // Add date condition to filter transactions for the current month
             collectList()
         )
-        // Number(intValue >= 3) from eval($transactions.size() >= 3)
+        $totalSpending: Number(doubleValue > 0) from accumulate(
+            $t3: Transaction(clientId == $clientId, category == Category.SHOPPING, value > 0, date >= startOfMonth(), date <= today()), 
+            sum($t3.getValue())
+        )
         eval($transactions.size() >= 3)
-        // Number(doubleValue > ($currentMonthIncome.doubleValue() * 0.1)) from accumulate(
-        //     $transactions, sum(value)
-        // )
+        eval($totalSpending.doubleValue() > ($currentMonthIncome.doubleValue() * 0.1))
     then
         System.out.println("Mild warning generated for client " + $transactions.size());
         insert(new Warning($clientId, "Mild", "You have spent more than 10% of your monthly income on SHOPPING."));
-        System.out.println("Mild warning generated for client " + $clientId);
+        // String categoryName = $category.name();
+        System.out.println("Mild warning generated for client " + $clientId + " in category ");
 end
 
 // Utility functions to get start of the current month and current day
