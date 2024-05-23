@@ -8,6 +8,7 @@ import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ftn.sbnz.enumeration.Category;
 import com.ftn.sbnz.event.Alarm;
 import com.ftn.sbnz.event.Alarm.Level;
 import com.ftn.sbnz.model.FirstOfMonthEvent;
@@ -30,9 +31,9 @@ public class ReportsRulesService {
         kSession.insert( new Alarm(3L, "Treci alarm", Level.LOW, 1L));
 
         kSession.insert( new FirstOfMonthEvent());
-        kSession.insert( new Transaction(1L, 200.00, Timestamp.valueOf(LocalDateTime.of(2024, 4, 15, 12, 0, 0)), Type.INCOME, 1L));
-        kSession.insert( new Transaction(2L, 800.00, Timestamp.valueOf(LocalDateTime.of(2024, 4, 25, 10, 0, 0)), Type.INCOME, 1L));
-        kSession.insert( new Transaction(3L, 400.00, Timestamp.valueOf(LocalDateTime.of(2024, 5, 10, 12, 0, 0)), Type.INCOME, 1L));
+        kSession.insert( new Transaction(1L, 200.00, Timestamp.valueOf(LocalDateTime.of(2024, 4, 15, 12, 0, 0)), Type.INCOME, Category.PRIVATE, 1L));
+        kSession.insert( new Transaction(2L, 800.00, Timestamp.valueOf(LocalDateTime.of(2024, 4, 25, 10, 0, 0)), Type.INCOME, Category.PRIVATE, 1L));
+        kSession.insert( new Transaction(3L, 400.00, Timestamp.valueOf(LocalDateTime.of(2024, 5, 10, 12, 0, 0)), Type.INCOME, Category.PRIVATE, 1L));
         // kSession.insert( new FirstOfMonthEvent());
 
         kSession.fireAllRules();

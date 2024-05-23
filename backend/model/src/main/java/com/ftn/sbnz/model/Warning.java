@@ -8,16 +8,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-public class Category implements Serializable {
-    
+@Getter
+@Setter
+public class Warning implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
-    private Long id;
-    private String name;
-    private double value;
+    private Long clientId;
+    private String level;
+    private String message;
 }

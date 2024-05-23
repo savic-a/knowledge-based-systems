@@ -14,4 +14,7 @@
     <kbase name="cep" eventProcessingMode="stream" packages="cep">
         <ksession name="ksession-cep"/>
     </kbase>
+    <kbase name="forward-1" packages="forward">
+        <ksession name="ksession-forward-1"/>
+    </kbase>
 </kmodule>

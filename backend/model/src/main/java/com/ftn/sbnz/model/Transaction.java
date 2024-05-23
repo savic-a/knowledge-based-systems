@@ -3,6 +3,8 @@ package com.ftn.sbnz.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import com.ftn.sbnz.enumeration.Category;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -26,5 +28,6 @@ public class Transaction implements Serializable {
     private double value;
     private Timestamp date;
     private Type type;
+    private Category category;
     private Long clientId;
 }
