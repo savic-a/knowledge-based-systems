@@ -95,7 +95,6 @@ rule "Generate Mild Warning for Flag3"
     then
         insert(new Warning($clientId, "Mild", "You have spent more than 10% of your monthly income."));
         System.out.println("Mild warning generated for client " + $clientId + " in category " + $category.name());
-        // todo ispprazni liste??
 end
 
 
@@ -106,7 +105,6 @@ rule "Generate High Warning for Flag4"
     then
         insert(new Warning($clientId, "High", "You have spent more than 25% of your monthly income."));
         System.out.println("High warning generated for client " + $clientId + " in category " + $category.name());
-        // todo isprazni liste??
 end
 
 
