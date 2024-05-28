@@ -24,7 +24,7 @@ public class ForwardRulesService {
 
     public void fireRules() {
         KieSession kSession = kieContainer.newKieSession("ksession-forward-1");
-        kSession.insert( new Client(1L, "PERA", "PERIC", "pera@gmail.com",  "123"));
+        kSession.insert( new Client(1L, "PERA", "PERIC", "pera@gmail.com",  "123", false, false, false, false));
 
         kSession.insert(new Transaction(1L, 50000, Timestamp.valueOf("2024-05-01 10:00:00"), Transaction.Type.INCOME, Category.FOOD, 1L));
         kSession.insert(new Transaction(2L, 30000, Timestamp.valueOf("2024-05-05 12:00:00"), Transaction.Type.INCOME, Category.FOOD, 1L));

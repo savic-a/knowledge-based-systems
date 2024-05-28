@@ -30,4 +30,10 @@ public class Client implements Serializable {
     private String surname;
     private String email;
     private String password;
+
+    // flags
+    private boolean threePurchases;
+    private boolean fivePurchases;
+    private boolean flag3;
+    private boolean flag4;
 }

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.ftn.sbnz.event.TransactionEvent;
 import com.ftn.sbnz.model.Budget;
-import com.ftn.sbnz.model.Client;
 import com.ftn.sbnz.model.FinancialGoal;
 
 @Service
@@ -23,7 +22,6 @@ public class CepRulesService {
 
     public void fireRules() {
         KieSession kSession = kieContainer.newKieSession("ksession-cep");
-        kSession.insert( new Client(1L, "PERA", "PERIC", "pera@gmail.com",  "123"));
 
         // first rule
         kSession.insert(new Budget(1L, 5000.0, 1L));
