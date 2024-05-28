@@ -7,34 +7,34 @@ import java.sql.Timestamp;
 import java.util.List;
 
 
-rule "Generate Mild Warning for Excessive Spending"
-    when
-        $client: Client($clientId: id)
-        $currentMonthIncome: Number(doubleValue > 0) from accumulate(
-            $t1: Transaction(
-                clientId == $clientId, 
-                type == Transaction.Type.INCOME, 
-                date >= startOfMonth(), 
-                date <= today()), 
-            sum($t1.getValue())
-        )
-        // $category: Category()
-        $transactions: List() from accumulate(
-            Transaction(clientId == $clientId, category == Category.SHOPPING, value > 0, date >= startOfMonth(), date <= today()), // Add date condition to filter transactions for the current month
-            collectList()
-        )
-        $totalSpending: Number(doubleValue > 0) from accumulate(
-            $t3: Transaction(clientId == $clientId, category == Category.SHOPPING, value > 0, date >= startOfMonth(), date <= today()), 
-            sum($t3.getValue())
-        )
-        eval($transactions.size() >= 3)
-        eval($totalSpending.doubleValue() > ($currentMonthIncome.doubleValue() * 0.1))
-    then
-        System.out.println("Mild warning generated for client " + $transactions.size());
-        insert(new Warning($clientId, "Mild", "You have spent more than 10% of your monthly income on SHOPPING."));
-        // String categoryName = $category.name();
-        System.out.println("Mild warning generated for client " + $clientId + " in category ");
-end
+// rule "Generate Mild Warning for Excessive Spending"
+//     when
+//         $client: Client($clientId: id)
+//         $currentMonthIncome: Number(doubleValue > 0) from accumulate(
+//             $t1: Transaction(
+//                 clientId == $clientId, 
+//                 type == Transaction.Type.INCOME, 
+//                 date >= startOfMonth(), 
+//                 date <= today()), 
+//             sum($t1.getValue())
+//         )
+//         // $category: Category()
+//         $transactions: List() from accumulate(
+//             Transaction(clientId == $clientId, category == Category.SHOPPING, value > 0, date >= startOfMonth(), date <= today()), // Add date condition to filter transactions for the current month
+//             collectList()
+//         )
+//         $totalSpending: Number(doubleValue > 0) from accumulate(
+//             $t3: Transaction(clientId == $clientId, category == Category.SHOPPING, value > 0, date >= startOfMonth(), date <= today()), 
+//             sum($t3.getValue())
+//         )
+//         eval($transactions.size() >= 3)
+//         eval($totalSpending.doubleValue() > ($currentMonthIncome.doubleValue() * 0.1))
+//     then
+//         System.out.println("Mild warning generated for client " + $transactions.size());
+//         insert(new Warning($clientId, "Mild", "You have spent more than 10% of your monthly income on SHOPPING."));
+//         // String categoryName = $category.name();
+//         System.out.println("Mild warning generated for client " + $clientId + " in category ");
+// end
 
 // Utility functions to get start of the current month and current day
 function Timestamp startOfMonth() {
@@ -57,52 +57,17 @@ function Timestamp today() {
 }
 
 
-// rule "Generate Severe Warning for Excessive Spending"
-//     when
-//         $client: client($clientId: id, $monthlyIncome: monthlyIncome)
-//         $purchases: List() from accumulate(
-//             Purchase(clientId == $clientId, category == "SPECIFIC_CATEGORY", amount > 0) over window:time(1m),
-//             collectList()
-//         )
-//         Number(intValue >= 5) from count($purchases)
-//         Number(doubleValue > ($monthlyIncome * 0.2)) from sum($purchases.amount)
-//     then
-//         insert(new Warning($clientId, "Severe", "You have spent more than 20% of your monthly income on SPECIFIC_CATEGORY."));
-//         System.out.println("Severe warning generated for client " + $clientId);
-// end
-
-// rule "Adjust Spending Thresholds Based on Savings Goal"
-//     when
-//         $client: client($clientId: id, $monthlyIncome: monthlyIncome, $savingsGoalAmount: savingsGoalAmount)
-//         eval($savingsGoalAmount > 0)
-//     then
-//         double mildThreshold = $monthlyIncome * 0.1 - ($savingsGoalAmount * 0.05);
-//         double severeThreshold = $monthlyIncome * 0.2 - ($savingsGoalAmount * 0.1);
-
-//         // Generate mild warning
-//         if (mildThreshold < $monthlyIncome * 0.1) {
-//             mildThreshold = $monthlyIncome * 0.1;
-//         }
-
-//         // Generate severe warning
-//         if (severeThreshold < $monthlyIncome * 0.2) {
-//             severeThreshold = $monthlyIncome * 0.2;
-//         }
-
-//         insert(new ThresholdAdjustment($clientId, mildThreshold, severeThreshold));
-//         System.out.println("Thresholds adjusted for client " + $clientId);
-// end
-
-// rule "Generate Financial Suggestion"
-//     when
-//         $client: client($clientId: id, $monthlyIncome: monthlyIncome, $savingsGoalAmount: savingsGoalAmount)
-//         $warnings: List() from collect ( Warning(clientId == $clientId) )
-//         $thresholds: ThresholdAdjustment(clientId == $clientId, $mildThreshold: mildThreshold, $severeThreshold: severeThreshold)
-//     then
-//         String suggestion = "Consider reviewing your spending habits.";
-//         if ($warnings.size() > 1) {
-//             suggestion = "You have received multiple warnings. It's time to seriously review your expenses and consider saving more.";
-//         }
-//         insert(new FinancialSuggestion($clientId, suggestion));
-//         System.out.println("Financial suggestion for client " + $clientId + ": " + suggestion);
-// end
+rule "Set Flag1 for 3 Purchases in a Category"
+    when
+        $client: Client($clientId: id)
+        $category: Category() from Category.values() 
+        $transactions: List(size >= 3) from accumulate(
+            Transaction(clientId == $clientId, category == $category, value > 0, date >= startOfMonth(), date <= today()), 
+            collectList()
+        )
+    then
+        // todo - izmeni flag, kod klijenta verovatno ce biti 
+        // insert(new Flag1($clientId, $category));
+        System.out.println("Flag1 set for client " + $clientId + " in category " + $category.name());
+        // System.out.println("Flag1 set for client " + $clientId + " in category ");
+end
