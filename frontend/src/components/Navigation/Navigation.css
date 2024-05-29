@@ -1,0 +1,61 @@
+body {
+    margin: 0;
+}
+  
+.drawer {
+    width: 240px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: white;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    font-size: medium;
+    /* padding-bottom: 50px; */
+}
+
+.app-title {
+    padding: 15px 20px;
+    margin-bottom: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    font-size: x-large;
+    color: black;
+    text-align: center;
+}
+
+.drawer ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.drawer li {
+    padding: 15px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: black;
+}
+
+/* .drawer li:hover {
+    background-color: whitesmoke;
+    color: black;
+} */
+
+.drawer .selected {
+    background-color: black;
+    color: white;
+}
+
+.drawer .icon {
+    margin-right: 10px;
+}
+
+.content {
+    margin-left: 240px;
+    padding: 20px;
+}
+  
