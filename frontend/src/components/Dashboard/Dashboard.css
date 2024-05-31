@@ -1,0 +1,65 @@
+.main-content {
+    display: grid;
+    grid-template-columns: 2fr 1px 1fr; /* Podela na dve kolone */
+    grid-template-rows: auto auto; /* Podela na dva reda */
+    gap: 20px; /* Razmak između elemenata */
+    margin-left: 240px; /* Margina za navigaciju */
+    padding: 20px;
+  }
+
+  .left-side {
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .right-side {
+    grid-column: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .delimiter {
+    grid-column: 2;
+    width: 1px;
+    background-color: #ddd; /* Boja razdelnika */
+    height: 100%; /* Visina razdelnika */
+  }
+  
+  .chart-area {
+    grid-column: 1; /* Prva kolona */
+    grid-row: 1; /* Prvi red */
+  }
+  
+  .card-balance-area {
+    grid-column: 2; /* Druga kolona */
+    grid-row: 1; /* Prvi red */
+  }
+  
+  .transaction-table-area {
+    grid-column: 1 ; /* Zauzima obe kolone */
+    grid-row: 2; /* Drugi red */
+  }
+  
+  .financial-goal-area {
+    grid-column: 2; /* Druga kolona */
+    grid-row: 2; /* Drugi red */
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+    text-align: left;
+  }
+  

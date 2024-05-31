@@ -1,6 +1,6 @@
 import React from "react";
 import Login from "./components/Login/Login";
-import Navigation from "./components/Navigation/Navigation";
+import Dashboard from "./components/Dashboard/Dashboard";
 
 const AppRoutes = [
     {
@@ -8,8 +8,8 @@ const AppRoutes = [
       element: <Login />
     },  
     {
-        path: '/nav',
-        element: <Navigation />
+        path: '/dashboard',
+        element: <Dashboard />
     },  
 ];
   
