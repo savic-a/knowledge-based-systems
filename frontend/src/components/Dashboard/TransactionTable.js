@@ -1,5 +1,4 @@
 import React from 'react';
-import './TransactionTable.css';
 
 const transactions = [
   { date: '2024-01-01', category: 'private', amount: 5000 },
@@ -9,6 +8,8 @@ const transactions = [
 ];
 
 const TransactionTable = () => (
+  <div className="framed-container">
+    <div className='component-title'>Transaction history</div>
   <table>
     <thead>
       <tr>
@@ -27,6 +28,7 @@ const TransactionTable = () => (
       ))}
     </tbody>
   </table>
+  </div>
 );
 
 export default TransactionTable;

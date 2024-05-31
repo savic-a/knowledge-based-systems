@@ -63,3 +63,40 @@
     text-align: left;
   }
   
+
+  /* src/components/Dashboard/Chart.css */
+.chart-container {
+    padding: 20px;
+    background: #f9f9f9; /* Primer pozadine */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd; /* Okvir */
+}
+
+.component-title {
+    margin-bottom: 25px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.framed-container {
+  padding: 20px;
+  background: #f9f9f9; /* Primer pozadine */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ddd; /* Okvir */
+}
+
+.goal-header {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .add-goal {
+    display: flex;
+    cursor: pointer;
+  }
+  
+  .add-goal span {
+    margin-left: 5px;
+  }
