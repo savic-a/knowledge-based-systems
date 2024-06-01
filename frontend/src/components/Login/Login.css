@@ -1,0 +1,52 @@
+.ground {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 5px 1rem;
+    background: linear-gradient(90deg, #0A0A0A 50%, #ffffff 50%);
+  }
+  
+.form {
+    border: 1px solid white;
+    padding: 15px 40px;
+    background-color: white;
+    border-radius: 25px;
+    -webkit-box-shadow: 2px 9px 50px -21px rgba(0,0,0,0.81);
+    -moz-box-shadow: 2px 9px 50px -21px rgba(0,0,0,0.81);
+    box-shadow: 2px 9px 50px -21px rgba(0,0,0,0.81);
+}
+
+#card-header{
+    margin-top: 10%;
+    margin-left: 10px;
+}
+
+.left {
+    width: 55%;
+}
+  
+.welcome {
+    font-size: 18px;
+    font-weight: 540;
+}
+  
+.title-login {
+    font-size: 3em;
+    margin-bottom: 0.8em;
+    font-weight: 500;
+}
+
+.label {
+    margin-left: 10px;
+}
+  
+.text-field {
+    width: 100% !important;
+    padding-top: 5px;
+    font-size: 14px !important;
+} 
+
+#signup {
+    margin-bottom: 35px;
+}
