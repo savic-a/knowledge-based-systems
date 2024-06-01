@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.ftn.sbnz.model.Client;
 import com.ftn.sbnz.model.CreditCard;
 import com.ftn.sbnz.model.Transaction;
+import com.ftn.sbnz.model.Transaction.Category;
 import com.ftn.sbnz.model.Transaction.Type;
 import com.ftn.sbnz.service.repositories.CreditCardRepository;
 
@@ -28,12 +29,11 @@ public class CreditCardRulesService {
     }
 
     public void fireRules() {
-        System.out.println("LAAAAAAAAAAAAAAAAAA");
         KieSession kSession = kieContainer.newKieSession("ksession-credit-card");
         kSession.insert( new Client(1L, "PERA", "PERIC", "pera@gmail.com",  "123"));
         kSession.insert( new CreditCard(1L, 2000.00, 1L));
-        kSession.insert( new Transaction(1L, 200.00, Timestamp.valueOf(LocalDateTime.now()), Type.INCOME, 1L));
-        kSession.insert( new Transaction(2L, 400.00, Timestamp.valueOf(LocalDateTime.now()), Type.OUTCOME, 1L));
+        kSession.insert( new Transaction(1L, 200.00, Timestamp.valueOf(LocalDateTime.now()), Type.INCOME, 1L, Category.FUN));
+        kSession.insert( new Transaction(2L, 400.00, Timestamp.valueOf(LocalDateTime.now()), Type.OUTCOME, 1L, Category.SHOPPING));
 
         kSession.fireAllRules();
     }

@@ -12,6 +12,7 @@ import com.ftn.sbnz.event.Alarm;
 import com.ftn.sbnz.event.Alarm.Level;
 import com.ftn.sbnz.model.FirstOfMonthEvent;
 import com.ftn.sbnz.model.Transaction;
+import com.ftn.sbnz.model.Transaction.Category;
 import com.ftn.sbnz.model.Transaction.Type;
 
 @Service
@@ -30,9 +31,9 @@ public class ReportsRulesService {
         kSession.insert( new Alarm(3L, "Treci alarm", Level.LOW, 1L));
 
         kSession.insert( new FirstOfMonthEvent());
-        kSession.insert( new Transaction(1L, 200.00, Timestamp.valueOf(LocalDateTime.of(2024, 4, 15, 12, 0, 0)), Type.INCOME, 1L));
-        kSession.insert( new Transaction(2L, 800.00, Timestamp.valueOf(LocalDateTime.of(2024, 4, 25, 10, 0, 0)), Type.INCOME, 1L));
-        kSession.insert( new Transaction(3L, 400.00, Timestamp.valueOf(LocalDateTime.of(2024, 5, 10, 12, 0, 0)), Type.INCOME, 1L));
+        kSession.insert( new Transaction(1L, 200.00, Timestamp.valueOf(LocalDateTime.of(2024, 4, 15, 12, 0, 0)), Type.INCOME, 1L, Category.GROCERIES));
+        kSession.insert( new Transaction(2L, 800.00, Timestamp.valueOf(LocalDateTime.of(2024, 4, 25, 10, 0, 0)), Type.INCOME, 1L, Category.RENT));
+        kSession.insert( new Transaction(3L, 400.00, Timestamp.valueOf(LocalDateTime.of(2024, 5, 10, 12, 0, 0)), Type.INCOME, 1L, Category.UTILITES));
         // kSession.insert( new FirstOfMonthEvent());
 
         kSession.fireAllRules();

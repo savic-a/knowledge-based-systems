@@ -4,25 +4,25 @@ import com.ftn.sbnz.model.CreditCard;
 
 rule "Update current balance - outcome transaction"
 when
-    $transaction: Transaction(type == Transaction.Type.OUTCOME, $value: value, $clientId: clientId)
+    $transaction: Transaction(type == Transaction.Type.OUTCOME, isProcessed == false, $value: value, $clientId: clientId)
     $card: CreditCard(clientId == $clientId)
 then
     System.out.println("Promjena stanja na kartici - odliv novca");
     double newBalance = 0;
     newBalance = $card.getBalance() - $value;
     System.out.println(Double.toString(newBalance));
-    modify($card){setBalance(newBalance);}
+    modify($card){setBalance(newBalance); setIsProcessed(true);}
 end
 
 rule "Update current balance - income transaction"
 when
-    $transaction: Transaction(type == Transaction.Type.INCOME, $value: value, $clientId: clientId)
+    $transaction: Transaction(type == Transaction.Type.INCOME, isProcessed == false, $value: value, $clientId: clientId)
     $card: CreditCard(clientId == $clientId)
 then
     System.out.println("Promjena stanja na kartici - priliv novca");
     double newBalance = 0;
     newBalance = $card.getBalance() + $value;
     System.out.println(Double.toString(newBalance));
-    modify($card){setBalance(newBalance);}
+    modify($card){setBalance(newBalance); setIsProcessed(true);}
 end
 
