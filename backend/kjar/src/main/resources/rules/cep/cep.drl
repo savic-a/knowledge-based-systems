@@ -1,3 +1,75 @@
+// import com.ftn.sbnz.event.TransactionEvent;
+// import com.ftn.sbnz.event.AnalysisTransaction;
+// import com.ftn.sbnz.event.AccomplishedGoal;
+// import com.ftn.sbnz.model.Budget;
+// import com.ftn.sbnz.model.FinancialGoal;
+
+
+// rule "Budget exceeded detection"
+//     when
+//         Budget($cId: clientId, $value: value)
+//         $t1: TransactionEvent($cId == clientId)
+//         $totalAmount: Number(doubleValue > $value) from accumulate(
+//             $t2: TransactionEvent(
+//                 clientId == $cId,
+//                 type == TransactionEvent.Type.OUTCOME,
+//                 this after[0d, 7d] $t1
+//             ),
+//             sum($t2.getValue())
+//         )
+//         not (AnalysisTransaction(clientId == $cId, reason == "Budget overrun", type == AnalysisTransaction.FinancialGoalType.UNFAVORABLE))
+
+//     then
+//         System.out.println("Detected overrun budget for customer " + $cId);
+//         insert(new AnalysisTransaction($cId, "Budget overrun", AnalysisTransaction.FinancialGoalType.UNFAVORABLE));
+// end
+
+
+// rule "Weekly transactions exceed 20% of budget"
+//     when
+//         Budget($bId: id, $budget: value, $cId: clientId)
+//         $t1: TransactionEvent($cId == clientId)
+//         $totalAmount: Number(doubleValue >= $budget * 0.2) from accumulate(
+//             $t2: TransactionEvent(
+//                 clientId == $cId,
+//                 type == TransactionEvent.Type.OUTCOME,
+//                 this after[0d, 7d] $t1
+//             ),
+//             sum($t2.getValue())
+//         )
+//         not (AnalysisTransaction(clientId == $cId, reason == "Sudden jump in costs", type == AnalysisTransaction.FinancialGoalType.UNFAVORABLE))
+//         not (AnalysisTransaction(clientId == $cId, reason == "Budget overrun", type == AnalysisTransaction.FinancialGoalType.UNFAVORABLE))
+
+//     then
+//         System.out.println("Detected sudden jump in costs for customer " + $cId);
+//         insert(new AnalysisTransaction($cId, "Sudden jump in costs", AnalysisTransaction.FinancialGoalType.UNFAVORABLE));
+// end
+
+
+// rule "Financial goal achieved detection"
+//     when
+//         $goal: FinancialGoal(currentBalance >= targetValue)
+//         not (AnalysisTransaction(clientId == $goal.getClientId(), reason == "Goal achieved: " + $goal.getName(), type == AnalysisTransaction.FinancialGoalType.FAVORABLE))
+//     then
+//         insert(new AnalysisTransaction($goal.getClientId(), "Goal achieved: " + $goal.getName(), AnalysisTransaction.FinancialGoalType.FAVORABLE));
+//         System.out.println("Financial goal achieved for client: " + $goal.getClientId() + " Goal: " + $goal.getName());
+// end
+
+
+// rule "Analyze Financial Goal Every Two Weeks"
+//     when
+//         $goal: FinancialGoal($clientId: clientId, $targetValue: targetValue, $currentBalance: currentBalance, $startBalance: startBalance)
+//         eval(($currentBalance - $startBalance) / $targetValue <= 1.0)
+//     then
+//         double total = $currentBalance - $startBalance;
+//         double percentageAchieved = (total / $targetValue) * 100;
+
+//         insert( new AccomplishedGoal($clientId, "Financial goal analysis: " + percentageAchieved + "% of the goal achieved."));
+        
+//         System.out.println("Financial goal analysis for client " + $clientId + ": " + percentageAchieved + "% of the goal achieved.");
+// end
+
+
 import com.ftn.sbnz.event.TransactionEvent;
 import com.ftn.sbnz.event.AnalysisTransaction;
 import com.ftn.sbnz.event.AccomplishedGoal;
@@ -5,58 +77,9 @@ import com.ftn.sbnz.model.Budget;
 import com.ftn.sbnz.model.FinancialGoal;
 
 
-rule "Budget exceeded detection"
-    when
-        Budget($cId: clientId, $value: value)
-        $t1: TransactionEvent($cId == clientId)
-        $totalAmount: Number(doubleValue > $value) from accumulate(
-            $t2: TransactionEvent(
-                clientId == $cId,
-                type == TransactionEvent.Type.OUTCOME,
-                this after[0d, 7d] $t1
-            ),
-            sum($t2.getValue())
-        )
-        not (AnalysisTransaction(clientId == $cId, reason == "Budget overrun", type == AnalysisTransaction.FinancialGoalType.UNFAVORABLE))
-
-    then
-        System.out.println("Detected overrun budget for customer " + $cId);
-        insert(new AnalysisTransaction($cId, "Budget overrun", AnalysisTransaction.FinancialGoalType.UNFAVORABLE));
-end
-
-
-rule "Weekly transactions exceed 20% of budget"
-    when
-        Budget($bId: id, $budget: value, $cId: clientId)
-        $t1: TransactionEvent($cId == clientId)
-        $totalAmount: Number(doubleValue >= $budget * 0.2) from accumulate(
-            $t2: TransactionEvent(
-                clientId == $cId,
-                type == TransactionEvent.Type.OUTCOME,
-                this after[0d, 7d] $t1
-            ),
-            sum($t2.getValue())
-        )
-        not (AnalysisTransaction(clientId == $cId, reason == "Sudden jump in costs", type == AnalysisTransaction.FinancialGoalType.UNFAVORABLE))
-        not (AnalysisTransaction(clientId == $cId, reason == "Budget overrun", type == AnalysisTransaction.FinancialGoalType.UNFAVORABLE))
-
-    then
-        System.out.println("Detected sudden jump in costs for customer " + $cId);
-        insert(new AnalysisTransaction($cId, "Sudden jump in costs", AnalysisTransaction.FinancialGoalType.UNFAVORABLE));
-end
-
-
-rule "Financial goal achieved detection"
-    when
-        $goal: FinancialGoal(currentBalance >= targetValue)
-        not (AnalysisTransaction(clientId == $goal.getClientId(), reason == "Goal achieved: " + $goal.getName(), type == AnalysisTransaction.FinancialGoalType.FAVORABLE))
-    then
-        insert(new AnalysisTransaction($goal.getClientId(), "Goal achieved: " + $goal.getName(), AnalysisTransaction.FinancialGoalType.FAVORABLE));
-        System.out.println("Financial goal achieved for client: " + $goal.getClientId() + " Goal: " + $goal.getName());
-end
-
-
-rule "Analyze Financial Goal Every Two Weeks"
+// 1. LEVEL
+// todo da se otkine za svake nedelje
+rule "Weekly financial goal progress check"
     when
         $goal: FinancialGoal($clientId: clientId, $targetValue: targetValue, $currentBalance: currentBalance, $startBalance: startBalance)
         eval(($currentBalance - $startBalance) / $targetValue <= 1.0)
@@ -64,7 +87,79 @@ rule "Analyze Financial Goal Every Two Weeks"
         double total = $currentBalance - $startBalance;
         double percentageAchieved = (total / $targetValue) * 100;
 
-        insert( new AccomplishedGoal($clientId, "Financial goal analysis: " + percentageAchieved + "% of the goal achieved."));
-        
+        insert(new AccomplishedGoal($clientId, percentageAchieved));
+
         System.out.println("Financial goal analysis for client " + $clientId + ": " + percentageAchieved + "% of the goal achieved.");
 end
+
+// 2. nivo
+// rule "Check if financial goal is achieved (flag1)"
+//     when
+//         AccomplishedGoal($clientId: clientId, $percentageAchieved: percentageAchieved)
+//         eval($percentageAchieved == 100)
+//     then
+//         insert(new AnalysisTransaction($clientId, "Goal achieved", AnalysisTransaction.FinancialGoalType.FAVORABLE));
+//         System.out.println("Financial goal achieved for client " + $clientId);
+// end
+
+// rule "Detect sudden jump in costs (flag2)"
+//     when
+//         Budget($cId: clientId, $value: value)
+//         AccomplishedGoal($clientId: $cId, $percentageAchieved: percentageAchieved)
+//         eval($percentageAchieved < 100)
+//         $t1: TransactionEvent($cId == clientId)
+//         $totalAmount: Number(doubleValue >= $value * 0.2) from accumulate(
+//             $t2: TransactionEvent(
+//                 clientId == $cId,
+//                 type == TransactionEvent.Type.OUTCOME,
+//                 this after[0d, 7d] $t1
+//             ),
+//             sum($t2.getValue())
+//         )
+//         not (AnalysisTransaction(clientId == $cId, reason == "Sudden jump in costs", type == AnalysisTransaction.FinancialGoalType.UNFAVORABLE))
+//     then
+//         insert(new AnalysisTransaction($cId, "Sudden jump in costs", AnalysisTransaction.FinancialGoalType.UNFAVORABLE));
+//         System.out.println("Detected sudden jump in costs for customer " + $cId);
+// end
+
+// rule "Detect budget overrun (flag3)"
+//     when
+//         Budget($cId: clientId, $value: value)
+//         AccomplishedGoal($clientId: $cId, $percentageAchieved: percentageAchieved)
+//         eval($percentageAchieved < 100)
+//         $t1: TransactionEvent($cId == clientId)
+//         $totalAmount: Number(doubleValue > $value) from accumulate(
+//             $t2: TransactionEvent(
+//                 clientId == $cId,
+//                 type == TransactionEvent.Type.OUTCOME,
+//                 this after[0d, 7d] $t1
+//             ),
+//             sum($t2.getValue())
+//         )
+//         not (AnalysisTransaction(clientId == $cId, reason == "Budget overrun", type == AnalysisTransaction.FinancialGoalType.UNFAVORABLE))
+//     then
+//         insert(new AnalysisTransaction($cId, "Budget overrun", AnalysisTransaction.FinancialGoalType.UNFAVORABLE));
+//         System.out.println("Detected overrun budget for customer " + $cId);
+// end
+
+// // 3. nivo
+// rule "Notify client of favorable analysis result (flag1)"
+//     when
+//         AnalysisTransaction($clientId: clientId, reason == "Goal achieved", type == AnalysisTransaction.FinancialGoalType.FAVORABLE)
+//     then
+//         // Notification logic here
+//         System.out.println("Notification: Favorable analysis result for client " + $clientId);
+// end
+
+// rule "Notify client of unfavorable analysis result (flag2, flag3)"
+//     when
+//         $analysis: AnalysisTransaction(clientId == clientId, type == AnalysisTransaction.FinancialGoalType.UNFAVORABLE, reason == "Sudden jump in costs" || reason == "Budget overrun")
+//     then
+//         // Notification logic here
+//         System.out.println("Notification: Unfavorable analysis result for client " + $analysis.getClientId() + " Reason: " + $analysis.getReason());
+
+//         if ($analysis.getReason().equals("Budget overrun")) {
+//             // Perform backward chaining logic here
+//             System.out.println("Performing backward chaining for client " + $analysis.getClientId());
+//         }
+// end

@@ -21,5 +21,5 @@ public class AccomplishedGoal implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long clientId;
-    private String reason;
+    private double percentageAchieved;
 }
