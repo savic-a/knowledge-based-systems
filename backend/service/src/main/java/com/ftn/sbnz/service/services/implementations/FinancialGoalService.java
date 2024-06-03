@@ -1,4 +1,4 @@
-package com.ftn.sbnz.service.services;
+package com.ftn.sbnz.service.services.implementations;
 
 import java.util.List;
 
@@ -8,10 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.ftn.sbnz.model.FinancialGoal;
 import com.ftn.sbnz.service.repositories.FinancialGoalRepository;
+import com.ftn.sbnz.service.services.interfaces.IFinancialGoalService;
 
 
 @Service
-public class FinancialGoalService {
+public class FinancialGoalService implements IFinancialGoalService {
     private final KieContainer kieContainer;
 
     @Autowired

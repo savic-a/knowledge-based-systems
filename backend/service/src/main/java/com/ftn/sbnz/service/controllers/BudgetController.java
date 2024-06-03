@@ -11,13 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ftn.sbnz.model.Budget;
-import com.ftn.sbnz.service.services.BudgetService;
+import com.ftn.sbnz.service.services.implementations.BudgetService;
+import com.ftn.sbnz.service.services.interfaces.IBudgetService;
 
 @RestController
 @RequestMapping("/budget")
 public class BudgetController {
 
-    private BudgetService service;
+    private IBudgetService service;
 
     @Autowired
     public BudgetController(BudgetService service) {

@@ -1,4 +1,4 @@
-package com.ftn.sbnz.service.services;
+package com.ftn.sbnz.service.services.implementations;
 
 import java.util.List;
 
@@ -8,10 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.ftn.sbnz.model.Client;
 import com.ftn.sbnz.service.repositories.ClientRepository;
+import com.ftn.sbnz.service.services.interfaces.IClientService;
 
 
 @Service
-public class ClientService {
+public class ClientService implements IClientService {
     private final KieContainer kieContainer;
 
     @Autowired

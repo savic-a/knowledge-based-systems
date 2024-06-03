@@ -1,4 +1,4 @@
-package com.ftn.sbnz.service.services;
+package com.ftn.sbnz.service.services.implementations;
 
 import java.util.List;
 
@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.ftn.sbnz.model.Budget;
 import com.ftn.sbnz.service.repositories.BudgetRepository;
+import com.ftn.sbnz.service.services.interfaces.IBudgetService;
 
 @Service
-public class BudgetService {
+public class BudgetService implements IBudgetService {
     private final KieContainer kieContainer;
 
     @Autowired
