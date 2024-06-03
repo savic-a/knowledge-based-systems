@@ -50,3 +50,10 @@ CREATE TABLE report (
     client_id BIGINT NOT NULL,
 	FOREIGN KEY (client_id) REFERENCES Client(id)
 );
+
+CREATE TABLE budget (
+    id BIGSERIAL PRIMARY KEY,
+    value DOUBLE PRECISION NOT NULL,
+    client_id BIGINT NOT NULL,
+    FOREIGN KEY (client_id) REFERENCES Client(id)
+);

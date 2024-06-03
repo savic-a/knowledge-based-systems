@@ -22,3 +22,11 @@ VALUES
     (1, 'Client is unreasonably spening money.', '2024-06-02 09:15:00', 2),
     (2, 'Client is not normal.', '2024-06-03 14:45:00', 3),
     (3, 'Client is delusional about his current finance situation.', '2024-06-04 12:00:00', 4);
+
+INSERT INTO budget(value, client_id)
+VALUES
+    (50000, 1),
+    (65000, 2),
+    (70000, 3),
+    (55000, 4),
+    (100000, 5);
