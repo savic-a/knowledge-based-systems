@@ -27,17 +27,12 @@ public class CepRulesService {
 
         kSession.insert(new Client(1L, "PERA", "PERIC", "pera@gmail.com", "123", new ArrayList<>(), new ArrayList<>(), false, false));
     
-        // Insert Budget data
         kSession.insert(new Budget(1L, 100000, 1L));
 
-        // Insert FinancialGoal data
         kSession.insert(new FinancialGoal(1L, "Savings Goal", "Save money for a vacation", Timestamp.valueOf("2024-01-01 00:00:00"), 100000, Timestamp.valueOf("2024-12-31 23:59:59"), 120000, 50000, 1L));
 
-        // Insert TransactionEvent data (flag2: Sudden jump in costs)
         kSession.insert(new TransactionEvent(1L, 25000, TransactionEvent.Type.OUTCOME, 1L));
         kSession.insert(new TransactionEvent(2L, 5000, TransactionEvent.Type.OUTCOME, 1L));
-
-        // Insert TransactionEvent data (flag3: Budget overrun)
         kSession.insert(new TransactionEvent(3L, 60000, TransactionEvent.Type.OUTCOME, 1L));
         kSession.insert(new TransactionEvent(4L, 50000, TransactionEvent.Type.OUTCOME, 1L));
 

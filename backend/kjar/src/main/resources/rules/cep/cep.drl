@@ -98,8 +98,9 @@ rule "Check if financial goal is achieved (flag1)"
     when
         AccomplishedGoal($clientId: clientId, $percentageAchieved: percentageAchieved)
         eval($percentageAchieved == 100)
+        not (AnalysisTransaction(clientId == $clientId, flagActivated == true))
     then
-        insert(new AnalysisTransaction($clientId, AnalysisTransaction.FinancialGoalType.FINISHED));
+        insert(new AnalysisTransaction($clientId, AnalysisTransaction.FinancialGoalType.FINISHED, true));
         System.out.println("Financial goal achieved for client " + $clientId);
 end
 
@@ -117,9 +118,9 @@ rule "Detect budget overrun (flag2)"
             ),
             sum($t2.getValue())
         )
-        not (AnalysisTransaction(clientId == $cId, type == AnalysisTransaction.FinancialGoalType.OVERRUN_BUDGET))
+        not (AnalysisTransaction(clientId == $cId, flagActivated == true))
     then
-        insert(new AnalysisTransaction($cId, AnalysisTransaction.FinancialGoalType.OVERRUN_BUDGET));
+        insert(new AnalysisTransaction($cId, AnalysisTransaction.FinancialGoalType.OVERRUN_BUDGET, true));
         System.out.println("Detected overrun budget for customer " + $cId);
 end
 
@@ -137,9 +138,9 @@ rule "Detect sudden jump in costs (flag3)"
             ),
             sum($t2.getValue())
         )
-        not (AnalysisTransaction(clientId == $cId, type == AnalysisTransaction.FinancialGoalType.SUDDEN_JUMP))
+        not (AnalysisTransaction(clientId == $cId, flagActivated == true))
     then
-        insert(new AnalysisTransaction($cId, AnalysisTransaction.FinancialGoalType.SUDDEN_JUMP));
+        insert(new AnalysisTransaction($cId, AnalysisTransaction.FinancialGoalType.SUDDEN_JUMP, true));
         System.out.println("Detected sudden jump in costs for customer " + $cId);
 end
 
