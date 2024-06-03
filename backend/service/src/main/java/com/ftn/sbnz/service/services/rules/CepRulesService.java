@@ -27,9 +27,6 @@ public class CepRulesService {
 
         kSession.insert(new Client(1L, "PERA", "PERIC", "pera@gmail.com", "123", new ArrayList<>(), new ArrayList<>(), false, false));
     
-        // Insert Client data
-        kSession.insert(new Client(1L, "PERA", "PERIC", "pera@gmail.com", "123", new ArrayList<>(), new ArrayList<>(), false, false));
-
         // Insert Budget data
         kSession.insert(new Budget(1L, 100000, 1L));
 
