@@ -30,3 +30,9 @@ VALUES
     (70000, 3),
     (55000, 4),
     (100000, 5);
+
+INSERT INTO financial_goal (name, description, generation_date, target_value, target_date, current_balance, start_balance, client_id)
+VALUES 
+('Save for Car', 'Saving money to buy a new car.', '2024-06-01 10:30:00', 20000.00, '2025-06-01 00:00:00', 5000.00, 1000.00, 1),
+('Vacation Fund', 'Saving for a family vacation.', '2024-06-01 10:30:00', 5000.00, '2024-12-15 00:00:00', 1500.00, 500.00, 2),
+('Emergency Fund', 'Emergency savings for unexpected expenses.', '2024-06-01 10:30:00', 10000.00, '2025-01-01 00:00:00', 2000.00, 1000.00, 3);
