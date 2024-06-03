@@ -25,7 +25,6 @@ public class TransactionController {
     @GetMapping("")
     public ResponseEntity<List<Transaction>> getAllTransactions() {
         List<Transaction> transactions = service.getAll();
-        System.out.println(transactions);
         return new ResponseEntity<List<Transaction>>(transactions, HttpStatus.OK);
     }
 }

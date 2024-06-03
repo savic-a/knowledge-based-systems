@@ -35,9 +35,18 @@ CREATE TABLE transactions (
     id BIGSERIAL PRIMARY KEY,
     value DOUBLE PRECISION NOT NULL,
     date TIMESTAMP NOT NULL,
-    type transaction_type NOT NULL,
+    type INT NOT NULL,
     client_id BIGINT NOT NULL,
     category int NOT NULL,
     is_processed BOOLEAN NOT NULL,
+	FOREIGN KEY (client_id) REFERENCES Client(id)
+);
+
+CREATE TABLE report (
+    id BIGSERIAL PRIMARY KEY,
+    week_num INT NOT NULL,
+    reason VARCHAR(255) NOT NULL,
+    generation_date TIMESTAMP NOT NULL,
+    client_id BIGINT NOT NULL,
 	FOREIGN KEY (client_id) REFERENCES Client(id)
 );
