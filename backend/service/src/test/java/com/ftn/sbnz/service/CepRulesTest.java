@@ -2,12 +2,16 @@ package com.ftn.sbnz.service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 import org.kie.api.KieServices;
 import org.kie.api.event.rule.DebugAgendaEventListener;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.KieSessionConfiguration;
+import org.kie.api.runtime.conf.ClockTypeOption;
+import org.kie.api.time.SessionPseudoClock;
 
 import com.ftn.sbnz.event.TransactionEvent;
 import com.ftn.sbnz.model.Budget;
@@ -20,7 +24,12 @@ public class CepRulesTest {
     public void testCEPRules() {
     	KieServices ks = KieServices.Factory.get();
     	KieContainer kc = ks.newKieClasspathContainer();
-        KieSession ksession = kc.newKieSession("ksession-cep");
+
+        KieSessionConfiguration config = KieServices.Factory.get().newKieSessionConfiguration();
+        config.setOption(ClockTypeOption.get("pseudo"));
+        KieSession ksession = kc.newKieSession("ksession-cep", config);
+
+        SessionPseudoClock clock = ksession.getSessionClock();
 
         // Insert client and budget
         Long clientId = 1L;
@@ -47,12 +56,9 @@ public class CepRulesTest {
         ruleFireCount = ksession.fireAllRules();
         System.out.println("Rules fired: " + ruleFireCount);
         
-        // Check the results
-        // for (Object obj : ksession.getObjects()) {
-        //     if (obj instanceof AnalysisTransaction) {
-        //         System.out.println(obj);
-        //     }
-        // }
-
+        for (int i = 0; i < 4; i++) { // Simulate 4 weeks
+            clock.advanceTime(7, TimeUnit.DAYS); // Move clock forward by one week
+            ksession.fireAllRules();
+        }
     }
 }
