@@ -2,6 +2,7 @@ import com.ftn.sbnz.model.Client;
 import com.ftn.sbnz.enumeration.Category
 import com.ftn.sbnz.model.Transaction;
 import com.ftn.sbnz.model.Warning;
+import com.ftn.sbnz.model.Budget;
 import java.util.Calendar;
 import java.sql.Timestamp;
 import java.util.List;
@@ -45,7 +46,7 @@ end
 
 // 2. LEVEL
 
-rule "Set Flag3 if ThreePurchases and Spending > 10% Income"
+rule "Set Flag3 if ThreePurchases and Spending > 10% Income" no-loop
     when
         $client: Client($clientId: id, flag3 == false)
         $category: Category() from $client.threePurchases
@@ -53,11 +54,12 @@ rule "Set Flag3 if ThreePurchases and Spending > 10% Income"
             $income: Transaction(clientId == $clientId, type == Transaction.Type.INCOME, date >= startOfMonth(), date <= today()), 
             sum($income.getValue())
         )
+        $budget: Budget(clientId == $clientId)
         $totalSpending: Number(doubleValue > 0) from accumulate(
             $expense: Transaction(clientId == $clientId, type == Transaction.Type.OUTCOME, category == $category, value > 0, date >= startOfMonth(), date <= today()), 
             sum($expense.getValue())
         )
-        eval($totalSpending.doubleValue() > ($currentMonthIncome.doubleValue() * 0.1))
+        eval($totalSpending.doubleValue() > (($currentMonthIncome.doubleValue() + $budget.getValue()) * 0.1))
     then
         modify($client) {
             setFlag3(true)
@@ -65,8 +67,7 @@ rule "Set Flag3 if ThreePurchases and Spending > 10% Income"
         System.out.println("Flag3 set for client " + $clientId + " as spending exceeds 10% of income in category " + $category.name());
 end
 
-
-rule "Set Flag4 if FivePurchases and Spending > 25% Income"
+rule "Set Flag4 if FivePurchases and Spending > 25% Income" no-loop
     when
         $client: Client($clientId: id, flag4 == false)
         $category: Category() from $client.fivePurchases
@@ -74,17 +75,19 @@ rule "Set Flag4 if FivePurchases and Spending > 25% Income"
             $income: Transaction(clientId == $clientId, type == Transaction.Type.INCOME, date >= startOfMonth(), date <= today()), 
             sum($income.getValue())
         )
+        $budget: Budget(clientId == $clientId)
         $totalSpending: Number(doubleValue > 0) from accumulate(
             $expense: Transaction(clientId == $clientId, type == Transaction.Type.OUTCOME, category == $category, value > 0, date >= startOfMonth(), date <= today()), 
             sum($expense.getValue())
         )
-        eval($totalSpending.doubleValue() > ($currentMonthIncome.doubleValue() * 0.25))
+        eval($totalSpending.doubleValue() > (($currentMonthIncome.doubleValue() + $budget.getValue()) * 0.25))
     then
         modify($client) {
             setFlag4(true)
         }
         System.out.println("Flag4 set for client " + $clientId + " as spending exceeds 25% of income in category " + $category.name());
 end
+
 
 // 3 LEVEL
 
