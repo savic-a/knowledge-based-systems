@@ -6,8 +6,8 @@ import com.ftn.sbnz.model.FinancialGoal;
 
 
 // 1. LEVEL
-// todo da se otkine za svake nedelje
 rule "Weekly financial goal progress check"
+    no-loop true
     when
         $goal: FinancialGoal($clientId: clientId, $targetValue: targetValue, $currentBalance: currentBalance, $startBalance: startBalance)
         eval(($currentBalance - $startBalance) / $targetValue <= 1.0)
@@ -23,6 +23,7 @@ end
 // 2. LEVEL
 
 rule "Check if financial goal is achieved (flag1)"
+    // no-loop true
     when
         AccomplishedGoal($clientId: clientId, $percentageAchieved: percentageAchieved)
         eval($percentageAchieved == 100)
@@ -33,6 +34,7 @@ rule "Check if financial goal is achieved (flag1)"
 end
 
 rule "Detect budget overrun (flag2)"
+    // no-loop true
     when
         Budget($cId: clientId, $value: value)
         AccomplishedGoal(clientId == $cId, $percentageAchieved: percentageAchieved)
@@ -53,6 +55,7 @@ rule "Detect budget overrun (flag2)"
 end
 
 rule "Detect sudden jump in costs (flag3)"
+    // no-loop true
     when
         Budget($cId: clientId, $value: value)
         AccomplishedGoal(clientId == $cId, $percentageAchieved: percentageAchieved)
@@ -76,27 +79,30 @@ end
 
 rule "Notify client of favorable analysis result (flag1)"
     when
-        AnalysisTransaction($clientId: clientId, type == AnalysisTransaction.FinancialGoalType.FINISHED)
+        $analysis: AnalysisTransaction($clientId: clientId, type == AnalysisTransaction.FinancialGoalType.FINISHED)
     then
         // Notification logic here
         System.out.println("Notification: Favorable analysis result for client " + $clientId);
+        modify($analysis) { setFlagActivated(false); }
 end
 
 rule "Notify client of unfavorable analysis result - Budget Overrun"
     when
-        AnalysisTransaction($clientId: clientId, type == AnalysisTransaction.FinancialGoalType.OVERRUN_BUDGET)
+        $analysis: AnalysisTransaction($clientId: clientId, type == AnalysisTransaction.FinancialGoalType.OVERRUN_BUDGET)
     then
         // Notification logic here
         System.out.println("Notification: Unfavorable analysis result for client " + $clientId + " Reason: Budget Overrun");
 
         // Perform backward chaining logic here
         // System.out.println("Performing backward chaining for client " + $clientId);
+        modify($analysis) { setFlagActivated(false); }
 end
 
 rule "Notify client of unfavorable analysis result - Sudden Jump in Costs"
     when
-        AnalysisTransaction($clientId: clientId, type == AnalysisTransaction.FinancialGoalType.SUDDEN_JUMP)
+        $analysis: AnalysisTransaction($clientId: clientId, type == AnalysisTransaction.FinancialGoalType.SUDDEN_JUMP)
     then
         // Notification logic here
         System.out.println("Notification: Unfavorable analysis result for client " + $clientId + " Reason: Sudden Jump in Costs");
+        modify($analysis) { setFlagActivated(false); }
 end
