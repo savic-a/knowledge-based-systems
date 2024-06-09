@@ -29,5 +29,4 @@ public class AnalysisTransaction implements Serializable {
 
     private Long clientId;
     private FinancialGoalType type;
-    private boolean flagActivated;
 }
