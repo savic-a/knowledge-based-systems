@@ -9,24 +9,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ftn.sbnz.model.Client;
-import com.ftn.sbnz.service.services.implementations.ClientService;
+import com.ftn.sbnz.model.FinancialGoal;
+import com.ftn.sbnz.service.services.implementations.FinancialGoalService;
 import com.ftn.sbnz.service.services.interfaces.IService;
 
 @RestController
-@RequestMapping("/client")
-public class ClientController {
-    private IService<Client> service;
+@RequestMapping("/financial-goal")
+public class FinancialGoalController {
+    private IService<FinancialGoal> service;
 
     @Autowired
-    public ClientController(ClientService service) {
+    public FinancialGoalController(FinancialGoalService service) {
         this.service = service;
     }
 
     @GetMapping("")
-    public ResponseEntity<List<Client>> getAllCreditCards() {
-        List<Client> clients = service.getAll();
-        return new ResponseEntity<List<Client>>(clients, HttpStatus.OK);
+    public ResponseEntity<List<FinancialGoal>> getAll() {
+        List<FinancialGoal> goals = this.service.getAll();
+        return new ResponseEntity<>(goals, HttpStatus.OK);
     }
-    
 }

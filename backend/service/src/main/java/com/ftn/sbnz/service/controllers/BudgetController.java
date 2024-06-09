@@ -9,24 +9,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ftn.sbnz.model.Client;
-import com.ftn.sbnz.service.services.implementations.ClientService;
+import com.ftn.sbnz.model.Budget;
+import com.ftn.sbnz.service.services.implementations.BudgetService;
 import com.ftn.sbnz.service.services.interfaces.IService;
 
 @RestController
-@RequestMapping("/client")
-public class ClientController {
-    private IService<Client> service;
+@RequestMapping("/budget")
+public class BudgetController {
+
+    private IService<Budget> service;
 
     @Autowired
-    public ClientController(ClientService service) {
+    public BudgetController(BudgetService service) {
         this.service = service;
     }
 
     @GetMapping("")
-    public ResponseEntity<List<Client>> getAllCreditCards() {
-        List<Client> clients = service.getAll();
-        return new ResponseEntity<List<Client>>(clients, HttpStatus.OK);
+    public ResponseEntity<List<Budget>> getAll() {
+        List<Budget> budgets = service.getAll();
+        return new ResponseEntity<>(budgets, HttpStatus.OK);
     }
     
 }

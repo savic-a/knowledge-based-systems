@@ -28,7 +28,6 @@ public class CreditCardRulesService {
     }
 
     public void fireRules() {
-        System.out.println("LAAAAAAAAAAAAAAAAAA");
         KieSession kSession = kieContainer.newKieSession("ksession-credit-card");
 
         kSession.insert( new CreditCard(1L, 2000.00, 1L));

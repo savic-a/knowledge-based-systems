@@ -16,12 +16,6 @@ CREATE DATABASE sbnz
 CREATE USER root WITH PASSWORD 'ftn';
 GRANT ALL PRIVILEGES ON DATABASE sbnz TO root;
 
-CREATE TABLE credit_card (
-    id SERIAL PRIMARY KEY,
-    balance DOUBLE PRECISION,
-    client_id BIGINT
-);
-
 CREATE TABLE client (
     id BIGINT PRIMARY KEY,
     name VARCHAR(255),
@@ -29,3 +23,50 @@ CREATE TABLE client (
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL
 );
+
+CREATE TABLE credit_card (
+    id SERIAL PRIMARY KEY,
+    balance DOUBLE PRECISION,
+    client_id BIGINT,
+    FOREIGN KEY (client_id) REFERENCES Client(id)
+);
+
+CREATE TABLE transactions (
+    id BIGSERIAL PRIMARY KEY,
+    value DOUBLE PRECISION NOT NULL,
+    date TIMESTAMP NOT NULL,
+    type INT NOT NULL,
+    client_id BIGINT NOT NULL,
+    category int NOT NULL,
+    is_processed BOOLEAN NOT NULL,
+	FOREIGN KEY (client_id) REFERENCES Client(id)
+);
+
+CREATE TABLE report (
+    id BIGSERIAL PRIMARY KEY,
+    week_num INT NOT NULL,
+    reason VARCHAR(255) NOT NULL,
+    generation_date TIMESTAMP NOT NULL,
+    client_id BIGINT NOT NULL,
+	FOREIGN KEY (client_id) REFERENCES Client(id)
+);
+
+CREATE TABLE budget (
+    id BIGSERIAL PRIMARY KEY,
+    value DOUBLE PRECISION NOT NULL,
+    client_id BIGINT NOT NULL,
+    FOREIGN KEY (client_id) REFERENCES Client(id)
+);
+
+    CREATE TABLE financial_goal (
+        id BIGSERIAL PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        description TEXT,
+        generation_date TIMESTAMP NOT NULL,
+        target_value DOUBLE PRECISION NOT NULL,
+        target_date TIMESTAMP,
+        current_balance DOUBLE PRECISION NOT NULL,
+        start_balance DOUBLE PRECISION NOT NULL,
+        client_id BIGINT NOT NULL,
+        FOREIGN KEY (client_id) REFERENCES Client(id)
+    );
