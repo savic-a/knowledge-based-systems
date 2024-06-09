@@ -21,7 +21,21 @@ CREATE TABLE client (
     name VARCHAR(255),
     surname VARCHAR(255),
     email VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL
+    password VARCHAR(255) NOT NULL,
+    flag3 BOOLEAN DEFAULT FALSE,
+    flag4 BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE client_three_purchases (
+    id SERIAL PRIMARY KEY,
+    client_id BIGINT,
+    category INT NOT NULL
+);
+
+CREATE TABLE client_five_purchases (
+    id SERIAL PRIMARY KEY,
+    client_id BIGINT,
+    category INT NOT NULL
 );
 
 CREATE TABLE credit_card (

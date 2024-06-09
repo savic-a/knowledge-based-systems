@@ -10,3 +10,5 @@ GRANT ALL PRIVILEGES ON TABLE transactions TO root;
 GRANT ALL PRIVILEGES ON TABLE report TO root;
 GRANT ALL PRIVILEGES ON TABLE budget TO root;
 GRANT ALL PRIVILEGES ON TABLE financial_goal TO root;
+GRANT ALL PRIVILEGES ON TABLE client_three_purchases TO root;
+GRANT ALL PRIVILEGES ON TABLE client_five_purchases TO root;
