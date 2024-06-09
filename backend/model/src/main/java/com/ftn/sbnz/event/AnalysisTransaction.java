@@ -20,12 +20,13 @@ import lombok.Setter;
 public class AnalysisTransaction implements Serializable {
 
     public enum FinancialGoalType {
-        FAVORABLE, UNFAVORABLE
+        FINISHED,
+        OVERRUN_BUDGET,
+        SUDDEN_JUMP
     };
     
     private static final long serialVersionUID = 1L;
 
     private Long clientId;
-    private String reason;
     private FinancialGoalType type;
 }
