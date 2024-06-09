@@ -1,4 +1,3 @@
-
 INSERT INTO client (id, name, surname, email, password) VALUES 
     (1, 'John', 'Doe', 'john.doe@example.com', 'password123'),
     (2, 'Jane', 'Smith', 'jane.smith@example.com', 'securepass456'),
@@ -11,11 +10,11 @@ INSERT INTO credit_card (balance, client_id) VALUES
     (500.75, 3);
 
 INSERT INTO transactions (value, date, type, client_id, category, is_processed) VALUES
-    (150.75, '2024-05-01 10:30:00', 'INCOME', 1, 'SHOPPING', TRUE),
-    (75.50, '2024-05-02 14:15:00', 'OUTCOME', 2, 'FUN', FALSE),
-    (200.00, '2024-05-03 09:00:00', 'INCOME', 3, 'GROCERIES', TRUE),
-    (500.00, '2024-05-04 18:45:00', 'OUTCOME', 4, 'RENT', FALSE),
-    (60.00, '2024-05-05 12:30:00', 'OUTCOME', 1, 'UTILITES', TRUE);
+    (150.75, '2024-05-01 10:30:00', 0, 1, 0, TRUE),
+    (75.50, '2024-05-02 14:15:00', 1, 2, 1, FALSE),
+    (200.00, '2024-05-03 09:00:00', 0, 3, 2, TRUE),
+    (500.00, '2024-05-04 18:45:00', 1, 4, 3, FALSE),
+    (60.00, '2024-05-05 12:30:00', 1, 1, 4, TRUE);
 
 INSERT INTO report (week_num, reason, generation_date, client_id)
 VALUES 
@@ -28,8 +27,7 @@ VALUES
     (50000, 1),
     (65000, 2),
     (70000, 3),
-    (55000, 4),
-    (100000, 5);
+    (55000, 4);
 
 INSERT INTO financial_goal (name, description, generation_date, target_value, target_date, current_balance, start_balance, client_id)
 VALUES 
