@@ -1,5 +1,4 @@
 package com.ftn.sbnz.service;
-
 import org.kie.api.KieServices;
 import org.kie.api.builder.KieScanner;
 import org.kie.api.runtime.KieContainer;

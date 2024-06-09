@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.ftn.sbnz.model.Report;
 import com.ftn.sbnz.service.repositories.ReportRepository;
-import com.ftn.sbnz.service.services.interfaces.IReportService;
+import com.ftn.sbnz.service.services.interfaces.IService;
 
 
 @Service
-public class ReportService implements IReportService{
+public class ReportService implements IService<Report>{
     private final KieContainer kieContainer;
 
     @Autowired

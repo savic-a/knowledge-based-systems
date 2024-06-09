@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ftn.sbnz.model.Transaction;
 import com.ftn.sbnz.service.services.implementations.TransactionService;
-import com.ftn.sbnz.service.services.interfaces.ITransactionService;
+import com.ftn.sbnz.service.services.interfaces.IService;
 
 @RestController
 @RequestMapping("/transaction")
 public class TransactionController {
-    private ITransactionService service;
+    private IService<Transaction> service;
 
     @Autowired
     public TransactionController(TransactionService service) {

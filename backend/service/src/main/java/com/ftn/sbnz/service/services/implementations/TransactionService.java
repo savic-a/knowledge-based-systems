@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.ftn.sbnz.model.Transaction;
 import com.ftn.sbnz.service.repositories.TransactionRepository;
-import com.ftn.sbnz.service.services.interfaces.ITransactionService;
+import com.ftn.sbnz.service.services.interfaces.IService;
 
 @Service
-public class TransactionService implements ITransactionService {
+public class TransactionService implements IService<Transaction> {
     private final KieContainer kieContainer;
 
     @Autowired

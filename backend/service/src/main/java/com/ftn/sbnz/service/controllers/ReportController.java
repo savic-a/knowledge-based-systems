@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ftn.sbnz.model.Report;
 import com.ftn.sbnz.service.services.implementations.ReportService;
-import com.ftn.sbnz.service.services.interfaces.IReportService;
+import com.ftn.sbnz.service.services.interfaces.IService;
 
 @RestController
 @RequestMapping("/report")
 public class ReportController {
-    private IReportService service;
+    private IService<Report> service;
 
     public ReportController(ReportService service) {
         this.service = service;

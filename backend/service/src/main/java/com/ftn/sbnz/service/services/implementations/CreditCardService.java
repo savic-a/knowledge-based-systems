@@ -6,25 +6,24 @@ import org.kie.api.runtime.KieContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ftn.sbnz.model.Client;
-import com.ftn.sbnz.service.repositories.ClientRepository;
+import com.ftn.sbnz.model.CreditCard;
+import com.ftn.sbnz.service.repositories.CreditCardRepository;
 import com.ftn.sbnz.service.services.interfaces.IService;
 
-
 @Service
-public class ClientService implements IService<Client> {
+public class CreditCardService implements IService<CreditCard>{
     private final KieContainer kieContainer;
 
     @Autowired
-    public ClientRepository repository;
+    public CreditCardRepository repository;
 
     @Autowired
-    public ClientService(KieContainer kieContainer) {
+    public CreditCardService(KieContainer kieContainer) {
         this.kieContainer = kieContainer;
     }
 
-    public List<Client> getAll() {
-        return this.repository.findAll();
+    public List<CreditCard> getAll() {
+        return repository.findAll();
     }
     
 }

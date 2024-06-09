@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ftn.sbnz.model.Client;
 import com.ftn.sbnz.service.services.implementations.ClientService;
-import com.ftn.sbnz.service.services.interfaces.IClientService;
+import com.ftn.sbnz.service.services.interfaces.IService;
 
 @RestController
 @RequestMapping("/client")
 public class ClientController {
-    private IClientService service;
+    private IService<Client> service;
 
     @Autowired
     public ClientController(ClientService service) {

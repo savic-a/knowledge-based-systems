@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.ftn.sbnz.model.FinancialGoal;
 import com.ftn.sbnz.service.repositories.FinancialGoalRepository;
-import com.ftn.sbnz.service.services.interfaces.IFinancialGoalService;
+import com.ftn.sbnz.service.services.interfaces.IService;
 
 
 @Service
-public class FinancialGoalService implements IFinancialGoalService {
+public class FinancialGoalService implements IService<FinancialGoal> {
     private final KieContainer kieContainer;
 
     @Autowired

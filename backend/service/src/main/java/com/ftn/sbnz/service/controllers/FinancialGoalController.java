@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ftn.sbnz.model.FinancialGoal;
 import com.ftn.sbnz.service.services.implementations.FinancialGoalService;
-import com.ftn.sbnz.service.services.interfaces.IFinancialGoalService;
+import com.ftn.sbnz.service.services.interfaces.IService;
 
 @RestController
 @RequestMapping("/financial-goal")
 public class FinancialGoalController {
-    private IFinancialGoalService service;
+    private IService<FinancialGoal> service;
 
     @Autowired
     public FinancialGoalController(FinancialGoalService service) {
