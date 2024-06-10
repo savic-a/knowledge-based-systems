@@ -12,7 +12,7 @@ public enum PurchaseType {
 
     @Enumerated(EnumType.STRING)
     IMPULSIVE("Impulsive"),
-    Frequent("Frequent");
+    FREQUENT("Frequent");
     
     private final String description;
 }
