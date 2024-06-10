@@ -83,13 +83,13 @@ public class Client implements Serializable {
         this.fivePurchases = fivePurchases;
     }
 
-    private void setKieSession() {
+    private void setSession() {
         KieServices ks = KieServices.Factory.get();
     	KieContainer kc = ks.newKieClasspathContainer();
 
         KieSessionConfiguration config = KieServices.Factory.get().newKieSessionConfiguration();
         config.setOption(ClockTypeOption.get("pseudo"));
-        KieSession ksession = kc.newKieSession("ksession-cep", config);
+        KieSession ksession = kc.newKieSession("ksession-forward-1", config);
         this.kieSession = ksession;
     }
 
@@ -116,22 +116,25 @@ public class Client implements Serializable {
 
     // from here starts backward chaining logic
     public void backward(BudgetExceeding obj) {
+        if (this.kieSession == null) {
+            System.out.println("Setting kie session in backward");
+            this.setSession();
+        }
         if (obj.getStartTime() == null) {
             obj.setStartTime(firstOfTheMonth());
             obj.setEndTime(addDaysToTimestamp(obj.getStartTime(), 7));
             System.out.println(obj.getStartTime());
             System.out.println(obj.getEndTime());
-            // TODO: insert budget exceeding object to key session
-            setKieSession();
             this.kieSession.insert(obj);
+            this.kieSession.fireAllRules();
         }
         else {
             obj.setStartTime(obj.getEndTime());
             obj.setEndTime(addDaysToTimestamp(obj.getEndTime(), 7));
             System.out.println(obj.getStartTime());
             System.out.println(obj.getEndTime());
-            // TODO: insert budget exceeding object to key session
             this.kieSession.insert(obj);
+            this.kieSession.fireAllRules();
         }
         if (isLastDayOfMonth(obj.getEndTime())) {
             System.out.println("krajjjj");

@@ -17,4 +17,7 @@
     <kbase name="forward-1" packages="forward">
         <ksession name="ksession-forward-1"/>
     </kbase>
+    <kbase name="backward" packages="backward">
+        <ksession name="ksession-backward"/>
+    </kbase>
 </kmodule>

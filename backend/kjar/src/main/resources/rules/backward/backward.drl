@@ -1,0 +1,30 @@
+import com.ftn.sbnz.model.Household;
+import com.ftn.sbnz.event.AnalysisTransaction;
+import com.ftn.sbnz.event.Alarm;
+
+
+query isGoalRefused(Long x, Long y)
+    Household( x, y; )
+    or
+    ( Household( z, y; ) and isGoalRefused( x, z; ) )
+end
+
+rule "Refused financial goal - overrun budget"
+when
+    $goal: AnalysisTransaction($clientId: clientId, type == AnalysisTransaction.FinancialGoalType.OVERRUN_BUDGET)
+    // TODO : template here for clientId
+    isGoalRefused(1L, $clientId; )
+then
+    System.out.println("Refused financial goal for client with id " + $clientId + ". Type: " + AnalysisTransaction.FinancialGoalType.OVERRUN_BUDGET);
+    insert(new Alarm(1L, "Refused financial goal for client with id " + $clientId + ". Type: " + AnalysisTransaction.FinancialGoalType.OVERRUN_BUDGET, Alarm.Level.MEDIUM, 1L));
+end
+
+rule "Refused financial goal - sudden jump"
+when
+    $goal: AnalysisTransaction($clientId: clientId, type == AnalysisTransaction.FinancialGoalType.SUDDEN_JUMP)
+    // TODO : template here for clientId
+    isGoalRefused(1L, $clientId; )
+then
+    System.out.println("Refused financial goal for client with id " + $clientId + ". Type: " + AnalysisTransaction.FinancialGoalType.SUDDEN_JUMP);
+    insert(new Alarm(1L, "Refused financial goal for client with id " + $clientId + ". Type: " + AnalysisTransaction.FinancialGoalType.SUDDEN_JUMP, Alarm.Level.HIGH, 1L));
+end
