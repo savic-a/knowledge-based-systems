@@ -17,11 +17,11 @@ const Dashboard = () => {
       const fetchUserDetails = async () => {
         const details = await authService.getUserDetails();
         console.log(details);
-        // if (!details) {
-        //   navigate('/');
-        // } else {
+        if (!details) {
+          navigate('/');
+        } else {
           setUserDetails(details);
-        // }
+        }
       };
   
       fetchUserDetails();
@@ -35,7 +35,7 @@ const Dashboard = () => {
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <span style={{ margin: '0 5px 0 15px', fontWeight: 'normal' }}>Hello, </span> 
-            <span style={{ fontWeight: '500' }}>Pera</span>
+            <span style={{ fontWeight: '500' }}>{userDetails.name}</span>
           </div>
           <div style={{ fontWeight: 'normal', fontSize: '12px', color:"gray", marginLeft: "15px" }}>Let's manage your wallet finance</div>
         </div>

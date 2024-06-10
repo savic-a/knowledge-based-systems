@@ -32,29 +32,12 @@ class AuthService {
         try {
             const response = await httpClient.get('http://localhost:8081/client/current');
             console.log(response)
-            return true;
+            return response.data;
 
         } catch (error) {
             console.error(error);
             return false;
         }
-        // const token = this.getToken();
-        // if (!token) {
-        //     return null;
-        // }
-
-        // try {
-        //     const decodedToken = jwtDecode(token);
-        //     console.log(decodedToken)
-        //     return {
-        //         email: decodedToken.sub,
-        //         name: decodedToken.name,
-        //         surname: decodedToken.surname
-        //     };
-        // } catch (error) {
-        //     console.error('Invalid token:', error);
-        //     return null;
-        // }
     }
 
     logOut() {
