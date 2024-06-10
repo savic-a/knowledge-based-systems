@@ -8,9 +8,11 @@ import FinancialGoal from './FinancialGoal';
 
 import { Link, useNavigate } from 'react-router-dom';
 import authService from '../../services/AuthService';
+import clientService from '../../services/ClientService';
 
 const Dashboard = () => {
   const [userDetails, setUserDetails] = useState({"name": "Pera"});
+  const [transactions, setTransactions] = useState([]);
   const navigate = useNavigate();
 
     useEffect(() => {
@@ -25,7 +27,17 @@ const Dashboard = () => {
       };
   
       fetchUserDetails();
-    }, []);
+    }, [userDetails.clientId]);
+
+    useEffect(() => {
+      if (userDetails.clientId) {
+        const fetchTransactions = async () => {
+          const fetchedTransactions = await clientService.getTransactions(userDetails.clientId);
+          setTransactions(fetchedTransactions);
+        };
+        fetchTransactions();
+      }
+    }, [userDetails]);
 
     return (
       <div>
@@ -43,7 +55,7 @@ const Dashboard = () => {
         <div className="main-content">
           <div className="left-side">
             <div className="chart-area">
-              <Chart />
+              <Chart clientId={userDetails.clientId}/>
             </div>
             <div className="transaction-table-area">
               <TransactionTable />

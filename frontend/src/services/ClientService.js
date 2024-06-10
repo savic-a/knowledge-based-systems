@@ -18,7 +18,18 @@ class ClientService {
             console.log(response)
             return response.data;
         } catch (error) {
-            console.error('Error fetching credit cards:', error);
+            console.error('Error fetching financial goal:', error);
+            throw error;
+        }
+    };
+
+    async getTransactions(clientId) {
+        try {
+            const response = await httpClient.get(`/transaction/1`);
+            console.log(response)
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching transaction:', error);
             throw error;
         }
     };

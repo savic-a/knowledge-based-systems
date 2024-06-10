@@ -26,4 +26,7 @@ public class TransactionService implements IService<Transaction> {
         return this.repository.findAll();
     }
     
+    public List<Transaction> getTransactionsByClientId(Long clientId) {
+        return this.repository.findByClientId(clientId);
+    }
 }

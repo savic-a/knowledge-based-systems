@@ -1,34 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import clientService from '../../services/ClientService';
 
-const transactions = [
-  { date: '2024-01-01', category: 'private', amount: 5000 },
-  { date: '2024-01-02', category: 'food', amount: -150 },
-  { date: '2024-01-03', category: 'food', amount: -100 },
-  { date: '2024-01-04', category: 'shooping', amount: -5400 },
-];
+const TransactionTable = ({ clientId }) => {
+  const [transactions, setTransactions] = useState([]);
 
-const TransactionTable = () => (
-  <div className="framed-container">
-    <div className='component-title'>Transaction history</div>
-  <table>
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Category</th>
-        <th>Amount</th>
-      </tr>
-    </thead>
-    <tbody>
-      {transactions.map((transaction, index) => (
-        <tr key={index}>
-          <td>{transaction.date}</td>
-          <td>{transaction.category}</td>
-          <td>{transaction.amount}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-  </div>
-);
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      console.log(clientId)
+      try {
+        const fetchedTransactions = await clientService.getTransactions(clientId);
+        const transactionsWithFormattedDate = fetchedTransactions.map(transaction => ({
+          ...transaction,
+          date: new Date(transaction.date).toLocaleDateString() // Konvertovanje datuma u lokalni format
+        }));
+        setTransactions(transactionsWithFormattedDate);
+      } catch (error) {
+        console.error('Failed to fetch transactions:', error);
+      }
+    };
+
+    fetchTransactions();
+  }, [clientId]);
+
+  return (
+    <div className="framed-container">
+      <div className='component-title'>Transaction history</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Category</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {transactions.map((transaction, index) => (
+            <tr key={index}>
+              <td>{transaction.date}</td>
+              <td>{transaction.category}</td>
+              <td>{transaction.value}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
 
 export default TransactionTable;
