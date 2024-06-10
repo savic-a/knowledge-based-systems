@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@ComponentScan(basePackages = {"com.ftn.sbnz.service.controllers", "com.ftn.sbnz.service.services", "com.ftn.sbnz.service.repositories"})
+@ComponentScan(basePackages = {"com.ftn.sbnz.service.controllers", "com.ftn.sbnz.service.services", "com.ftn.sbnz.service.repositories", "com.ftn.sbnz.service.security.jwt"})
 @SpringBootApplication(scanBasePackages = { "com.ftn.sbnz.model", "com.ftn.sbnz.dto", "com.ftn.sbnz.kjar"})
 @EnableJpaRepositories(basePackages = "com.ftn.sbnz.service.repositories")
 @EntityScan(basePackages = {"com.ftn.sbnz.model", "com.ftn.sbnz.dto"})
