@@ -1,5 +1,4 @@
 import httpClient from "../interceptor/Interceptor";
-import {jwtDecode } from 'jwt-decode';
 
 class AuthService {
   
@@ -35,7 +34,7 @@ class AuthService {
             return response.data;
 
         } catch (error) {
-            console.error(error);
+            console.error("Current user does'n exist!");
             return false;
         }
     }

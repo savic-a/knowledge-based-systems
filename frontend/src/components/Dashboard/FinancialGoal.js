@@ -1,11 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import LinearProgress from '@mui/material/LinearProgress';
 import AddIcon from '@mui/icons-material/Add';
+import clientService from '../../services/ClientService';
 
-const FinancialGoal = () => {
+const FinancialGoal = ({ clientId }) => {
+    const [financialGoal, setFinancialGoal] = useState([]);
 
-    const target = 10000;
-    const current = 4500;
+    useEffect(() => {
+        const fetchCreditCards = async () => {
+          try {
+                const goal = await clientService.getFinancialGoal(clientId);
+                console.log(goal)
+                setFinancialGoal(goal);
+            } catch (error) {
+                console.error('Failed to fetch credit cards:', error);
+            }
+        };
+    
+        fetchCreditCards();
+    }, [clientId]);
+
+    const target = financialGoal.targetValue;
+    const current = financialGoal.currentBalance;
     const progress = (current / target) * 100;
 
     return (
@@ -19,11 +35,14 @@ const FinancialGoal = () => {
             </div>
             <div className="goal-details">
                 <div>
-                    <p style={{fontWeight: "500"}}>New car</p>
-                    <p style={{color: "gray", fontSize: "12px"}}>Target: $10,000</p>
-                    <p>Saving: $4,500</p>
+                    <p style={{fontWeight: "500"}}>{financialGoal.name}</p>
+                    <span style={{color: "gray", fontSize: "12px"}}>Target: $</span>
+                    <span style={{color: "gray", fontSize: "12px"}}>{financialGoal.targetValue}</span>
+                    <div style={{marginBottom: "20px"}}></div>
+                    <span>Saving: $</span>
+                    <span>{financialGoal.currentBalance}</span>
                 </div>
-                <LinearProgress variant="determinate" value={progress} sx={{ bgcolor: '#f0f0f0', '& .MuiLinearProgress-bar': { bgcolor: '#ff5722' } }}/>
+                <LinearProgress style={{marginTop: "10px"}} variant="determinate" value={progress} sx={{ bgcolor: '#f0f0f0', '& .MuiLinearProgress-bar': { bgcolor: '#ff5722' } }}/>
             </div>
         </div>
     );

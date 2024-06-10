@@ -27,7 +27,6 @@ import com.ftn.sbnz.service.repositories.ClientRepository;
 import com.ftn.sbnz.service.security.jwt.TokenUtils;
 import com.ftn.sbnz.service.services.implementations.ClientService;
 import com.ftn.sbnz.service.services.interfaces.IClientService;
-import com.ftn.sbnz.service.services.interfaces.IService;
 
 @RestController
 @CrossOrigin

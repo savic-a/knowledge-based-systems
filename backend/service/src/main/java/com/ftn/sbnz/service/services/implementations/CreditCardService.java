@@ -22,8 +22,15 @@ public class CreditCardService implements IService<CreditCard>{
         this.kieContainer = kieContainer;
     }
 
+    public CreditCardService() {
+        this.kieContainer = null;
+    }
+
     public List<CreditCard> getAll() {
         return repository.findAll();
     }
-    
+
+    public CreditCard getCreditCardByClientId(Long clientId) {
+        return repository.findByClientId(clientId);
+    }
 }

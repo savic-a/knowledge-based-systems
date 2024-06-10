@@ -26,4 +26,8 @@ public class FinancialGoalService implements IService<FinancialGoal> {
     public List<FinancialGoal> getAll() {
         return this.repository.findAll();
     }
+
+    public FinancialGoal getFinancialGoalByClientId(Long clientId) {
+        return repository.findByClientId(clientId);
+    }
 }
