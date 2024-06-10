@@ -1,4 +1,5 @@
 import httpClient from "../interceptor/Interceptor";
+import {jwtDecode } from 'jwt-decode';
 
 class AuthService {
   
@@ -9,12 +10,11 @@ class AuthService {
                 password: password
             });
             await this.setToken(response.data['accessToken']);
-            console.log(response)
-            return response;
+            return true;
 
         } catch (error) {
-            console.error('Error fetching data:', error);
-            return null;
+            console.error('Invalid email or password!');
+            return false;
         }
     }
   
@@ -25,6 +25,29 @@ class AuthService {
     getToken() {
         const user = JSON.parse(localStorage.getItem('jwt'));
         return user;
+    }
+
+    getUserDetails() {
+        const token = this.getToken();
+        if (!token) {
+            return null;
+        }
+
+        try {
+            const decodedToken = jwtDecode(token);
+            return {
+                email: decodedToken.sub,
+                name: decodedToken.name,
+                surname: decodedToken.surname
+            };
+        } catch (error) {
+            console.error('Invalid token:', error);
+            return null;
+        }
+    }
+
+    logOut() {
+        localStorage.removeItem('jwt');
     }
 }
   

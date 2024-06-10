@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navigation from '../Navigation/Navigation';
 import './Dashboard.css';
 import Chart from './Chart';
@@ -6,7 +6,22 @@ import TransactionTable from './TransactionTable';
 import CardBalance from './CardBalance';
 import FinancialGoal from './FinancialGoal';
 
+import { Link, useNavigate } from 'react-router-dom';
+import authService from '../../services/AuthService';
+
 const Dashboard = () => {
+  const [userDetails, setUserDetails] = useState(null);
+  const navigate = useNavigate();
+
+    useEffect(() => {
+        const details = authService.getUserDetails();
+        setUserDetails(details);
+    }, []);
+
+    if (!userDetails) {
+      navigate('/')
+    }
+
   return (
     <div>
       <div className="profile-info">
