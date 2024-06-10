@@ -16,11 +16,11 @@ import com.ftn.sbnz.model.ClientThreePurchases;
 import com.ftn.sbnz.service.repositories.ClientFivePurchasesRepository;
 import com.ftn.sbnz.service.repositories.ClientRepository;
 import com.ftn.sbnz.service.repositories.ClientThreePurchasesRepository;
-import com.ftn.sbnz.service.services.interfaces.IService;
+import com.ftn.sbnz.service.services.interfaces.IClientService;
 
 
 @Service
-public class ClientService implements IService<Client>, UserDetailsService {
+public class ClientService implements IClientService, UserDetailsService {
     private final KieContainer kieContainer;
 
     @Autowired
@@ -72,4 +72,8 @@ public class ClientService implements IService<Client>, UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("User with email '%s' is not found!", email)));
     }
     
+	public Client findByEmail(String email) throws UsernameNotFoundException {
+		return this.repository.findByEmail(email).orElseThrow(()
+				-> new UsernameNotFoundException(String.format("User with email '%s' is not found!", email)));
+	}
 }

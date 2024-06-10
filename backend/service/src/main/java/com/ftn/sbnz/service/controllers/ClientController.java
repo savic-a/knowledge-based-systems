@@ -1,5 +1,6 @@
 package com.ftn.sbnz.service.controllers;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.http.MediaType;
@@ -25,6 +26,7 @@ import com.ftn.sbnz.service.exeception.BadRequestException;
 import com.ftn.sbnz.service.repositories.ClientRepository;
 import com.ftn.sbnz.service.security.jwt.TokenUtils;
 import com.ftn.sbnz.service.services.implementations.ClientService;
+import com.ftn.sbnz.service.services.interfaces.IClientService;
 import com.ftn.sbnz.service.services.interfaces.IService;
 
 @RestController
@@ -32,7 +34,7 @@ import com.ftn.sbnz.service.services.interfaces.IService;
 @RequestMapping("/client")
 public class ClientController {
 
-    private IService<Client> service;
+    private IClientService service;
 
     @Autowired
     ClientRepository clientRepository;
@@ -60,8 +62,6 @@ public class ClientController {
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<TokenStateDTO> login(@RequestBody LoginDTO loginDTO) 
     {
-        System.out.println("LOGGGGGGGGGGGGGGGGGGGGGGGGGIIIIIIIIIIIIIIIIIIIIIIIIIIN");
-        System.out.println(passwordEncoder.encode("Katarina123!"));
         Client check = clientRepository.findByEmail(loginDTO.getEmail()).orElseThrow(() -> new BadRequestException("Wrong username or password!"));
         if(!check.getEmail().equals(loginDTO.getEmail()) || !passwordEncoder.matches(loginDTO.getPassword(), check.getPassword()))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -77,5 +77,10 @@ public class ClientController {
         int expiresIn = tokenUtils.getExpiredIn();
 
         return new ResponseEntity<>(new TokenStateDTO(access, expiresIn), HttpStatus.OK);
+    }
+
+    @GetMapping("/current")
+    public Client user(Principal user) {
+        return this.service.findByEmail(user.getName());
     }
 }

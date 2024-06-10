@@ -14,13 +14,19 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
     useEffect(() => {
-        const details = authService.getUserDetails();
-        setUserDetails(details);
+      const fetchUserDetails = async () => {
+        const details = await authService.getUserDetails();
+        console.log(details);
+        // if (!details) {
+        //   navigate('/');
+        // } else {
+          setUserDetails(details);
+        // }
+      };
+  
+      fetchUserDetails();
     }, []);
 
-    if (!userDetails) {
-      navigate('/')
-    }
 
   return (
     <div>

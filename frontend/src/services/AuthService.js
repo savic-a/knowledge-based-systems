@@ -10,6 +10,7 @@ class AuthService {
                 password: password
             });
             await this.setToken(response.data['accessToken']);
+            console.log(response.data['accessToken'])
             return true;
 
         } catch (error) {
@@ -18,32 +19,42 @@ class AuthService {
         }
     }
   
-    async setToken(user) {
-      localStorage.setItem('jwt', JSON.stringify(user));
+    async setToken(token) {
+      localStorage.setItem('jwt', token);
     }
 
     getToken() {
-        const user = JSON.parse(localStorage.getItem('jwt'));
+        const user = localStorage.getItem('jwt');
         return user;
     }
 
-    getUserDetails() {
-        const token = this.getToken();
-        if (!token) {
-            return null;
-        }
-
+    async getUserDetails() {
         try {
-            const decodedToken = jwtDecode(token);
-            return {
-                email: decodedToken.sub,
-                name: decodedToken.name,
-                surname: decodedToken.surname
-            };
+            const response = await httpClient.get('http://localhost:8081/client/current');
+            console.log(response)
+            return true;
+
         } catch (error) {
-            console.error('Invalid token:', error);
-            return null;
+            console.error(error);
+            return false;
         }
+        // const token = this.getToken();
+        // if (!token) {
+        //     return null;
+        // }
+
+        // try {
+        //     const decodedToken = jwtDecode(token);
+        //     console.log(decodedToken)
+        //     return {
+        //         email: decodedToken.sub,
+        //         name: decodedToken.name,
+        //         surname: decodedToken.surname
+        //     };
+        // } catch (error) {
+        //     console.error('Invalid token:', error);
+        //     return null;
+        // }
     }
 
     logOut() {
