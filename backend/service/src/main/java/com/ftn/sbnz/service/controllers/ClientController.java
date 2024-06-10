@@ -40,8 +40,10 @@ public class ClientController {
     @Autowired
     TokenUtils tokenUtils;
 
+    @Autowired
     AuthenticationManager authenticationManager;
 
+    @Autowired
     BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
@@ -59,20 +61,21 @@ public class ClientController {
     public ResponseEntity<TokenStateDTO> login(@RequestBody LoginDTO loginDTO) 
     {
         System.out.println("LOGGGGGGGGGGGGGGGGGGGGGGGGGIIIIIIIIIIIIIIIIIIIIIIIIIIN");
-        // Client check = clientRepository.findByEmail(loginDTO.getEmail()).orElseThrow(() -> new BadRequestException("Wrong username or password!"));
-        // if(!check.getEmail().equals(loginDTO.getEmail()) || !passwordEncoder.matches(loginDTO.getPassword(), check.getPassword()))
-        //     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        System.out.println(passwordEncoder.encode("Katarina123!"));
+        Client check = clientRepository.findByEmail(loginDTO.getEmail()).orElseThrow(() -> new BadRequestException("Wrong username or password!"));
+        if(!check.getEmail().equals(loginDTO.getEmail()) || !passwordEncoder.matches(loginDTO.getPassword(), check.getPassword()))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
-        // Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-        //         loginDTO.getEmail(), loginDTO.getPassword()));
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                loginDTO.getEmail(), loginDTO.getPassword()));
 
-        // SecurityContextHolder.getContext().setAuthentication(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // // Create tokens for that user
-        // Client user = (Client) authentication.getPrincipal();
-        // String access = tokenUtils.generateToken(user.getEmail());
-        // int expiresIn = tokenUtils.getExpiredIn();
+        // Create tokens for that user
+        Client user = (Client) authentication.getPrincipal();
+        String access = tokenUtils.generateToken(user.getEmail());
+        int expiresIn = tokenUtils.getExpiredIn();
 
-        return new ResponseEntity<>(new TokenStateDTO("laa", 123), HttpStatus.OK);
+        return new ResponseEntity<>(new TokenStateDTO(access, expiresIn), HttpStatus.OK);
     }
 }

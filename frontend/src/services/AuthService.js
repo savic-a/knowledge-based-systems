@@ -8,13 +8,13 @@ class AuthService {
                 email: email,
                 password: password
             });
-            // await this.setToken(response.data['accessToken']);
+            await this.setToken(response.data['accessToken']);
             console.log(response)
             return response;
 
         } catch (error) {
             console.error('Error fetching data:', error);
-            throw error;
+            return null;
         }
     }
   
