@@ -7,11 +7,6 @@ import com.ftn.sbnz.enumeration.Category;
 import com.ftn.sbnz.enumeration.PurchaseType;
 
 
-// global Double highestCategoryCost;
-// global Category highestCategory;
-// global Integer highestCategoryCount;
-// global Integer numOfCategories;
-
 // 1. LEVEL
 // TODO: add check time (set time in backward)
 rule "Week with the biggest cost" 
@@ -91,4 +86,16 @@ then
         setCriterion(3),
         setPurchaseType(PurchaseType.IMPULSIVE)
     }
+end
+
+// 4. LEVEL
+rule "Generate report"
+when
+    $budgetExceeding: BudgetExceeding($clientId: clientId, criterion == 3)
+then
+    System.out.println("Inserting new report");
+    insert(new Warning($clientId, "High", "You have spent more than 20% of your monthly income on " + $budgetExceeding.getCategory() 
+                        + ". Type of shopping: " + $budgetExceeding.getPurchaseType()));
+    System.out.println("You have spent more than 20% of your monthly income on " + $budgetExceeding.getCategory() 
+                        + ". Type of shopping: " + $budgetExceeding.getPurchaseType());
 end
