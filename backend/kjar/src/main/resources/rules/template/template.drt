@@ -1,0 +1,17 @@
+template header
+cost
+
+package rules;
+
+template "calculateBudget"
+
+rule "CalculateBudget_@{row.rowNumber}"
+no-loop true
+when
+    String( this == "calculate budget" )
+then
+    System.out.println("Rule is triggered");
+    System.out.println("@{cost}");
+end
+
+end template
