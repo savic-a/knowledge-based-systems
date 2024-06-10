@@ -2,6 +2,7 @@ package com.ftn.sbnz.service;
 
 import java.io.InputStream;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import org.kie.internal.utils.KieHelper;
 import com.ftn.sbnz.dto.TemplateDTO;
 import com.ftn.sbnz.model.Budget;
 import com.ftn.sbnz.model.FinancialGoal;
+import com.ftn.sbnz.model.Report;
 
 public class TemplateRulesTest {
     
@@ -36,6 +38,26 @@ public class TemplateRulesTest {
 
         KieSession kSession = createKieSessionFromDRL(drl);
         doTest(kSession);
+    }
+
+    @Test
+    public void testTemplate2() {
+        InputStream template = TemplateRulesTest.class.getResourceAsStream("/rules/template/template2.drt");
+        System.out.println("--------------------------------");
+        System.out.println(template);
+
+        List<Report> data = new ArrayList<>();
+        Instant now = Instant.now();
+        Timestamp timestamp = Timestamp.from(now);
+        data.add(new Report(1L, 0, "razloggg", timestamp, 1L));
+        data.add(new Report(1L, 0, "razloggg2", timestamp, 2L));
+
+        ObjectDataCompiler converter = new ObjectDataCompiler();
+        String drl = converter.compile(data, template);
+        System.out.println("Generated DRL:\n" + drl);
+
+        KieSession kSession = createKieSessionFromDRL(drl);
+        doTest2(kSession);
     }
 
     private void doTest(KieSession ksession){
@@ -63,5 +85,10 @@ public class TemplateRulesTest {
         }
         
         return kieHelper.build().newKieSession();
+    }
+
+    private void doTest2(KieSession ksession){
+        ksession.insert("generate report");
+        ksession.fireAllRules();
     }
 }
