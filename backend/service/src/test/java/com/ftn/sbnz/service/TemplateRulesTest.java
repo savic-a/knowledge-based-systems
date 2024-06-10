@@ -1,12 +1,13 @@
 package com.ftn.sbnz.service;
 
-import static org.junit.Assert.assertThat;
-
 import java.io.InputStream;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.drools.template.DataProvider;
 import org.drools.template.DataProviderCompiler;
+import org.drools.template.ObjectDataCompiler;
 import org.drools.template.objects.ArrayDataProvider;
 import org.junit.Test;
 import org.kie.api.builder.Message;
@@ -15,6 +16,10 @@ import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieSession;
 import org.kie.internal.utils.KieHelper;
 
+import com.ftn.sbnz.dto.TemplateDTO;
+import com.ftn.sbnz.model.Budget;
+import com.ftn.sbnz.model.FinancialGoal;
+
 public class TemplateRulesTest {
     
     @Test
@@ -22,21 +27,22 @@ public class TemplateRulesTest {
         InputStream template = TemplateRulesTest.class.getResourceAsStream("/rules/template/template.drt");
         System.out.println(template);
 
-        DataProvider dataProvider = new ArrayDataProvider(new String[][] {
-            new String[]{"20 000"},
-            new String [] {"some string"},
-        });
+        List<TemplateDTO> data = new ArrayList<>();
+        data.add(new TemplateDTO(20000, 1L));
+        data.add(new TemplateDTO(18000, 2L));
 
-        DataProviderCompiler converter = new DataProviderCompiler();
-        String drl = converter.compile(dataProvider, template);
-        System.out.println("--------------------------------");
-        System.out.println(drl);
+        ObjectDataCompiler converter = new ObjectDataCompiler();
+        String drl = converter.compile(data, template);
 
         KieSession kSession = createKieSessionFromDRL(drl);
         doTest(kSession);
     }
 
     private void doTest(KieSession ksession){
+        ksession.insert(new Budget(1L, 20000, 1L));
+        ksession.insert(new FinancialGoal(1L, "Savings Goal", "Save money for a vacation", 
+        Timestamp.valueOf("2024-01-01 00:00:00"), 100000, Timestamp.valueOf("2024-12-31 23:59:59"), 
+        12000, 10000, 1L));
         ksession.insert("calculate budget");
         ksession.fireAllRules();
     }
