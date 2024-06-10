@@ -31,6 +31,7 @@ public class ForwardRulesTest {
         ksession.insert(new Transaction(6L, 40000, Timestamp.valueOf("2024-01-01 00:00:00"), Transaction.Type.OUTCOME, 1L, Category.HEALTH_AND_CARE));
         ksession.insert(new Transaction(7L, 30000, Timestamp.valueOf("2024-01-01 00:00:00"), Transaction.Type.OUTCOME, 1L, Category.FOOD));
         ksession.insert(new Transaction(8L, 15000, Timestamp.valueOf("2024-01-01 00:00:00"), Transaction.Type.OUTCOME, 1L, Category.FOOD));
+        ksession.insert(new Transaction(9L, 12000, Timestamp.valueOf("2024-01-01 00:00:00"), Transaction.Type.OUTCOME, 1L, Category.PRIVATE));
         ksession.insert(new BudgetExceeding(1L));
         ksession.fireAllRules();
     }
