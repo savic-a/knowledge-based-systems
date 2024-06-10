@@ -32,15 +32,15 @@ public class CepRulesTest {
         SessionPseudoClock clock = ksession.getSessionClock();
 
        // Insert initial test data
-       ksession.insert(new Client(1L, "PERA", "PERIC", "pera@gmail.com", "123", new ArrayList<>(), new ArrayList<>(), false, false));
+       ksession.insert(new Client(1L, "PERA", "PERIC", "pera@gmail.com", "123", false, false));
        ksession.insert(new Budget(1L, 100000, 1L));
        ksession.insert(new FinancialGoal(1L, "Savings Goal", "Save money for a vacation", Timestamp.valueOf("2024-01-01 00:00:00"), 100000, Timestamp.valueOf("2024-12-31 23:59:59"), 120000, 50000, 1L));
 
-       ksession.insert(new Client(2L, "PERA", "PERIC", "pera@gmail.com", "123", new ArrayList<>(), new ArrayList<>(), false, false));
+       ksession.insert(new Client(2L, "PERA", "PERIC", "pera@gmail.com", "123", false, false));
        ksession.insert(new Budget(2L, 100000, 2L));
        ksession.insert(new FinancialGoal(2L, "Savings Goal", "Save money for a vacation", Timestamp.valueOf("2024-01-01 00:00:00"), 100000, Timestamp.valueOf("2024-12-31 23:59:59"), 120000, 50000, 2L));
 
-      ksession.insert(new Client(3L, "PERA", "PERIC", "pera@gmail.com", "123", new ArrayList<>(), new ArrayList<>(), false, false));
+      ksession.insert(new Client(3L, "PERA", "PERIC", "pera@gmail.com", "123", false, false));
       ksession.insert(new Budget(3L, 100000, 3L));
       ksession.insert(new FinancialGoal(3L, "Savings Goal", "Save money for a vacation", Timestamp.valueOf("2024-01-01 00:00:00"), 100000, Timestamp.valueOf("2024-12-31 23:59:59"), 120000, 10000, 3L));
        

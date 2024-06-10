@@ -3,6 +3,8 @@ import com.ftn.sbnz.event.AnalysisTransaction;
 import com.ftn.sbnz.event.AccomplishedGoal;
 import com.ftn.sbnz.model.Budget;
 import com.ftn.sbnz.model.FinancialGoal;
+import com.ftn.sbnz.model.Client;
+import com.ftn.sbnz.model.BudgetExceeding;
 
 
 // 1. LEVEL
@@ -83,11 +85,14 @@ end
 rule "Notify client of unfavorable analysis result - Budget Overrun"
     when
         $analysis: AnalysisTransaction($clientId: clientId, type == AnalysisTransaction.FinancialGoalType.OVERRUN_BUDGET)
+        $client: Client(id == $clientId)
     then
         // Notification logic here
         System.out.println("Notification: Unfavorable analysis result for client " + $clientId + " Reason: Budget Overrun");
 
         // Perform backward chaining logic here
+        BudgetExceeding obj = new BudgetExceeding($clientId);
+        $client.backward(obj);
         // System.out.println("Performing backward chaining for client " + $clientId);
 end
 

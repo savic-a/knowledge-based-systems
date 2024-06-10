@@ -1,6 +1,7 @@
 import com.ftn.sbnz.model.BudgetExceeding;
 import com.ftn.sbnz.model.Budget;
 import com.ftn.sbnz.model.Transaction;
+import com.ftn.sbnz.model.TransactionEvent;
 import com.ftn.sbnz.model.Warning;
 
 import com.ftn.sbnz.enumeration.Category;
@@ -14,7 +15,7 @@ when
     $budgetExceeding: BudgetExceeding($clientId: clientId, criterion == 0)
     $budget: Budget($clientId == clientId)
     $monetaryAmount: Number(doubleValue > $budgetExceeding.getValue() * 0.2) from accumulate(
-        $transaction : Transaction(clientId == $clientId, type == Transaction.Type.OUTCOME),
+        $transaction : TransactionEvent(clientId == $clientId, type == TransactionEvent.Type.OUTCOME),
         sum($transaction.getValue())
     )
     eval($monetaryAmount.doubleValue() > $budgetExceeding.getValue())
@@ -33,11 +34,11 @@ when
     $budgetExceeding: BudgetExceeding($clientId: clientId, criterion == 1)
     $category: Category() from Category.values()
     $sum : Double() from accumulate (
-        $t : Transaction(type == Transaction.Type.OUTCOME, category == $category, $clientId == clientId),
+        $t : TransactionEvent(type == TransactionEvent.Type.OUTCOME, category == $category, $clientId == clientId),
         sum($t.getValue())
     )
     $count: Long() from accumulate(
-        $t: Transaction(type == Transaction.Type.OUTCOME, category == $category, $clientId == clientId),
+        $t: TransactionEvent(type == TransactionEvent.Type.OUTCOME, category == $category, $clientId == clientId),
         count($t)
     )
     eval($sum > $budgetExceeding.getCategoryCost())

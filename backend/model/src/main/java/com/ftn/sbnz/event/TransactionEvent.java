@@ -7,6 +7,8 @@ import org.kie.api.definition.type.Expires;
 import org.kie.api.definition.type.Role;
 import org.kie.api.definition.type.Timestamp;
 
+import com.ftn.sbnz.enumeration.Category;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -35,6 +37,7 @@ public class TransactionEvent implements Serializable {
     private Date executionTime;
     private Type type;
     private Long clientId;
+    private Category category;
 
     public TransactionEvent(Long id, double value, Type type, Long client) {
         this.id = id;
