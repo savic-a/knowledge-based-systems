@@ -58,20 +58,21 @@ public class ClientController {
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<TokenStateDTO> login(@RequestBody LoginDTO loginDTO) 
     {
-        Client check = clientRepository.findByEmail(loginDTO.getEmail()).orElseThrow(() -> new BadRequestException("Wrong username or password!"));
-        if(!check.getEmail().equals(loginDTO.getEmail()) || !passwordEncoder.matches(loginDTO.getPassword(), check.getPassword()))
-            throw new BadRequestException("Wrong username or password!");
+        System.out.println("LOGGGGGGGGGGGGGGGGGGGGGGGGGIIIIIIIIIIIIIIIIIIIIIIIIIIN");
+        // Client check = clientRepository.findByEmail(loginDTO.getEmail()).orElseThrow(() -> new BadRequestException("Wrong username or password!"));
+        // if(!check.getEmail().equals(loginDTO.getEmail()) || !passwordEncoder.matches(loginDTO.getPassword(), check.getPassword()))
+        //     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginDTO.getEmail(), loginDTO.getPassword()));
+        // Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+        //         loginDTO.getEmail(), loginDTO.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        // SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // Create tokens for that user
-        Client user = (Client) authentication.getPrincipal();
-        String access = tokenUtils.generateToken(user.getEmail());
-        int expiresIn = tokenUtils.getExpiredIn();
+        // // Create tokens for that user
+        // Client user = (Client) authentication.getPrincipal();
+        // String access = tokenUtils.generateToken(user.getEmail());
+        // int expiresIn = tokenUtils.getExpiredIn();
 
-        return new ResponseEntity<>(new TokenStateDTO(access, expiresIn), HttpStatus.OK);
+        return new ResponseEntity<>(new TokenStateDTO("laa", 123), HttpStatus.OK);
     }
 }

@@ -12,6 +12,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Snackbar from '@mui/material/Snackbar';
 import CloseIcon from '@mui/icons-material/Close';
+import authService from '../../services/AuthService';
 
 
 const Login = () => {
@@ -66,11 +67,12 @@ const Login = () => {
 
     // login
     const handleLogin = async () => {
-        // const result = await cognitoService.handleSignIn({"username": username, "password": password});
-    
+        console.log(username)
+        console.log(password)
+        const result = await authService.login(username, password);
+        
         // if (result) {
-        //     // navigate('/main')
-        //     await cognitoService.currentUser();
+            
         // } else {
         //     setSnackbarMessage("Invalid email or password");
         //     handleClick()
