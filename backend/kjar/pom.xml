@@ -59,11 +59,12 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.ftn.sbnz</groupId>
-			<artifactId>model</artifactId>
+			<artifactId>service</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+		</dependency> -->
+
 	</dependencies>
 
 	<build>
