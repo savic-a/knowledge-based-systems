@@ -52,6 +52,27 @@ class ClientService {
             throw error;
         }
     };
+
+    async getReports() {
+        try {
+            const response = await httpClient.get(`/report/${localStorage.getItem('id')}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching report:', error);
+            throw error;
+        }
+    };
+
+    async addReport(report) {
+        try {
+            const response = await httpClient.post(`/report/${localStorage.getItem('id')}`, report);
+            console.log(response)
+            return response.data;
+        } catch (error) {
+            console.error('Error adding report:', error);
+            throw error;
+        }
+    };
 }
 
 const clientService = new ClientService();
