@@ -11,7 +11,7 @@ const TransactionTable = ({ clientId }) => {
         const fetchedTransactions = await clientService.getTransactions(clientId);
         const transactionsWithFormattedDate = fetchedTransactions.map(transaction => ({
           ...transaction,
-          date: new Date(transaction.date).toLocaleDateString() // Konvertovanje datuma u lokalni format
+          date: new Date(transaction.date).toLocaleDateString() 
         }));
         setTransactions(transactionsWithFormattedDate);
       } catch (error) {

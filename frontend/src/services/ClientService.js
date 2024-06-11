@@ -33,6 +33,17 @@ class ClientService {
             throw error;
         }
     };
+
+    async addFinancialGoal(clientId, goal) {
+        try {
+            const response = await httpClient.post(`/financial-goal/5`, goal);
+            console.log(response)
+            return response.data;
+        } catch (error) {
+            console.error('Error adding new financial goal:', error);
+            throw error;
+        }
+    };
 }
 
 const clientService = new ClientService();
