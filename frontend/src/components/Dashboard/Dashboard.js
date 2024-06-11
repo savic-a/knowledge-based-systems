@@ -9,6 +9,7 @@ import FinancialGoal from './FinancialGoal';
 import { Link, useNavigate } from 'react-router-dom';
 import authService from '../../services/AuthService';
 import Budget from './Budget';
+import Household from '../Household.js/Household';
 
 const Dashboard = () => {
   const [userDetails, setUserDetails] = useState({"name": "Pera"});
