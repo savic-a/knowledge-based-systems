@@ -44,6 +44,13 @@ const FinancialGoal = () => {
         const newGoal = { name: goalName, description: goalDescription, targetValue: goalTargetValue, targetDate: goalTargetDate };
         await clientService.addFinancialGoal(newGoal);
         handleClose();
+
+        try {
+            const goal = await clientService.getFinancialGoal();
+            setFinancialGoal(goal);
+        } catch (error) {
+            console.error('Failed to fetch financial goal:', error);
+        }
     };
 
     if (!financialGoal) {
