@@ -81,6 +81,7 @@ public class FinancialGoalService implements IService<FinancialGoal> {
         } else if (leftMoney == goalPerMonth) {
             return 0.0;
         }
+        TemplateService.calculateFinancialGoal(clientId, value);
         return -1.0;
     }
 }

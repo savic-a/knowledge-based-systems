@@ -19,6 +19,7 @@ const FinancialGoal = () => {
     const [goalTargetValue, setGoalTargetValue] = useState('');
     const [goalTargetDate, setGoalTargetDate] = useState('');
     const [monthlyValue, setMonthlyValue] = useState('');
+    const [calculationResult, setCalculationResult] = useState('');
 
     useEffect(() => {
         const fetchFinancialGoal = async () => {
@@ -67,7 +68,8 @@ const FinancialGoal = () => {
         console.log("calculateeee");
         console.log(monthlyValue);
         let res = await clientService.getFinancialGoalCalculation(monthlyValue);
-        console.log(res);
+        if (res != -1) setCalculationResult("Result: " + Math.round(res * 100) / 100 + " RSD");
+        else setCalculationResult("Financial goal is not possible.");
     };
 
     if (!financialGoal) {
@@ -235,7 +237,7 @@ const FinancialGoal = () => {
                             value={monthlyValue}
                             onChange={(e) => setMonthlyValue(e.target.value)}
                         />
-                        <p>Result:</p>
+                        <p>{calculationResult}</p>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleGoalCalculatorClose}>Close</Button>
