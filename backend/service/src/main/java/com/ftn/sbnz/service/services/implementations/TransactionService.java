@@ -1,11 +1,16 @@
 package com.ftn.sbnz.service.services.implementations;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.kie.api.runtime.KieContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ftn.sbnz.dto.TransactionDTO;
+import com.ftn.sbnz.model.CreditCard;
+import com.ftn.sbnz.service.repositories.CreditCardRepository;
 import com.ftn.sbnz.model.Transaction;
 import com.ftn.sbnz.service.repositories.TransactionRepository;
 import com.ftn.sbnz.service.services.interfaces.IService;
@@ -18,6 +23,9 @@ public class TransactionService implements IService<Transaction> {
     public TransactionRepository repository;
 
     @Autowired
+    public CreditCardRepository creditCardRepository;
+
+    @Autowired
     public TransactionService(KieContainer kieContainer) {
         this.kieContainer = kieContainer;
     }
@@ -28,5 +36,31 @@ public class TransactionService implements IService<Transaction> {
     
     public List<Transaction> getTransactionsByClientId(Long clientId) {
         return this.repository.findByClientId(clientId);
+    }
+
+    public Transaction addTransaction(Long clientId, TransactionDTO dto) {
+        CreditCard card = this.creditCardRepository.findByClientId(clientId);
+        double newBalance = card.getBalance();
+
+        Transaction transaction = new Transaction();
+        transaction.setValue(dto.getValue());
+        transaction.setDate(Timestamp.valueOf(LocalDateTime.now()));
+        if(dto.getType() == 1) {
+            transaction.setType(Transaction.Type.OUTCOME);
+            newBalance -= dto.getValue(); 
+        } else {
+            transaction.setType(Transaction.Type.INCOME);
+            newBalance += dto.getValue();
+        }
+        transaction.setClientId(clientId);
+        transaction.setCategory(dto.convertToCategory());
+        transaction.setIsProcessed(true);
+
+        // edit value on credit card
+        card.setBalance(newBalance);
+        creditCardRepository.save(card);
+
+        // save new transaction
+        return repository.save(transaction);
     }
 }

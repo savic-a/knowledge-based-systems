@@ -35,10 +35,20 @@ class ClientService {
     async addFinancialGoal(goal) {
         try {
             const response = await httpClient.post(`/financial-goal/${localStorage.getItem('id')}`, goal);
-            console.log(response)
             return response.data;
         } catch (error) {
             console.error('Error adding new financial goal:', error);
+            throw error;
+        }
+    };
+
+    async addTransaction(transaction) {
+        try {
+            const response = await httpClient.post(`/transaction/${localStorage.getItem('id')}`, transaction);
+            console.log(response)
+            return response.data;
+        } catch (error) {
+            console.error('Error adding transaction:', error);
             throw error;
         }
     };

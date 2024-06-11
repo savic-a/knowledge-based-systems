@@ -46,8 +46,12 @@ const CardBalance = () => {
   const handleConfirmPayment = async () => {
     try {
       setIsLoading(true);
-      // Logika za potvrdu plaćanja
-      // Ovdje bi se obavila potvrda plaćanja sa unetom vrednošću i izabranom kategorijom
+      
+      const outcome = { value: transactionValue, type: 1, category: selectedCategory };
+      console.log(outcome)
+      await clientService.addTransaction(outcome);
+      window.location.reload();
+
       console.log('Plaćanje je uspešno obavljeno!');
       handleClosePayDialog();
     } catch (error) {
@@ -68,8 +72,12 @@ const CardBalance = () => {
   const handleConfirmAddMoney = async () => {
     try {
       setIsLoading(true);
-      // Logika za dodavanje novca na račun
-      // Ovdje bi se obavila logika za dodavanje novca na račun sa unetom vrednošću
+      
+      const income = { value: moneyToAdd, type: 0, category: "PRIVATE" };
+      console.log(income)
+      await clientService.addTransaction(income);
+      window.location.reload();
+
       console.log('Novac je uspešno dodat na račun!');
       handleCloseAddMoneyDialog();
     } catch (error) {

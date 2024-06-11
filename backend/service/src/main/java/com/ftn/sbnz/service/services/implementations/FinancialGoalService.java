@@ -42,8 +42,6 @@ public class FinancialGoalService implements IService<FinancialGoal> {
 
     public FinancialGoal addFinancialGoal(Long clientId, FinancialGoalDTO goalDTO) {
         CreditCard card = this.creditCardRepository.findByClientId(clientId);
-        System.out.println("LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        System.out.println(goalDTO.getTargetDate());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         LocalDateTime targetDate = LocalDateTime.parse(goalDTO.getTargetDate() + "T00:00:00", formatter);
         FinancialGoal financialGoal = new FinancialGoal();
