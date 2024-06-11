@@ -1,10 +1,12 @@
-import com.ftn.sbnz.event.TransactionEvent;
 import com.ftn.sbnz.event.AnalysisTransaction;
 import com.ftn.sbnz.event.AccomplishedGoal;
 import com.ftn.sbnz.model.Budget;
 import com.ftn.sbnz.model.FinancialGoal;
+import com.ftn.sbnz.model.Client;
+import com.ftn.sbnz.model.BudgetExceeding;
+import com.ftn.sbnz.model.Transaction;
 
-
+// TODO: izmijeniti ovo da se okida kad se doda income transakcija ukoliko postoji neki finan cilj
 // 1. LEVEL
 rule "Weekly financial goal progress check"
     when
@@ -35,11 +37,11 @@ rule "Detect budget overrun (flag2)"
         Budget($cId: clientId, $value: value)
         AccomplishedGoal(clientId == $cId, $percentageAchieved: percentageAchieved)
         eval($percentageAchieved < 100)
-        $t1: TransactionEvent(clientId == $cId)
+        $t1: Transaction(clientId == $cId)
         $totalAmount: Number(doubleValue > $value) from accumulate(
-            $t2: TransactionEvent(
+            $t2: Transaction(
                 clientId == $cId,
-                type == TransactionEvent.Type.OUTCOME,
+                type == Transaction.Type.OUTCOME,
                 this after[0d, 7d] $t1
             ),
             sum($t2.getValue())
@@ -55,11 +57,11 @@ rule "Detect sudden jump in costs (flag3)"
         Budget($cId: clientId, $value: value)
         AccomplishedGoal(clientId == $cId, $percentageAchieved: percentageAchieved)
         eval($percentageAchieved < 100)
-        $t1: TransactionEvent(clientId == $cId)
+        $t1: Transaction(clientId == $cId)
         $totalAmount: Number(doubleValue >= $value * 0.2) from accumulate(
-            $t2: TransactionEvent(
+            $t2: Transaction(
                 clientId == $cId,
-                type == TransactionEvent.Type.OUTCOME,
+                type == Transaction.Type.OUTCOME,
                 this after[0d, 7d] $t1
             ),
             sum($t2.getValue())
@@ -83,11 +85,14 @@ end
 rule "Notify client of unfavorable analysis result - Budget Overrun"
     when
         $analysis: AnalysisTransaction($clientId: clientId, type == AnalysisTransaction.FinancialGoalType.OVERRUN_BUDGET)
+        $client: Client(id == $clientId)
     then
         // Notification logic here
         System.out.println("Notification: Unfavorable analysis result for client " + $clientId + " Reason: Budget Overrun");
 
         // Perform backward chaining logic here
+        BudgetExceeding obj = new BudgetExceeding($clientId);
+        $client.backward(obj);
         // System.out.println("Performing backward chaining for client " + $clientId);
 end
 

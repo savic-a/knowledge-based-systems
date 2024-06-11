@@ -1,13 +1,32 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Navigation.css';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LogoutIcon from '@mui/icons-material/Logout';
+import ReportIcon from '@mui/icons-material/Report';
+import authService from '../../services/AuthService';
+import { useNavigate } from 'react-router-dom';
 
-const Navigation = () => {
-    const [selected, setSelected] = useState('Dashboard');
+const Navigation = ({option}) => {
+    const [selected, setSelected] = useState(option);
+    const navigate = useNavigate();
 
     const handleSelect = (option) => {
-      setSelected(option);
+        setSelected(option);
+        if(option === 'Dashboard') {
+            navigate('/dashboard')
+        }
+        if (option === 'Reports') {
+            navigate('/reports')
+        }
+        if (option === 'Logout') {
+            handleLogout();
+        }
+    };
+
+    const handleLogout = () => {
+        authService.logOut();
+        navigate('/'); 
     };
 
     return (
@@ -18,8 +37,16 @@ const Navigation = () => {
                     <li
                         className={selected === 'Dashboard' ? 'selected' : ''}
                         onClick={() => handleSelect('Dashboard')}>
-                            <DashboardIcon className="icon" />
-                        Dashboard
+                        <DashboardIcon className="icon" />
+                            Dashboard
+                    
+                    </li>
+                    <li
+                        className={selected === 'Reports' ? 'selected' : ''}
+                        onClick={() => handleSelect('Reports')}>
+                        <ReportIcon className="icon" />
+                            Reports
+                        
                     </li>
                     <li
                         className={selected === 'Logout' ? 'selected' : ''}

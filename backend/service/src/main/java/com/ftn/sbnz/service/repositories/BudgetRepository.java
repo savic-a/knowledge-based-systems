@@ -6,5 +6,5 @@ import com.ftn.sbnz.model.Budget;
 
 
 public interface BudgetRepository extends JpaRepository<Budget, Long>{
-    
+    Budget findByClientId(Long clientId);
 }

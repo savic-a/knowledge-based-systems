@@ -13,6 +13,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 
 @Getter
@@ -22,10 +23,8 @@ import lombok.Setter;
 @Data
 @Table
 @Entity
+@ToString
 public class Budget implements Serializable {
-    // public enum Period {
-    //     WEEK, MONTH
-    // };
     
     private static final long serialVersionUID = 1L;
 
@@ -33,6 +32,5 @@ public class Budget implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private double value;
-    // private Period period;
     private Long clientId;
 }

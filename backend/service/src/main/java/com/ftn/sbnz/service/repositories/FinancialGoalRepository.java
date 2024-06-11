@@ -6,4 +6,5 @@ import com.ftn.sbnz.model.FinancialGoal;
 
 public interface FinancialGoalRepository extends JpaRepository<FinancialGoal, Long>{
     
+    FinancialGoal findByClientId(Long clientId);
 }

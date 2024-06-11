@@ -2,6 +2,8 @@ package com.ftn.sbnz.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.Period;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,9 +16,11 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -37,4 +41,15 @@ public class FinancialGoal implements Serializable {
     private double currentBalance;
     private double startBalance;
     private Long clientId;
+
+    public int calculateNumOfMonths() {
+        LocalDateTime dateTime1 = this.generationDate.toLocalDateTime();
+        LocalDateTime dateTime2 = this.targetDate.toLocalDateTime();
+
+        Period period = Period.between(dateTime1.toLocalDate(), dateTime2.toLocalDate());
+        int months = period.getYears() * 12 + period.getMonths();
+        System.out.println("Months between the timestamps: " + months);
+        if (months == 0) months = 1;
+        return months;
+    }
 }

@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.kie.api.runtime.KieContainer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.ftn.sbnz.enumeration.Category;
@@ -13,11 +16,11 @@ import com.ftn.sbnz.model.ClientThreePurchases;
 import com.ftn.sbnz.service.repositories.ClientFivePurchasesRepository;
 import com.ftn.sbnz.service.repositories.ClientRepository;
 import com.ftn.sbnz.service.repositories.ClientThreePurchasesRepository;
-import com.ftn.sbnz.service.services.interfaces.IService;
+import com.ftn.sbnz.service.services.interfaces.IClientService;
 
 
 @Service
-public class ClientService implements IService<Client> {
+public class ClientService implements IClientService, UserDetailsService {
     private final KieContainer kieContainer;
 
     @Autowired
@@ -30,6 +33,10 @@ public class ClientService implements IService<Client> {
     @Autowired
     public ClientService(KieContainer kieContainer) {
         this.kieContainer = kieContainer;
+    }
+
+    public ClientService() {
+        this.kieContainer = null;
     }
 
     public List<Client> getAll() {
@@ -58,5 +65,15 @@ public class ClientService implements IService<Client> {
 
         return clients;
     }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return this.repository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("User with email '%s' is not found!", email)));
+    }
     
+	public Client findByEmail(String email) throws UsernameNotFoundException {
+		return this.repository.findByEmail(email).orElseThrow(()
+				-> new UsernameNotFoundException(String.format("User with email '%s' is not found!", email)));
+	}
 }

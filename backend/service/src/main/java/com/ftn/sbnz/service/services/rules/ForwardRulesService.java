@@ -58,15 +58,14 @@ public class ForwardRulesService {
         kSession.fireAllRules();
     }
     
-    // Funkcija koja vraća početak trenutnog meseca za datu vremensku oznaku
-    public static Timestamp getStartOfMonth(Timestamp timestamp) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(timestamp.getTime());
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        return new Timestamp(cal.getTimeInMillis());
-    }
+    // public static Timestamp getStartOfMonth(Timestamp timestamp) {
+    //     Calendar cal = Calendar.getInstance();
+    //     cal.setTimeInMillis(timestamp.getTime());
+    //     cal.set(Calendar.DAY_OF_MONTH, 1);
+    //     cal.set(Calendar.HOUR_OF_DAY, 0);
+    //     cal.set(Calendar.MINUTE, 0);
+    //     cal.set(Calendar.SECOND, 0);
+    //     cal.set(Calendar.MILLISECOND, 0);
+    //     return new Timestamp(cal.getTimeInMillis());
+    // }
 }
