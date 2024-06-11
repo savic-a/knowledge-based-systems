@@ -13,6 +13,7 @@ import com.ftn.sbnz.model.Budget;
 import com.ftn.sbnz.model.Client;
 import com.ftn.sbnz.model.CreditCard;
 import com.ftn.sbnz.model.FinancialGoal;
+import com.ftn.sbnz.model.Household;
 import com.ftn.sbnz.model.Report;
 import com.ftn.sbnz.model.Transaction;
 import com.ftn.sbnz.service.services.interfaces.ILoadDataService;
@@ -28,6 +29,7 @@ public class LoadDataService implements ILoadDataService {
     private IService<Budget> budgetService;
     private IService<FinancialGoal> financialGoalService;
     private IService<Report> reportService;
+    private IService<Household> householdService;
 
     @Autowired
     public LoadDataService(KieContainer kieContainer,
@@ -36,7 +38,8 @@ public class LoadDataService implements ILoadDataService {
                            TransactionService transactionService, 
                            BudgetService budgetService, 
                            FinancialGoalService financialGoalService, 
-                           ReportService reportService) {
+                           ReportService reportService,
+                           HouseholdService householdService) {
         this.kieContainer = kieContainer;
         this.clientService = clientService;
         this.creditCardService = creditCardService;
@@ -44,6 +47,7 @@ public class LoadDataService implements ILoadDataService {
         this.budgetService = budgetService;
         this.financialGoalService = financialGoalService;
         this.reportService = reportService;
+        this.householdService = householdService;
     }
 
     @PostConstruct
@@ -54,6 +58,7 @@ public class LoadDataService implements ILoadDataService {
         loadData(this.budgetService);
         loadData(this.financialGoalService);
         loadData(this.reportService);
+        loadData(this.householdService);
     }
     
     @Override
