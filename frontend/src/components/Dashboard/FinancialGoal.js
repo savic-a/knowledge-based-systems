@@ -10,7 +10,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import clientService from '../../services/ClientService';
 
-const FinancialGoal = ({ clientId }) => {
+const FinancialGoal = () => {
     const [financialGoal, setFinancialGoal] = useState(null);
     const [open, setOpen] = useState(false);
     const [goalName, setGoalName] = useState('');
@@ -21,18 +21,16 @@ const FinancialGoal = ({ clientId }) => {
     useEffect(() => {
         const fetchFinancialGoal = async () => {
             try {
-                const goal = await clientService.getFinancialGoal(clientId);
-                console.log(goal);
+                const goal = await clientService.getFinancialGoal();
                 setFinancialGoal(goal);
             } catch (error) {
                 console.error('Failed to fetch financial goal:', error);
             }
         };
 
-        if (clientId) {
-            fetchFinancialGoal();
-        }
-    }, [clientId]);
+        fetchFinancialGoal();
+        
+    }, []);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -44,7 +42,7 @@ const FinancialGoal = ({ clientId }) => {
 
     const handleSave = async () => {
         const newGoal = { name: goalName, description: goalDescription, targetValue: goalTargetValue, targetDate: goalTargetDate };
-        await clientService.addFinancialGoal(clientId, newGoal);
+        await clientService.addFinancialGoal(newGoal);
         handleClose();
     };
 

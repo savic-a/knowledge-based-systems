@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import clientService from '../../services/ClientService';
 
-const Chart = ({ clientId }) => {
+const Chart = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchTransactions = async () => {
-      console.log("laaaaaaaaaaaaaa")
       try {
-        const transactions = await clientService.getTransactions(clientId);
-        console.log("transakcije", transactions)
+        const transactions = await clientService.getTransactions();
         const transformedData = transactions.reduce((acc, transaction) => {
           const date = new Date(transaction.date).toLocaleDateString('en-US', { month: 'short' });
           const existingEntry = acc.find(entry => entry.name === date);
@@ -40,7 +38,7 @@ const Chart = ({ clientId }) => {
 
     fetchTransactions();
     
-  }, [clientId]);
+  }, []);
 
   return (
     <div className="chart-container">

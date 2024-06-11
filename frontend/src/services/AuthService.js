@@ -30,7 +30,7 @@ class AuthService {
     async getUserDetails() {
         try {
             const response = await httpClient.get('http://localhost:8081/client/current');
-            console.log(response)
+            localStorage.setItem('id', response.data.id);
             return response.data;
 
         } catch (error) {
@@ -41,6 +41,7 @@ class AuthService {
 
     logOut() {
         localStorage.removeItem('jwt');
+        localStorage.removeItem('id');
     }
 }
   

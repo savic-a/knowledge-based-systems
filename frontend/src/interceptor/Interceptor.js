@@ -6,7 +6,6 @@ const httpClient = axios.create({baseURL: 'http://localhost:8081'});
 httpClient.interceptors.request.use(
     async (config) => {
         const token = await authService.getToken();
-        console.log("token", token);
         config.headers['Authorization'] = `Bearer ${token}`;
         
         // config.headers['Access-Control-Allow-Origin'] = '*'; // Allow all origins

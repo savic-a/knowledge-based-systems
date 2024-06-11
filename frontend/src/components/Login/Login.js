@@ -31,7 +31,6 @@ const Login = () => {
 
     useEffect(() => {
         const details = authService.getUserDetails();
-        console.log(details)
         if(!details)
             navigate('/dashboard')
     }, []);

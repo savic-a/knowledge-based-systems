@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import clientService from '../../services/ClientService';
 
-const CardBalance = ({ clientId }) => {
+const CardBalance = () => {
   const [creditCards, setCreditCards] = useState([]);
 
   useEffect(() => {
     const fetchCreditCards = async () => {
       try {
-        const cards = await clientService.getCardBalance(clientId);
-        console.log(cards)
+        const cards = await clientService.getCardBalance();
         setCreditCards(cards);
       } catch (error) {
         console.error('Failed to fetch credit cards:', error);
@@ -16,7 +15,7 @@ const CardBalance = ({ clientId }) => {
     };
 
     fetchCreditCards();
-  }, [clientId]);
+  }, []);
 
   return (
       <div className="framed-container">

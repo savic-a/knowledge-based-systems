@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import clientService from '../../services/ClientService';
 
-const TransactionTable = ({ clientId }) => {
+const TransactionTable = () => {
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
     const fetchTransactions = async () => {
-      console.log(clientId)
       try {
-        const fetchedTransactions = await clientService.getTransactions(clientId);
+        const fetchedTransactions = await clientService.getTransactions();
         const transactionsWithFormattedDate = fetchedTransactions.map(transaction => ({
           ...transaction,
           date: new Date(transaction.date).toLocaleDateString() 
@@ -20,7 +19,7 @@ const TransactionTable = ({ clientId }) => {
     };
 
     fetchTransactions();
-  }, [clientId]);
+  }, []);
 
   return (
     <div className="framed-container">

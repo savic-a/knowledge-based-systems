@@ -12,13 +12,11 @@ import clientService from '../../services/ClientService';
 
 const Dashboard = () => {
   const [userDetails, setUserDetails] = useState({"name": "Pera"});
-  const [transactions, setTransactions] = useState([]);
   const navigate = useNavigate();
 
     useEffect(() => {
       const fetchUserDetails = async () => {
         const details = await authService.getUserDetails();
-        console.log(details);
         if (!details) {
           navigate('/');
         } else {
@@ -28,16 +26,6 @@ const Dashboard = () => {
   
       fetchUserDetails();
     }, [userDetails.clientId]);
-
-    useEffect(() => {
-      if (userDetails.clientId) {
-        const fetchTransactions = async () => {
-          const fetchedTransactions = await clientService.getTransactions(userDetails.clientId);
-          setTransactions(fetchedTransactions);
-        };
-        fetchTransactions();
-      }
-    }, [userDetails]);
 
     return (
       <div>
@@ -55,7 +43,7 @@ const Dashboard = () => {
         <div className="main-content">
           <div className="left-side">
             <div className="chart-area">
-              <Chart clientId={userDetails.clientId}/>
+              <Chart />
             </div>
             <div className="transaction-table-area">
               <TransactionTable />
@@ -64,10 +52,10 @@ const Dashboard = () => {
           <div className="delimiter"></div> 
           <div className="right-side">
             <div className="card-balance-area">
-              <CardBalance clientId={userDetails.clientId}/>
+              <CardBalance />
             </div>
             <div className="financial-goal-area">
-              <FinancialGoal clientId={userDetails.clientId}/>
+              <FinancialGoal />
             </div>
           </div>
         </div>

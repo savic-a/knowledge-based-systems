@@ -2,9 +2,9 @@ import httpClient from "../interceptor/Interceptor";
 
 class ClientService {
 
-    async getCardBalance(clientId) {
+    async getCardBalance() {
         try {
-            const response = await httpClient.get(`/credit-card/1`);
+            const response = await httpClient.get(`/credit-card/${localStorage.getItem('id')}`);
             return response.data;
         } catch (error) {
             console.error('Error fetching credit cards:', error);
@@ -12,10 +12,9 @@ class ClientService {
         }
     };
 
-    async getFinancialGoal(clientId) {
+    async getFinancialGoal() {
         try {
-            const response = await httpClient.get(`/financial-goal/1`);
-            console.log(response)
+            const response = await httpClient.get(`/financial-goal/${localStorage.getItem('id')}`);
             return response.data;
         } catch (error) {
             console.error('Error fetching financial goal:', error);
@@ -23,10 +22,9 @@ class ClientService {
         }
     };
 
-    async getTransactions(clientId) {
+    async getTransactions() {
         try {
-            const response = await httpClient.get(`/transaction/1`);
-            console.log(response)
+            const response = await httpClient.get(`/transaction/${localStorage.getItem('id')}`);
             return response.data;
         } catch (error) {
             console.error('Error fetching transaction:', error);
@@ -34,9 +32,9 @@ class ClientService {
         }
     };
 
-    async addFinancialGoal(clientId, goal) {
+    async addFinancialGoal(goal) {
         try {
-            const response = await httpClient.post(`/financial-goal/5`, goal);
+            const response = await httpClient.post(`/financial-goal/${localStorage.getItem('id')}`, goal);
             console.log(response)
             return response.data;
         } catch (error) {
