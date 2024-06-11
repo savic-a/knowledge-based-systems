@@ -1,27 +1,28 @@
 import React, { useEffect, useState } from 'react';
+import clientService from '../../services/ClientService';
 
 const Budget = () => {
-  const [creditCards, setCreditCards] = useState([]);
+  const [budget, setBudget] = useState([]);
 
-//   useEffect(() => {
-//     const fetchCreditCards = async () => {
-//       try {
-//         const cards = await clientService.getBudget();
-//         setCreditCards(cards);
-//       } catch (error) {
-//         console.error('Failed to fetch credit cards:', error);
-//       }
-//     };
+  useEffect(() => {
+    const fetchBudget = async () => {
+      try {
+        const item = await clientService.getBudget();
+        setBudget(item);
+      } catch (error) {
+        console.error('Failed to fetch budget:', error);
+      }
+    };
 
-//     fetchCreditCards();
-//   }, []);
+        fetchBudget();
+    }, []);
 
   
   return (
     <div className="framed-container">
       <div className='component-title'>Budget</div>
       <span>$</span>
-      <span>5000</span>
+      <span>{budget.value}</span>
     </div>
   );
 };

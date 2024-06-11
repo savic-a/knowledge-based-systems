@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ftn.sbnz.dto.BudgetDTO;
-import com.ftn.sbnz.dto.ReportDTO;
 import com.ftn.sbnz.model.Budget;
-import com.ftn.sbnz.model.CreditCard;
-import com.ftn.sbnz.model.Report;
 import com.ftn.sbnz.service.services.implementations.BudgetService;
 import com.ftn.sbnz.service.services.interfaces.IService;
 
