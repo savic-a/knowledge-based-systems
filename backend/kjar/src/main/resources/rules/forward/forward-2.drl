@@ -10,7 +10,6 @@ import com.ftn.sbnz.enumeration.PurchaseType;
 
 
 // 1. LEVEL
-// TODO: add check time (set time in backward)
 rule "Week with the biggest cost" 
 when
     $budgetExceeding: BudgetExceeding($clientId: clientId, criterion == 0, $startTime: startTime, $endTime: endTime)
@@ -66,18 +65,11 @@ then
             setCount($count.intValue()),
             setCategory($category)
         }
-        // $budgetExceeding.setCategoryCost($sum.doubleValue());
-        // $budgetExceeding.setCount($count.intValue());
-        // $budgetExceeding.setCategory($category);
-        // update($budgetExceeding);
     }
     System.out.println("...LEVEL 2...");
     System.out.println($budgetExceeding.getCategory());
     System.out.println($budgetExceeding.getCategoryCost());
     System.out.println($budgetExceeding.getCount());
-    // modify($budgetExceeding) {
-    //     setCriterion(2)
-    // }
 end
 
 // 3. LEVEL
