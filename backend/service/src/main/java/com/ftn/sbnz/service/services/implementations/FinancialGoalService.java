@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ftn.sbnz.dto.FinancialGoalDTO;
+import com.ftn.sbnz.model.Budget;
 import com.ftn.sbnz.model.CreditCard;
 import com.ftn.sbnz.model.FinancialGoal;
+import com.ftn.sbnz.service.repositories.BudgetRepository;
 import com.ftn.sbnz.service.repositories.CreditCardRepository;
 import com.ftn.sbnz.service.repositories.FinancialGoalRepository;
 import com.ftn.sbnz.service.services.interfaces.IService;
@@ -28,6 +30,9 @@ public class FinancialGoalService implements IService<FinancialGoal> {
 
     @Autowired
     public CreditCardRepository creditCardRepository;
+
+    @Autowired
+    public BudgetRepository budgetRepository;
 
     @Autowired
     public FinancialGoalService(KieContainer kieContainer) {
@@ -64,5 +69,19 @@ public class FinancialGoalService implements IService<FinancialGoal> {
         System.out.println("--------------------------------------");
 
         return repository.save(financialGoal);
+    }
+
+    public Double calculate(Long clientId, double value) {
+        Budget budget = this.budgetRepository.findByClientId(clientId);
+        FinancialGoal goal = this.repository.findByClientId(clientId);
+        Double leftMoney = budget.getValue() - value;
+        Double goalPerMonth = goal.getTargetValue() / goal.calculateNumOfMonths();
+        if (leftMoney > goalPerMonth) {
+            return leftMoney - goalPerMonth;
+        } else if (leftMoney == goalPerMonth) {
+            return 0.0;
+        }
+        TemplateService.calculateFinancialGoal(clientId, value);
+        return -1.0;
     }
 }

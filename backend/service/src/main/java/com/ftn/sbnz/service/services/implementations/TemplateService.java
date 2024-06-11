@@ -1,8 +1,6 @@
 package com.ftn.sbnz.service.services.implementations;
 
 import java.io.InputStream;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,10 +12,25 @@ import org.kie.api.runtime.KieSession;
 import org.kie.internal.utils.KieHelper;
 import org.springframework.stereotype.Service;
 
+import com.ftn.sbnz.dto.TemplateDTO;
 import com.ftn.sbnz.model.Report;
 
 @Service
 public class TemplateService {
+
+    public static void calculateFinancialGoal(Long clientId, double cost) {
+        InputStream template = TemplateService.class.getResourceAsStream("/rules/template/template.drt");
+        System.out.println(template);
+
+        List<TemplateDTO> data = new ArrayList<>();
+        data.add(new TemplateDTO(cost, clientId));
+
+        ObjectDataCompiler converter = new ObjectDataCompiler();
+        String drl = converter.compile(data, template);
+
+        KieSession kSession = createKieSessionFromDRL(drl);
+        doTest(kSession);
+    }
 
     public static void createReport(Report report) {
         InputStream template = TemplateService.class.getResourceAsStream("/rules/template/template2.drt");
@@ -51,6 +64,11 @@ public class TemplateService {
         }
         
         return kieHelper.build().newKieSession();
+    }
+
+    private static void doTest(KieSession ksession){
+        ksession.insert("calculate budget");
+        ksession.fireAllRules();
     }
 
     private static void doTest2(KieSession ksession){

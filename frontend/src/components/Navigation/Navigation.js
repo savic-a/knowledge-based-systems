@@ -4,6 +4,7 @@ import './Navigation.css';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ReportIcon from '@mui/icons-material/Report';
+import HomeIcon from '@mui/icons-material/Home';
 import authService from '../../services/AuthService';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,6 +19,9 @@ const Navigation = ({option}) => {
         }
         if (option === 'Reports') {
             navigate('/reports')
+        }
+        if(option === 'Household') {
+            navigate('/household')
         }
         if (option === 'Logout') {
             handleLogout();
@@ -46,6 +50,13 @@ const Navigation = ({option}) => {
                         onClick={() => handleSelect('Reports')}>
                         <ReportIcon className="icon" />
                             Reports
+                        
+                    </li>
+                    <li
+                        className={selected === 'Household' ? 'selected' : ''}
+                        onClick={() => handleSelect('Household')}>
+                        <HomeIcon className="icon" />
+                            Household
                         
                     </li>
                     <li
