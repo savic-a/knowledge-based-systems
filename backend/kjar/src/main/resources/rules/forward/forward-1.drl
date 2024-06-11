@@ -7,9 +7,7 @@ import java.util.Calendar;
 import java.sql.Timestamp;
 import java.util.List;
 
-global java.util.List results;
 
-// Pomoćne funkcije za dobijanje početka meseca i trenutnog dana
 function java.sql.Timestamp startOfMonth() {
     Calendar cal = Calendar.getInstance();
     cal.set(Calendar.DAY_OF_MONTH, 1);
