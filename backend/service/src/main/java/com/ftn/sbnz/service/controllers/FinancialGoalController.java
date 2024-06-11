@@ -48,4 +48,10 @@ public class FinancialGoalController {
         FinancialGoal newGoal = fgService.addFinancialGoal(clientId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(newGoal);
     }
+
+    @PostMapping("/calculator/{clientId}/{value}")
+    public ResponseEntity<Double> calculate(@PathVariable Long clientId, @PathVariable double value) {
+        Double result = fgService.calculate(clientId, value);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
 }
