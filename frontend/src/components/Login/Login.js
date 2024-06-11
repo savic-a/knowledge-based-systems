@@ -29,11 +29,11 @@ const Login = () => {
     const [open, setOpen] = React.useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState(''); 
 
-    useEffect(() => {
-        const details = authService.getUserDetails();
-        if(!details)
-            navigate('/dashboard')
-    }, []);
+    // useEffect(() => {
+    //     const details = authService.getUserDetails();
+    //     if(details)
+    //         navigate('/dashboard')
+    // }, []);
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
@@ -76,6 +76,7 @@ const Login = () => {
         const result = await authService.login(username, password);
         
         if (result) {
+            await authService.getUserDetails();
             navigate('/dashboard')
         } else {
             setSnackbarMessage("Invalid email or password");

@@ -9,7 +9,6 @@ class AuthService {
                 password: password
             });
             await this.setToken(response.data['accessToken']);
-            console.log(response.data['accessToken'])
             return true;
 
         } catch (error) {
