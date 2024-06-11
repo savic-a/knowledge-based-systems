@@ -93,6 +93,17 @@ class ClientService {
             throw error;
         }
     };
+
+    async getFinancialGoalCalculation(value) {
+        try {
+            console.log()
+            const response = await httpClient.post(`/financial-goal/calculator/${localStorage.getItem('id')}/${value}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching report:', error);
+            throw error;
+        }
+    };
 }
 
 const clientService = new ClientService();

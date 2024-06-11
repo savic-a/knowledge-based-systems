@@ -66,6 +66,8 @@ const FinancialGoal = () => {
     const calculate = async () => {
         console.log("calculateeee");
         console.log(monthlyValue);
+        let res = await clientService.getFinancialGoalCalculation(monthlyValue);
+        console.log(res);
     };
 
     if (!financialGoal) {
