@@ -47,16 +47,6 @@ rule "Generate Alarm Report"
         insert(report);
 end
 
-rule "Generate Warning Report"
-    when
-        $alarm: Warning()
-    then
-        System.out.println("Dodan je warning");
-        String description = "Warning happened: " + $alarm.getMessage() +". Level: " + $alarm.getLevel();
-        Report report = new Report(1L, -1, description, new Timestamp(System.currentTimeMillis()), $alarm.getClientId());
-        insert(report);
-end
-
 rule "Generate Too Many Alarms Report"
     when
         $alarm: Alarm(level == Alarm.Level.LOW, $clientId: clientId)
