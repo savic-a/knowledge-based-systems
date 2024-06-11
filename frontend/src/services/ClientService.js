@@ -93,6 +93,27 @@ class ClientService {
             throw error;
         }
     };
+
+    async getHousehold() {
+        try {
+            const response = await httpClient.get(`/household/${localStorage.getItem('id')}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching household:', error);
+            throw error;
+        }
+    };
+
+    async addHousehold(household) {
+        try {
+            const response = await httpClient.post(`/household/${localStorage.getItem('id')}`, household);
+            console.log(response)
+            return response.data;
+        } catch (error) {
+            console.error('Error adding household:', error);
+            throw error;
+        }
+    };
 }
 
 const clientService = new ClientService();

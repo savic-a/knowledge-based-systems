@@ -2,18 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { Button, TextField, Chip, Box } from '@mui/material';
 import Navigation from '../Navigation/Navigation';
 import './Household.css';
+import clientService from '../../services/ClientService';
 
 const Household = () => {
   const [emails, setEmails] = useState([]);
   const [emailInput, setEmailInput] = useState('');
 
   useEffect(() => {
-    // Simulacija dobijanja postojećih email adresa
     const fetchEmails = async () => {
-      // Ova funkcija treba da dohvati postojeće email adrese sa servera
-      // Trenutno koristimo statičku listu kao primer
-      const existingEmails = ['user1@example.com', 'user2@example.com'];
-      setEmails(existingEmails);
+      const existingEmails = await clientService.getHousehold();
+      console.log(existingEmails);
+      const emailList = existingEmails.map(item => item.email);
+      setEmails(emailList);
     };
 
     fetchEmails();
