@@ -38,4 +38,9 @@ public class BudgetExceeding {
         this.categoryCost = 0.0;
         this.clientId = clientId;
     }
+
+    public BudgetExceeding copyBudgetExceeding() {
+        return new BudgetExceeding(this.startTime, this.endTime, this.category, this.purchaseType, this.value,
+        this.categoryCost, this.count, this.criterion, this.clientId);
+    }
 }

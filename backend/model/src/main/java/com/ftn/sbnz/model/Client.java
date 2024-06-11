@@ -29,6 +29,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.ftn.sbnz.enumeration.Category;
+import com.ftn.sbnz.singleton.KieSessionService;
 
 @Getter
 @Setter
@@ -57,8 +58,6 @@ public class Client implements UserDetails {
     private List<Category> fivePurchases;
     private boolean flag3;
     private boolean flag4;
-    @Transient
-    private KieSession kieSession = null;
 
     public Client(Long id, String name, String surname, String email, String password, boolean flag3, boolean flag4) {
         this.id = id;
@@ -85,17 +84,6 @@ public class Client implements UserDetails {
         this.fivePurchases = fivePurchases;
     }
 
-    private void setSession() {
-        KieServices ks = KieServices.Factory.get();
-    	KieContainer kc = ks.newKieClasspathContainer();
-
-        KieSessionConfiguration config = KieServices.Factory.get().newKieSessionConfiguration();
-        config.setOption(ClockTypeOption.get("pseudo"));
-        KieSession ksession = kc.newKieSession("ksession-forward-1", config);
-        this.kieSession = ksession;
-    }
-
-
     public void addThreePurchasesCategory(Category category) {
         if (!threePurchases.contains(category)) {
             threePurchases.add(category);
@@ -118,30 +106,22 @@ public class Client implements UserDetails {
 
     // from here starts backward chaining logic
     public void backward(BudgetExceeding obj) {
-        if (this.kieSession == null) {
-            System.out.println("Setting kie session in backward");
-            this.setSession();
-        }
+        KieSession kieSession = KieSessionService.getKieSession();
         if (obj.getStartTime() == null) {
             obj.setStartTime(firstOfTheMonth());
             obj.setEndTime(addDaysToTimestamp(obj.getStartTime(), 7));
-            System.out.println(obj.getStartTime());
-            System.out.println(obj.getEndTime());
-            this.kieSession.insert(obj);
-            this.kieSession.fireAllRules();
+            BudgetExceeding newObj = obj.copyBudgetExceeding();
+            kieSession.insert(newObj);
+            kieSession.fireAllRules();
         }
         else {
             obj.setStartTime(obj.getEndTime());
             obj.setEndTime(addDaysToTimestamp(obj.getEndTime(), 7));
-            System.out.println(obj.getStartTime());
-            System.out.println(obj.getEndTime());
-            this.kieSession.insert(obj);
-            this.kieSession.fireAllRules();
+            BudgetExceeding newObj = obj.copyBudgetExceeding();
+            kieSession.insert(newObj);
+            kieSession.fireAllRules();
         }
-        if (isLastDayOfMonth(obj.getEndTime())) {
-            System.out.println("krajjjj");
-        }
-        else {
+        if (!isLastDayOfMonth(obj.getEndTime())) {
             backward(obj);
         }
     }
@@ -150,7 +130,9 @@ public class Client implements UserDetails {
         LocalDate currentDate = LocalDate.now();
         LocalDate firstDayOfMonth = currentDate.withDayOfMonth(1);
         LocalDateTime firstMoment = firstDayOfMonth.atStartOfDay();
-        return Timestamp.valueOf(firstMoment);
+        Timestamp timestamp = Timestamp.valueOf(firstMoment);
+        timestamp.setNanos(0); 
+        return timestamp;
     }
 
     public static Timestamp addDaysToTimestamp(Timestamp timestamp, int days) {
@@ -161,7 +143,9 @@ public class Client implements UserDetails {
             int lastDayOfMonth = newDateTime.minusMonths(1).toLocalDate().lengthOfMonth();
             newDateTime = newDateTime.minusMonths(1).withDayOfMonth(lastDayOfMonth);
         }
-        return Timestamp.valueOf(newDateTime);
+        Timestamp endDate = Timestamp.valueOf(newDateTime);
+        endDate.setNanos(0);
+        return endDate;
     }
 
     public static boolean isLastDayOfMonth(Timestamp timestamp) {
