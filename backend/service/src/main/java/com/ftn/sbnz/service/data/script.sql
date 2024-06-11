@@ -63,18 +63,18 @@ CREATE TABLE budget (
     FOREIGN KEY (client_id) REFERENCES Client(id)
 );
 
-CREATE TABLE financial_goal (
-    id BIGSERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
-    generation_date TIMESTAMP NOT NULL,
-    target_value DOUBLE PRECISION NOT NULL,
-    target_date TIMESTAMP,
-    current_balance DOUBLE PRECISION NOT NULL,
-    start_balance DOUBLE PRECISION NOT NULL,
-    client_id BIGINT NOT NULL,
-    FOREIGN KEY (client_id) REFERENCES Client(id)
-);
+    CREATE TABLE financial_goal (
+        id BIGSERIAL PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        description TEXT,
+        generation_date TIMESTAMP NOT NULL,
+        target_value DOUBLE PRECISION NOT NULL,
+        target_date TIMESTAMP,
+        current_balance DOUBLE PRECISION NOT NULL,
+        start_balance DOUBLE PRECISION NOT NULL,
+        client_id BIGINT NOT NULL,
+        FOREIGN KEY (client_id) REFERENCES Client(id)
+    );
 
 INSERT INTO client (id, name, surname, email, password) VALUES 
     (1, 'John', 'Doe', 'john.doe@example.com', '$2a$10$3iKmUIyLrRe.AfERgBoqSODrZtFMhKDIcQXsaL2qWxk2.SgoSKIVy'),
@@ -150,3 +150,4 @@ GRANT ALL PRIVILEGES ON TABLE client_five_purchases TO root;
 GRANT USAGE, SELECT ON SEQUENCE financial_goal_id_seq TO root;
 GRANT USAGE, SELECT ON SEQUENCE transactions_id_seq TO root;
 GRANT USAGE, SELECT ON SEQUENCE report_id_seq TO root;
+GRANT USAGE, SELECT ON SEQUENCE budget_id_seq TO root;

@@ -1,31 +1,29 @@
-package com.ftn.sbnz.service.services.rules;
+package com.ftn.sbnz.service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 
+import org.junit.Test;
+import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.kie.api.runtime.KieSessionConfiguration;
 
 import com.ftn.sbnz.enumeration.Category;
 import com.ftn.sbnz.model.Budget;
 import com.ftn.sbnz.model.Client;
 import com.ftn.sbnz.model.Transaction;
 
+public class Forward1RulesTest {
 
-@Service
-public class ForwardRulesService {
-    private final KieContainer kieContainer;
+    @Test
+    public void forward1RulesTest() {
+        KieServices ks = KieServices.Factory.get();
+    	KieContainer kc = ks.newKieClasspathContainer();
 
-    @Autowired
-    public ForwardRulesService(KieContainer kieContainer) {
-        this.kieContainer = kieContainer;
-    }
-
-    public void fireRules() {
-        KieSession kSession = kieContainer.newKieSession("ksession-forward-1");
+        KieSessionConfiguration config = KieServices.Factory.get().newKieSessionConfiguration();
+        KieSession kSession = kc.newKieSession("ksession-forward-1", config);
+        
         kSession.insert( new Client(1L, "PERA", "PERIC", "pera@gmail.com",  "123", new ArrayList<>(), new ArrayList<>(), false, false));
 
         kSession.insert(new Budget(1L, 50000, 1L));
@@ -57,15 +55,5 @@ public class ForwardRulesService {
 
         kSession.fireAllRules();
     }
-    
-    // public static Timestamp getStartOfMonth(Timestamp timestamp) {
-    //     Calendar cal = Calendar.getInstance();
-    //     cal.setTimeInMillis(timestamp.getTime());
-    //     cal.set(Calendar.DAY_OF_MONTH, 1);
-    //     cal.set(Calendar.HOUR_OF_DAY, 0);
-    //     cal.set(Calendar.MINUTE, 0);
-    //     cal.set(Calendar.SECOND, 0);
-    //     cal.set(Calendar.MILLISECOND, 0);
-    //     return new Timestamp(cal.getTimeInMillis());
-    // }
+     
 }
