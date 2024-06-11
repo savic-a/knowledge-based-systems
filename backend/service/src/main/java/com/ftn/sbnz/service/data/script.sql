@@ -6,6 +6,7 @@ drop table client_three_purchases;
 drop table report;
 drop table financial_goal;
 drop table client;
+drop table household;
 
 CREATE TABLE client (
     id BIGINT PRIMARY KEY,
@@ -76,6 +77,14 @@ CREATE TABLE budget (
         FOREIGN KEY (client_id) REFERENCES Client(id)
     );
 
+CREATE TABLE household (
+    id BIGSERIAL PRIMARY KEY,
+    first_person BIGINT NOT NULL,
+    second_person BIGINT NOT NULL,
+    FOREIGN KEY (first_person) REFERENCES Client(id),
+    FOREIGN KEY (second_person) REFERENCES Client(id)
+);
+
 INSERT INTO client (id, name, surname, email, password) VALUES 
     (1, 'John', 'Doe', 'john.doe@example.com', '$2a$10$3iKmUIyLrRe.AfERgBoqSODrZtFMhKDIcQXsaL2qWxk2.SgoSKIVy'),
     (2, 'Jane', 'Smith', 'jane.smith@example.com', 'securepass456'),
@@ -133,6 +142,12 @@ VALUES
 ('Vacation Fund', 'Saving for a family vacation.', '2024-06-01 10:30:00', 5000.00, '2024-12-15 00:00:00', 1500.00, 500.00, 2),
 ('Emergency Fund', 'Emergency savings for unexpected expenses.', '2024-06-01 10:30:00', 10000.00, '2025-01-01 00:00:00', 2000.00, 1000.00, 3);
 
+INSERT INTO household (first_person, second_person)
+VALUES
+(1, 2),
+(2, 3),
+(3, 4);
+
 GRANT TEMPORARY, CONNECT ON DATABASE sbnz TO PUBLIC;
 
 GRANT ALL ON DATABASE sbnz TO postgres;
@@ -147,6 +162,7 @@ GRANT ALL PRIVILEGES ON TABLE budget TO root;
 GRANT ALL PRIVILEGES ON TABLE financial_goal TO root;
 GRANT ALL PRIVILEGES ON TABLE client_three_purchases TO root;
 GRANT ALL PRIVILEGES ON TABLE client_five_purchases TO root;
+GRANT ALL PRIVILEGES ON TABLE household TO root;
 GRANT USAGE, SELECT ON SEQUENCE financial_goal_id_seq TO root;
 GRANT USAGE, SELECT ON SEQUENCE transactions_id_seq TO root;
 GRANT USAGE, SELECT ON SEQUENCE report_id_seq TO root;

@@ -11,7 +11,6 @@ import org.kie.api.runtime.KieSessionConfiguration;
 import com.ftn.sbnz.enumeration.Category;
 import com.ftn.sbnz.model.Budget;
 import com.ftn.sbnz.model.BudgetExceeding;
-import com.ftn.sbnz.model.Client;
 import com.ftn.sbnz.model.Transaction;
 
 public class ForwardRulesTest {
@@ -36,13 +35,10 @@ public class ForwardRulesTest {
         ksession.insert(new Transaction(8L, 1500, Timestamp.valueOf("2024-06-13 00:00:00"), Transaction.Type.OUTCOME, 1L, Category.FOOD));
         // ksession.insert(new Transaction(10L, 42000, Timestamp.valueOf("2024-06-05 00:00:00"), Transaction.Type.OUTCOME, 1L, Category.HEALTH_AND_CARE));
 
-        // BudgetExceeding budgetExceeding = new BudgetExceeding(1L);
-        Client client = new Client(1L, "name", "surname", "email", "pass", false, false);
-        client.setKieSession(ksession);
-        client.backward(new BudgetExceeding(client.getId()));
-        // budgetExceeding.setStartTime(Timestamp.valueOf("2024-06-01 00:00:00"));
-        // budgetExceeding.setEndTime(Timestamp.valueOf("2024-06-08 00:00:00"));
-        // ksession.insert(budgetExceeding);
+        BudgetExceeding budgetExceeding = new BudgetExceeding(1L);
+        budgetExceeding.setStartTime(Timestamp.valueOf("2024-06-08 00:00:00.0"));
+        budgetExceeding.setEndTime(Timestamp.valueOf("2024-06-15 00:00:00.0"));
+        ksession.insert(budgetExceeding);
         ksession.fireAllRules();
     }
     

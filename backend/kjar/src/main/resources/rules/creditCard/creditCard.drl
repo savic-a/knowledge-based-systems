@@ -11,7 +11,8 @@ then
     double newBalance = 0;
     newBalance = $card.getBalance() - $value;
     System.out.println(Double.toString(newBalance));
-    modify($card){setBalance(newBalance); setIsProcessed(true);}
+    modify($card){setBalance(newBalance);}
+    modify($transaction){setIsProcessed(true);}
 end
 
 rule "Update current balance - income transaction"
@@ -23,6 +24,7 @@ then
     double newBalance = 0;
     newBalance = $card.getBalance() + $value;
     System.out.println(Double.toString(newBalance));
-    modify($card){setBalance(newBalance); setIsProcessed(true);}
+    modify($card){setBalance(newBalance);}
+    modify($transaction){setIsProcessed(true);}
 end
 

@@ -1,5 +1,5 @@
 import com.ftn.sbnz.model.FirstOfMonthEvent;
-import com.ftn.sbnz.model.Alarm;
+import com.ftn.sbnz.event.Alarm;
 import com.ftn.sbnz.model.Report;
 import com.ftn.sbnz.model.Transaction;
 import java.util.Date;
@@ -27,7 +27,6 @@ function boolean isWithinLast30Days(Timestamp timestamp) {
     return timestamp.getTime() > thresholdTime;
 }
 
-
 rule "First of the Month"
     timer (cron: 0 0 0 1 * ?)  // fire at midnight (00:00) on the first day of every month
     when
@@ -37,48 +36,6 @@ rule "First of the Month"
         System.out.println("Starting new month...");
         new FirstOfMonthEvent();
 end
-
-
-// rule "Calculate Last Month's Income"
-//     when
-//     // TODO: check which client and do this for each client
-//         FirstOfMonthEvent()
-//         $transactions: List() // Create a new list to hold transactions
-//         $transaction: Transaction(type == Transaction.Type.INCOME, date >= getLastMonthStartDate()) // Match any Transaction
-//         // accumulate($transaction: Transaction(clientId != null, clientId == $transactions.get(0).getClientId()) 
-//         //     from $transactions,
-//         //     $totalIncome: sum($transaction.getValue()),
-//         //     $incomeTransactions : collectList($transaction))
-//     then
-//         // System.out.println("Total income:");
-//         // System.out.println($totalIncome);
-//         // System.out.println("Income transactions:");
-//         // System.out.println($incomeTransactions);
-//         // System.out.println($value);
-//         $transactions.add($transaction);
-//         System.out.println("neke transakcije");
-//         System.out.println($transaction);
-//         Report report = new Report(1L, 0, "Total Income for the Last Month i ovdje dodati + value", new Timestamp(System.currentTimeMillis()), 1L);
-// end
-
-// rule "Calculate Sum of Incomes for Each clientId in Last Month"
-// when
-//     $transactions: List(size > 0) from collect(Transaction(type == Transaction.Type.INCOME, $clientId : clientId, $value : value, $date : date))
-//     // eval($transactions != null && !$transactions.isEmpty())
-//     // $clientIdSumMap: Map() from accumulate(
-//     //     Transaction($clientId : clientId, $value : value, $date : date, type == Transaction.Type.INCOME) over window:time(30d),
-//     //     init(Map map = new HashMap();),
-//     //     action(Map map, Transaction t) { map.merge($clientId, t.getValue(), (oldValue, newValue) -> oldValue + newValue); },
-//     //     reverse(Map map) { map.clear(); },
-//     //     result($clientIdSumMap)
-//     // )
-// then
-//     System.out.println("Sum of incomes for each clientId in the last month:");
-//     for (Map.Entry<Long, Double> entry : $clientIdSumMap.entrySet()) {
-//         System.out.println("ClientId: " + entry.getKey() + ", Sum of Incomes: " + entry.getValue());
-//     }
-// end
-
 
 rule "Generate Alarm Report"
     when
@@ -90,6 +47,15 @@ rule "Generate Alarm Report"
         insert(report);
 end
 
+rule "Generate Warning Report"
+    when
+        $alarm: Warning()
+    then
+        System.out.println("Dodan je warning");
+        String description = "Warning happened: " + $alarm.getMessage() +". Level: " + $alarm.getLevel();
+        Report report = new Report(1L, -1, description, new Timestamp(System.currentTimeMillis()), $alarm.getClientId());
+        insert(report);
+end
 
 rule "Generate Too Many Alarms Report"
     when

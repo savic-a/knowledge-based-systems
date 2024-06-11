@@ -20,4 +20,7 @@
     <kbase name="backward" packages="backward">
         <ksession name="ksession-backward"/>
     </kbase>
+    <kbase name="combinedRules" eventProcessingMode="stream" packages="com.ftn,budget,creditCard,reports,cep,forward,backward">
+        <ksession name="k-session-all"/>
+    </kbase>
 </kmodule>
