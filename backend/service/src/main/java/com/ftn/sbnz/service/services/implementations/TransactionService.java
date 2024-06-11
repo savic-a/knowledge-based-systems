@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 import com.ftn.sbnz.dto.TransactionDTO;
 import com.ftn.sbnz.model.CreditCard;
+import com.ftn.sbnz.model.FinancialGoal;
 import com.ftn.sbnz.service.repositories.CreditCardRepository;
+import com.ftn.sbnz.service.repositories.FinancialGoalRepository;
 import com.ftn.sbnz.model.Transaction;
 import com.ftn.sbnz.service.repositories.TransactionRepository;
 import com.ftn.sbnz.service.services.interfaces.IService;
@@ -24,6 +26,9 @@ public class TransactionService implements IService<Transaction> {
 
     @Autowired
     public CreditCardRepository creditCardRepository;
+
+    @Autowired
+    public FinancialGoalRepository goalRepository;
 
     @Autowired
     public TransactionService(KieContainer kieContainer) {
@@ -42,6 +47,8 @@ public class TransactionService implements IService<Transaction> {
         CreditCard card = this.creditCardRepository.findByClientId(clientId);
         double newBalance = card.getBalance();
 
+        FinancialGoal goal = this.goalRepository.findByClientId(clientId);
+
         Transaction transaction = new Transaction();
         transaction.setValue(dto.getValue());
         transaction.setDate(Timestamp.valueOf(LocalDateTime.now()));
@@ -59,6 +66,12 @@ public class TransactionService implements IService<Transaction> {
         // edit value on credit card
         card.setBalance(newBalance);
         creditCardRepository.save(card);
+
+        // edit financial goal
+        if(goal != null) {
+            goal.setCurrentBalance(newBalance);
+            goalRepository.save(goal);
+        }
 
         // save new transaction
         return repository.save(transaction);

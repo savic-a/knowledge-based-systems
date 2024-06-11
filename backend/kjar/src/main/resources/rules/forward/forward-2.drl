@@ -1,9 +1,6 @@
 import com.ftn.sbnz.model.BudgetExceeding;
 import com.ftn.sbnz.model.Budget;
 import com.ftn.sbnz.model.Transaction;
-import com.ftn.sbnz.model.Warning;
-
-import com.ftn.sbnz.event.TransactionEvent;
 
 import com.ftn.sbnz.enumeration.Category;
 import com.ftn.sbnz.enumeration.PurchaseType;
@@ -113,8 +110,8 @@ when
     $budgetExceeding: BudgetExceeding($clientId: clientId, criterion == 3)
 then
     System.out.println("Inserting new report");
-    insert(new Warning($clientId, "High", "You have spent more than 20% of your monthly income on " + $budgetExceeding.getCategory() 
-                        + ". Type of shopping: " + $budgetExceeding.getPurchaseType()));
+    insert(new Alarm(1L, "You have spent more than 20% of your monthly income on " + $budgetExceeding.getCategory() 
+                        + ". Type of shopping: " + $budgetExceeding.getPurchaseType(), Alarm.Level.HIGH, $clientId));
     System.out.println("You have spent more than 20% of your monthly income on " + $budgetExceeding.getCategory() 
                         + ". Type of shopping: " + $budgetExceeding.getPurchaseType());
 end

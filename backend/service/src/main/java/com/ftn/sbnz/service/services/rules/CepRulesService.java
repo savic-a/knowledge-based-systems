@@ -1,6 +1,7 @@
 package com.ftn.sbnz.service.services.rules;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import org.kie.api.runtime.KieContainer;
@@ -8,10 +9,11 @@ import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ftn.sbnz.event.TransactionEvent;
+import com.ftn.sbnz.enumeration.Category;
 import com.ftn.sbnz.model.Budget;
 import com.ftn.sbnz.model.Client;
 import com.ftn.sbnz.model.FinancialGoal;
+import com.ftn.sbnz.model.Transaction;
 
 @Service
 public class CepRulesService {
@@ -31,10 +33,10 @@ public class CepRulesService {
 
         kSession.insert(new FinancialGoal(1L, "Savings Goal", "Save money for a vacation", Timestamp.valueOf("2024-01-01 00:00:00"), 100000, Timestamp.valueOf("2024-12-31 23:59:59"), 120000, 50000, 1L));
 
-        kSession.insert(new TransactionEvent(1L, 25000, TransactionEvent.Type.OUTCOME, 1L));
-        kSession.insert(new TransactionEvent(2L, 5000, TransactionEvent.Type.OUTCOME, 1L));
-        kSession.insert(new TransactionEvent(3L, 60000, TransactionEvent.Type.OUTCOME, 1L));
-        kSession.insert(new TransactionEvent(4L, 50000, TransactionEvent.Type.OUTCOME, 1L));
+        kSession.insert(new Transaction(1L, 25000, Timestamp.valueOf(LocalDateTime.now()), Transaction.Type.OUTCOME, Category.FOOD, 1L));
+        kSession.insert(new Transaction(2L, 5000, Timestamp.valueOf(LocalDateTime.now()), Transaction.Type.OUTCOME, Category.FOOD, 1L));
+        kSession.insert(new Transaction(3L, 60000, Timestamp.valueOf(LocalDateTime.now()), Transaction.Type.INCOME, Category.PRIVATE, 1L));
+        kSession.insert(new Transaction(4L, 50000, Timestamp.valueOf(LocalDateTime.now()), Transaction.Type.OUTCOME, Category.FOOD, 1L));
 
         kSession.fireAllRules();
     }

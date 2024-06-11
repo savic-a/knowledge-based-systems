@@ -66,6 +66,26 @@ class ClientService {
     async addReport(report) {
         try {
             const response = await httpClient.post(`/report/${localStorage.getItem('id')}`, report);
+            return response.data;
+        } catch (error) {
+            console.error('Error adding report:', error);
+            throw error;
+        }
+    };
+
+    async getBudget() {
+        try {
+            const response = await httpClient.get(`/budget/${localStorage.getItem('id')}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching report:', error);
+            throw error;
+        }
+    };
+
+    async addBudget(budget) {
+        try {
+            const response = await httpClient.post(`/budget/${localStorage.getItem('id')}`, budget);
             console.log(response)
             return response.data;
         } catch (error) {
