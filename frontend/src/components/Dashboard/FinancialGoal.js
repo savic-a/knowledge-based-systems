@@ -137,7 +137,8 @@ const FinancialGoal = () => {
             </div>
             <div className="goal-details">
                 <div>
-                    <p style={{ fontWeight: "500" }}>{financialGoal.name}</p>
+                    <p style={{ fontWeight: "500", marginBottom: "0" }}>{financialGoal.name}</p>
+                    <p style={{ fontWeight: "200", fontSize: "14px", marginTop: "0px" }}>{financialGoal.description}</p>
                     <span style={{ color: "gray", fontSize: "12px" }}>Target: $</span>
                     <span style={{ color: "gray", fontSize: "12px" }}>{financialGoal.targetValue}</span>
                     <div style={{ marginBottom: "20px" }}></div>

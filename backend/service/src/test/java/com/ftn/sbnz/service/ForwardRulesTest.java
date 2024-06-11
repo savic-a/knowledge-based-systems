@@ -9,7 +9,6 @@ import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.KieSessionConfiguration;
 
 import com.ftn.sbnz.enumeration.Category;
-import com.ftn.sbnz.event.TransactionEvent;
 import com.ftn.sbnz.model.Budget;
 import com.ftn.sbnz.model.BudgetExceeding;
 import com.ftn.sbnz.model.Client;

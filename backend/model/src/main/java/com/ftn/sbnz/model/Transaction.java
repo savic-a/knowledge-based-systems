@@ -1,7 +1,6 @@
 package com.ftn.sbnz.model;
 
 import java.io.Serializable;
-import java.sql.Time;
 import java.sql.Timestamp;
 
 import javax.persistence.Entity;
@@ -9,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.kie.api.definition.type.Expires;
+import org.kie.api.definition.type.Role;
 
 import com.ftn.sbnz.enumeration.Category;
 
@@ -25,6 +27,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Data
 @Entity
+@Role(Role.Type.EVENT)
+@org.kie.api.definition.type.Timestamp("date")
+@Expires("2h30m")
 @Table(name = "transactions")
 public class Transaction implements Serializable {
 
