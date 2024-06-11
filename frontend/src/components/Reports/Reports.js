@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import Navigation from '../Navigation/Navigation';
 import './Reports.css';
 import clientService from '../../services/ClientService';
+import { Button } from '@mui/material';
   
 
 const Reports = () => {
   const [reports, setReports] = useState([]);
+  const [newReportReason, setNewReportReason] = useState('');
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -24,6 +26,22 @@ const Reports = () => {
     fetchReports();
   }, []);
 
+  const handleAddReport = async () => {
+    const newReport = {reason: newReportReason};
+    await clientService.addReport(newReport)
+    
+    try {
+      const reports = await clientService.getReports();
+      const reportsWithFormattedDate = reports.map(report => ({
+        ...report,
+        date: new Date(report.generationDate).toLocaleDateString() 
+      }));
+      setReports(reportsWithFormattedDate);
+      setNewReportReason("");
+    } catch (error) {
+      console.error('Failed to fetch financial goal:', error);
+    }
+  };
 
   return (
     <div>
@@ -46,6 +64,23 @@ const Reports = () => {
           ))}
         </tbody>
       </table>
+
+      <div className="add-report-container">
+          <input
+            type="text"
+            value={newReportReason}
+            onChange={(e) => setNewReportReason(e.target.value)}
+            placeholder="Enter report reason"
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleAddReport}
+            disabled={!newReportReason.trim()}
+          >
+            Add Report
+          </Button>
+        </div>
     </div>
     </div>
   );
