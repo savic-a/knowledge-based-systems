@@ -53,6 +53,8 @@ public class ReportService implements IService<Report>{
         KieSession kieSession = KieSessionService.getKieSession();
         kieSession.insert(report);
         kieSession.fireAllRules();
+        TemplateService.createReport(report);
+        KieSessionService.printKieSessionObjects();
         System.out.println("-----------------------");
 
         return repository.save(report);
