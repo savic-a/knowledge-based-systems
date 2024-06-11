@@ -6,7 +6,7 @@ import com.ftn.sbnz.model.FinancialGoal;
 import com.ftn.sbnz.model.Client;
 import com.ftn.sbnz.model.BudgetExceeding;
 
-
+// TODO: izmijeniti ovo da se okida kad se doda income transakcija ukoliko postoji neki finan cilj
 // 1. LEVEL
 rule "Weekly financial goal progress check"
     when

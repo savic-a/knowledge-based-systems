@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -31,6 +32,7 @@ import com.ftn.sbnz.enumeration.Category;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @Data
 @Entity

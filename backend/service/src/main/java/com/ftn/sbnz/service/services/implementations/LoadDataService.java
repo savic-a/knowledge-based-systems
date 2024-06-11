@@ -17,6 +17,7 @@ import com.ftn.sbnz.model.Report;
 import com.ftn.sbnz.model.Transaction;
 import com.ftn.sbnz.service.services.interfaces.ILoadDataService;
 import com.ftn.sbnz.service.services.interfaces.IService;
+import com.ftn.sbnz.singleton.KieSessionService;
 
 @Service
 public class LoadDataService implements ILoadDataService {
@@ -59,7 +60,7 @@ public class LoadDataService implements ILoadDataService {
     public <T extends IService<E>, E> void loadData(T service) {
         List<E> items = service.getAll();
         
-        KieSession kSession = kieContainer.newKieSession("k-session");
+        KieSession kSession = KieSessionService.getKieSession();
         for (E item : items) {
             kSession.insert(item);
         }
