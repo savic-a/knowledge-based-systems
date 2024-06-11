@@ -38,7 +38,7 @@ const Dashboard = () => {
             <div style={{ fontWeight: 'normal', fontSize: '12px', color:"gray", marginLeft: "15px" }}>Let's manage your wallet finance</div>
           </div>
         </div>
-        <Navigation />
+        <Navigation option={"Dashboard"}/>
         <div className="main-content">
           <div className="left-side">
             <div className="chart-area">

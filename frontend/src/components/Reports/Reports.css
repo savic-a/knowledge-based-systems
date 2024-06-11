@@ -1,0 +1,20 @@
+.report-container {
+    margin: 5px 50px 5px 295px; 
+    padding: 20px;
+    background: #f9f9f9; /* Primer pozadine */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd; /* Okvir */
+}
+
+.add-report-container {
+    display: flex;
+    gap: 10px;
+}
+  
+.add-report-container input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}

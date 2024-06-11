@@ -63,24 +63,24 @@ CREATE TABLE budget (
     FOREIGN KEY (client_id) REFERENCES Client(id)
 );
 
-    CREATE TABLE financial_goal (
-        id BIGSERIAL PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        description TEXT,
-        generation_date TIMESTAMP NOT NULL,
-        target_value DOUBLE PRECISION NOT NULL,
-        target_date TIMESTAMP,
-        current_balance DOUBLE PRECISION NOT NULL,
-        start_balance DOUBLE PRECISION NOT NULL,
-        client_id BIGINT NOT NULL,
-        FOREIGN KEY (client_id) REFERENCES Client(id)
-    );
+CREATE TABLE financial_goal (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    generation_date TIMESTAMP NOT NULL,
+    target_value DOUBLE PRECISION NOT NULL,
+    target_date TIMESTAMP,
+    current_balance DOUBLE PRECISION NOT NULL,
+    start_balance DOUBLE PRECISION NOT NULL,
+    client_id BIGINT NOT NULL,
+    FOREIGN KEY (client_id) REFERENCES Client(id)
+);
 
 INSERT INTO client (id, name, surname, email, password) VALUES 
     (1, 'John', 'Doe', 'john.doe@example.com', '$2a$10$3iKmUIyLrRe.AfERgBoqSODrZtFMhKDIcQXsaL2qWxk2.SgoSKIVy'),
-    (2, 'Jane', 'Smith', 'jane.smith@example.com', '$2a$10$3iKmUIyLrRe.AfERgBoqSODrZtFMhKDIcQXsaL2qWxk2.SgoSKIVy'),
-    (3, 'Alice', 'Johnson', 'alice.johnson@example.com', '$2a$10$3iKmUIyLrRe.AfERgBoqSODrZtFMhKDIcQXsaL2qWxk2.SgoSKIVy'),
-    (4, 'Bob', 'Brown', 'bob.brown@example.com', '$2a$10$3iKmUIyLrRe.AfERgBoqSODrZtFMhKDIcQXsaL2qWxk2.SgoSKIVy'),
+    (2, 'Jane', 'Smith', 'jane.smith@example.com', 'securepass456'),
+    (3, 'Alice', 'Johnson', 'alice.johnson@example.com', 'alicepassword'),
+    (4, 'Bob', 'Brown', 'bob.brown@example.com', 'bobbypass789'),
 	(5, 'Ana', 'Cekic', 'ana@example.com', '$2a$10$3iKmUIyLrRe.AfERgBoqSODrZtFMhKDIcQXsaL2qWxk2.SgoSKIVy');
 
 INSERT INTO client_three_purchases (client_id, category) VALUES 
@@ -116,7 +116,9 @@ INSERT INTO report (week_num, reason, generation_date, client_id)
 VALUES 
     (1, 'Client is unreasonably spening money.', '2024-06-02 09:15:00', 2),
     (2, 'Client is not normal.', '2024-06-03 14:45:00', 3),
-    (3, 'Client is delusional about his current finance situation.', '2024-06-04 12:00:00', 4);
+    (3, 'Client is delusional about his current finance situation.', '2024-06-04 12:00:00', 4),
+	(4, 'Client is unreasonably spening money.', '2024-06-02 09:15:00', 1),
+    (5, 'Client is not normal.', '2024-06-03 14:45:00', 1);
 
 INSERT INTO budget(value, client_id)
 VALUES
@@ -147,3 +149,4 @@ GRANT ALL PRIVILEGES ON TABLE client_three_purchases TO root;
 GRANT ALL PRIVILEGES ON TABLE client_five_purchases TO root;
 GRANT USAGE, SELECT ON SEQUENCE financial_goal_id_seq TO root;
 GRANT USAGE, SELECT ON SEQUENCE transactions_id_seq TO root;
+GRANT USAGE, SELECT ON SEQUENCE report_id_seq TO root;
