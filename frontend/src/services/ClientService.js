@@ -111,7 +111,8 @@ class ClientService {
             return response.data;
         } catch (error) {
             console.error('Error adding household:', error);
-        };
+        }
+    };
       
     async getFinancialGoalCalculation(value) {
         try {
