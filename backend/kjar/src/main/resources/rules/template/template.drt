@@ -1,0 +1,25 @@
+template header
+cost
+clientId
+
+package rules;
+import com.ftn.sbnz.model.Budget;
+import com.ftn.sbnz.model.FinancialGoal;
+import com.ftn.sbnz.event.Alarm;
+
+template "calculateBudget"
+
+rule "CalculateBudget_@{row.rowNumber}"
+no-loop true
+when
+    String( this == "calculate budget" )
+    $budget : Budget(clientId == @{clientId}, $budgetValue: value, $id: clientId)
+    $goal : FinancialGoal(clientId == @{clientId}, $goalValue: targetValue)
+    eval ($budgetValue - @{cost} < $goalValue / $goal.calculateNumOfMonths())
+then
+    System.out.println("Rule is triggered");
+    System.out.println($goal.getTargetValue());
+    insert(new Alarm(1L, "Financial goal not possible.", Alarm.Level.LOW, $id));
+end
+
+end template

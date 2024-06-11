@@ -1,0 +1,28 @@
+template header
+id
+weekNum
+reason
+generationDate
+clientId
+
+package rules;
+
+import com.ftn.sbnz.model.Report;
+import java.sql.Timestamp;
+import java.time.Instant;
+
+template "createReport"
+
+rule "CreateReport_@{row.rowNumber}"
+no-loop true
+when
+    String( this == "generate report" )
+then
+    Instant now = Instant.now();
+    Timestamp timestamp = Timestamp.from(now);
+    insert(new Report(1L, 0, "@{reason}", timestamp, @{clientId}L));
+    System.out.println("generisanje reportaaaa");
+    System.out.println(new Report(1L, 0, "@{reason}", timestamp, @{clientId}L));
+end
+
+end template
