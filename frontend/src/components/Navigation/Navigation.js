@@ -2,12 +2,24 @@ import React, { useState } from 'react';
 import './Navigation.css';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LogoutIcon from '@mui/icons-material/Logout';
+import authService from '../../services/AuthService';
+import { useNavigate } from 'react-router-dom';
+
 
 const Navigation = () => {
     const [selected, setSelected] = useState('Dashboard');
+    const navigate = useNavigate();
 
     const handleSelect = (option) => {
-      setSelected(option);
+        setSelected(option);
+        if (option === 'Logout') {
+            handleLogout();
+        }
+    };
+
+    const handleLogout = () => {
+        authService.logOut();
+        navigate('/'); 
     };
 
     return (

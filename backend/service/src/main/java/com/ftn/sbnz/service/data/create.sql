@@ -72,15 +72,15 @@ CREATE TABLE budget (
     FOREIGN KEY (client_id) REFERENCES Client(id)
 );
 
-    CREATE TABLE financial_goal (
-        id BIGSERIAL PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        description TEXT,
-        generation_date TIMESTAMP NOT NULL,
-        target_value DOUBLE PRECISION NOT NULL,
-        target_date TIMESTAMP,
-        current_balance DOUBLE PRECISION NOT NULL,
-        start_balance DOUBLE PRECISION NOT NULL,
-        client_id BIGINT NOT NULL,
-        FOREIGN KEY (client_id) REFERENCES Client(id)
-    );
+CREATE TABLE financial_goal (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    generation_date TIMESTAMP NOT NULL,
+    target_value DOUBLE PRECISION NOT NULL,
+    target_date TIMESTAMP,
+    current_balance DOUBLE PRECISION NOT NULL,
+    start_balance DOUBLE PRECISION NOT NULL,
+    client_id BIGINT NOT NULL,
+    FOREIGN KEY (client_id) REFERENCES Client(id)
+);

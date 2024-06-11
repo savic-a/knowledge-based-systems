@@ -6,4 +6,5 @@ import com.ftn.sbnz.model.CreditCard;
 
 public interface CreditCardRepository extends JpaRepository<CreditCard, Long>{
     
+    CreditCard findByClientId(Long clientId);
 }

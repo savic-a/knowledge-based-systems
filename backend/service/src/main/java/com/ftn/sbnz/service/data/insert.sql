@@ -1,5 +1,5 @@
 INSERT INTO client (id, name, surname, email, password) VALUES 
-    (1, 'John', 'Doe', 'john.doe@example.com', 'password123'),
+    (1, 'John', 'Doe', 'john.doe@example.com', 'c2f9bbe7c6abad99b9c04c1c4e50972ab790a046d88e2ad5dc1e1bd0165742b7cef8bb29df636589b707dc7993b249b1499a94802b5e76a0f45e5bdae988fc4c'),
     (2, 'Jane', 'Smith', 'jane.smith@example.com', 'securepass456'),
     (3, 'Alice', 'Johnson', 'alice.johnson@example.com', 'alicepassword'),
     (4, 'Bob', 'Brown', 'bob.brown@example.com', 'bobbypass789');
