@@ -8,7 +8,6 @@ import FinancialGoal from './FinancialGoal';
 
 import { Link, useNavigate } from 'react-router-dom';
 import authService from '../../services/AuthService';
-import clientService from '../../services/ClientService';
 
 const Dashboard = () => {
   const [userDetails, setUserDetails] = useState({"name": "Pera"});
