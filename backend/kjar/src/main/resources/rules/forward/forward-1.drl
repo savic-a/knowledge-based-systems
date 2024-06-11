@@ -1,21 +1,42 @@
 import com.ftn.sbnz.model.Client;
-import com.ftn.sbnz.enumeration.Category
+import com.ftn.sbnz.enumeration.Category;
 import com.ftn.sbnz.model.Transaction;
-import com.ftn.sbnz.model.Warning;
+import com.ftn.sbnz.event.Alarm;
 import com.ftn.sbnz.model.Budget;
 import java.util.Calendar;
 import java.sql.Timestamp;
 import java.util.List;
 
+global java.util.List results;
 
-// 1. LEVEL
+// Pomoćne funkcije za dobijanje početka meseca i trenutnog dana
+function java.sql.Timestamp startOfMonth() {
+    Calendar cal = Calendar.getInstance();
+    cal.set(Calendar.DAY_OF_MONTH, 1);
+    cal.set(Calendar.HOUR_OF_DAY, 0);
+    cal.set(Calendar.MINUTE, 0);
+    cal.set(Calendar.SECOND, 0);
+    cal.set(Calendar.MILLISECOND, 0);
+    return new java.sql.Timestamp(cal.getTimeInMillis());
+}
 
-rule "Set Flag for 5 Purchases in a Category"
+function java.sql.Timestamp today() {
+    Calendar cal = Calendar.getInstance();
+    cal.set(Calendar.HOUR_OF_DAY, 23);
+    cal.set(Calendar.MINUTE, 59);
+    cal.set(Calendar.SECOND, 59);
+    cal.set(Calendar.MILLISECOND, 999);
+    return new java.sql.Timestamp(cal.getTimeInMillis());
+}
+
+// 1. NIVO
+
+rule "Postavi zastavicu za 5 kupovina u kategoriji"
     when
         $client: Client($clientId: id)
-        $category: Category() from Category.values() 
+        $category: Category() from Category.values()
         $transactions: List(size >= 5) from accumulate(
-            Transaction(clientId == $clientId, type == Transaction.Type.OUTCOME, category == $category, value > 0, date >= startOfMonth(), date <= today()), 
+            $transaction: Transaction(clientId == $clientId, type == Transaction.Type.OUTCOME, category == $category, value > 0, date >= startOfMonth(), date <= today()),
             collectList()
         )
         eval(!$client.hasFivePurchasesCategory($category))
@@ -23,16 +44,15 @@ rule "Set Flag for 5 Purchases in a Category"
         modify($client) {
             addFivePurchasesCategory($category);
         }
-        System.out.println("Category " + $category.name() + " added to FivePurchasesCategories for client " + $clientId);
+        System.out.println("Kategorija " + $category.name() + " dodata u FivePurchasesCategories za klijenta " + $clientId);
 end
 
-
-rule "Set Flag for 3 Purchases in a Category"
+rule "Postavi zastavicu za 3 kupovine u kategoriji"
     when
         $client: Client($clientId: id)
-        $category: Category() from Category.values() 
+        $category: Category() from Category.values()
         $transactions: List(size >= 3) from accumulate(
-            Transaction(clientId == $clientId, type == Transaction.Type.OUTCOME, category == $category, value > 0, date >= startOfMonth(), date <= today()), 
+            $transaction: Transaction(clientId == $clientId, type == Transaction.Type.OUTCOME, category == $category, value > 0, date >= startOfMonth(), date <= today()),
             collectList()
         )
         eval(!$client.hasThreePurchasesCategory($category) && !$client.hasFivePurchasesCategory($category))
@@ -40,23 +60,22 @@ rule "Set Flag for 3 Purchases in a Category"
         modify($client) {
             addThreePurchasesCategory($category);
         }
-        System.out.println("Category " + $category.name() + " added to ThreePurchasesCategories for client " + $clientId);
+        System.out.println("Kategorija " + $category.name() + " dodata u ThreePurchasesCategories za klijenta " + $clientId);
 end
 
+// 2. NIVO
 
-// 2. LEVEL
-
-rule "Set Flag3 if ThreePurchases and Spending > 10% Income" no-loop
+rule "Postavi zastavicu Flag3 ako postoje tri kupovine i potrošnja > 10% prihoda" no-loop
     when
         $client: Client($clientId: id, flag3 == false)
-        $category: Category() from $client.threePurchases
+        $category: Category() from $client.getThreePurchases()
         $currentMonthIncome: Number(doubleValue > 0) from accumulate(
-            $income: Transaction(clientId == $clientId, type == Transaction.Type.INCOME, date >= startOfMonth(), date <= today()), 
+            $income: Transaction(clientId == $clientId, type == Transaction.Type.INCOME, date >= startOfMonth(), date <= today()),
             sum($income.getValue())
         )
         $budget: Budget(clientId == $clientId)
         $totalSpending: Number(doubleValue > 0) from accumulate(
-            $expense: Transaction(clientId == $clientId, type == Transaction.Type.OUTCOME, category == $category, value > 0, date >= startOfMonth(), date <= today()), 
+            $expense: Transaction(clientId == $clientId, type == Transaction.Type.OUTCOME, category == $category, value > 0, date >= startOfMonth(), date <= today()),
             sum($expense.getValue())
         )
         eval($totalSpending.doubleValue() > (($currentMonthIncome.doubleValue() + $budget.getValue()) * 0.1))
@@ -64,20 +83,20 @@ rule "Set Flag3 if ThreePurchases and Spending > 10% Income" no-loop
         modify($client) {
             setFlag3(true)
         }
-        System.out.println("Flag3 set for client " + $clientId + " as spending exceeds 10% of income in category " + $category.name());
+        System.out.println("Flag3 postavljen za klijenta " + $clientId + " jer potrošnja premašuje 10% prihoda u kategoriji " + $category.name());
 end
 
-rule "Set Flag4 if FivePurchases and Spending > 25% Income" no-loop
+rule "Postavi zastavicu Flag4 ako postoje pet kupovina i potrošnja > 25% prihoda" no-loop
     when
         $client: Client($clientId: id, flag4 == false)
-        $category: Category() from $client.fivePurchases
+        $category: Category() from $client.getFivePurchases()
         $currentMonthIncome: Number(doubleValue > 0) from accumulate(
-            $income: Transaction(clientId == $clientId, type == Transaction.Type.INCOME, date >= startOfMonth(), date <= today()), 
+            $income: Transaction(clientId == $clientId, type == Transaction.Type.INCOME, date >= startOfMonth(), date <= today()),
             sum($income.getValue())
         )
         $budget: Budget(clientId == $clientId)
         $totalSpending: Number(doubleValue > 0) from accumulate(
-            $expense: Transaction(clientId == $clientId, type == Transaction.Type.OUTCOME, category == $category, value > 0, date >= startOfMonth(), date <= today()), 
+            $expense: Transaction(clientId == $clientId, type == Transaction.Type.OUTCOME, category == $category, value > 0, date >= startOfMonth(), date <= today()),
             sum($expense.getValue())
         )
         eval($totalSpending.doubleValue() > (($currentMonthIncome.doubleValue() + $budget.getValue()) * 0.25))
@@ -85,48 +104,25 @@ rule "Set Flag4 if FivePurchases and Spending > 25% Income" no-loop
         modify($client) {
             setFlag4(true)
         }
-        System.out.println("Flag4 set for client " + $clientId + " as spending exceeds 25% of income in category " + $category.name());
+        System.out.println("Flag4 postavljen za klijenta " + $clientId + " jer potrošnja premašuje 25% prihoda u kategoriji " + $category.name());
 end
 
+// 3. NIVO
 
-// 3 LEVEL
-
-rule "Generate Mild Warning for Flag3"
+rule "Generiši blago upozorenje za Flag3"
     when
         $client: Client($clientId: id, flag3 == true)
-        $category: Category() from $client.threePurchases
+        $category: Category() from $client.getThreePurchases()
     then
-        insert(new Warning($clientId, "Mild", "You have spent more than 10% of your monthly income."));
-        System.out.println("Mild warning generated for client " + $clientId + " in category " + $category.name());
+        insert(new Alarm(1L, "Klijent " + $clientId + " je potrošio više od 10% mesečnog prihoda.", Alarm.Level.MEDIUM, $clientId));
+        System.out.println("Blago upozorenje generisano za klijenta " + $clientId + " u kategoriji " + $category.name());
 end
 
-
-rule "Generate High Warning for Flag4"
+rule "Generiši ozbiljno upozorenje za Flag4"
     when
         $client: Client($clientId: id, flag4 == true)
-        $category: Category() from $client.fivePurchases
+        $category: Category() from $client.getFivePurchases()
     then
-        insert(new Warning($clientId, "High", "You have spent more than 25% of your monthly income."));
-        System.out.println("High warning generated for client " + $clientId + " in category " + $category.name());
+        insert(new Alarm(1L, "Klijent " + $clientId + " je potrošio više od 25% mesečnog prihoda.", Alarm.Level.HIGH, $clientId));
+        System.out.println("Ozbiljno upozorenje generisano za klijenta " + $clientId + " u kategoriji " + $category.name());
 end
-
-
-// Utility functions to get start of the current month and current day
-function Timestamp startOfMonth() {
-    Calendar cal = Calendar.getInstance();
-    cal.set(Calendar.DAY_OF_MONTH, 1);
-    cal.set(Calendar.HOUR_OF_DAY, 0);
-    cal.set(Calendar.MINUTE, 0);
-    cal.set(Calendar.SECOND, 0);
-    cal.set(Calendar.MILLISECOND, 0);
-    return new Timestamp(cal.getTimeInMillis());
-}
-
-function Timestamp today() {
-    Calendar cal = Calendar.getInstance();
-    cal.set(Calendar.HOUR_OF_DAY, 23);
-    cal.set(Calendar.MINUTE, 59);
-    cal.set(Calendar.SECOND, 59);
-    cal.set(Calendar.MILLISECOND, 999);
-    return new Timestamp(cal.getTimeInMillis());
-}
