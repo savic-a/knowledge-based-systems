@@ -13,10 +13,12 @@ import clientService from '../../services/ClientService';
 const FinancialGoal = () => {
     const [financialGoal, setFinancialGoal] = useState(null);
     const [open, setOpen] = useState(false);
+    const [calculatorOpen, setCalculatorOpen] = useState(false);
     const [goalName, setGoalName] = useState('');
     const [goalDescription, setGoalDescription] = useState('');
     const [goalTargetValue, setGoalTargetValue] = useState('');
     const [goalTargetDate, setGoalTargetDate] = useState('');
+    const [monthlyValue, setMonthlyValue] = useState('');
 
     useEffect(() => {
         const fetchFinancialGoal = async () => {
@@ -40,6 +42,14 @@ const FinancialGoal = () => {
         setOpen(false);
     };
 
+    const handleGoalCalculatorOpen = () => {
+        setCalculatorOpen(true);
+    };
+
+    const handleGoalCalculatorClose = () => {
+        setCalculatorOpen(false);
+    };
+
     const handleSave = async () => {
         const newGoal = { name: goalName, description: goalDescription, targetValue: goalTargetValue, targetDate: goalTargetDate };
         await clientService.addFinancialGoal(newGoal);
@@ -51,6 +61,11 @@ const FinancialGoal = () => {
         } catch (error) {
             console.error('Failed to fetch financial goal:', error);
         }
+    };
+
+    const calculate = async () => {
+        console.log("calculateeee");
+        console.log(monthlyValue);
     };
 
     if (!financialGoal) {
@@ -134,6 +149,12 @@ const FinancialGoal = () => {
                         <span>Add goal</span>
                     </div>
                 )}
+                {financialGoal.name && (
+                    <div className="add-goal" onClick={handleGoalCalculatorOpen}>
+                        <p className="add-goal-icon" />
+                        <span>Financial Goal Calculator</span>
+                    </div>
+                )}
             </div>
             <div className="goal-details">
                 <div>
@@ -197,6 +218,28 @@ const FinancialGoal = () => {
                     <Button onClick={handleSave}>Save</Button>
                 </DialogActions>
             </Dialog>
+            <Dialog open={calculatorOpen} onClose={handleGoalCalculatorClose}>
+                    <DialogTitle>Financial Goal Calculator</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Please enter how much you spend per month. Calculator will give you how much more you can spend and still achieve the financial goal.
+                        </DialogContentText>
+                        <TextField
+                            margin="dense"
+                            label="Value"
+                            type="number"
+                            fullWidth
+                            variant="standard"
+                            value={monthlyValue}
+                            onChange={(e) => setMonthlyValue(e.target.value)}
+                        />
+                        <p>Result:</p>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleGoalCalculatorClose}>Close</Button>
+                        <Button onClick={calculate}>Calculate</Button>
+                    </DialogActions>
+                </Dialog>
         </div>
     );
 }
