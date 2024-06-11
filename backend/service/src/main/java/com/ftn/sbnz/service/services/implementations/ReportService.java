@@ -27,4 +27,7 @@ public class ReportService implements IService<Report>{
         return this.repository.findAll();
     }
     
+    public List<Report> getReportsByClientId(Long clientId) {
+        return this.repository.findByClientId(clientId);
+    }
 }

@@ -52,6 +52,17 @@ class ClientService {
             throw error;
         }
     };
+
+    async getReports() {
+        try {
+            const response = await httpClient.get(`/report/${localStorage.getItem('id')}`);
+            console.log(response.data)
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching report:', error);
+            throw error;
+        }
+    };
 }
 
 const clientService = new ClientService();
