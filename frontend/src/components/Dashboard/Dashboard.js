@@ -8,6 +8,7 @@ import FinancialGoal from './FinancialGoal';
 
 import { Link, useNavigate } from 'react-router-dom';
 import authService from '../../services/AuthService';
+import Budget from './Budget';
 
 const Dashboard = () => {
   const [userDetails, setUserDetails] = useState({"name": "Pera"});
@@ -52,6 +53,9 @@ const Dashboard = () => {
           <div className="right-side">
             <div className="card-balance-area">
               <CardBalance />
+            </div>
+            <div className="card-balance-area">
+              <Budget />
             </div>
             <div className="financial-goal-area">
               <FinancialGoal />
